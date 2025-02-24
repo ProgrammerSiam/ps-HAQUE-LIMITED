@@ -6,14 +6,14 @@ const LeadershipSection = () => {
 
     const leaders = [
         {
-            name: "ADAM TAMIZI HAQUE",
-            title: "Managing Director",
+            name: "BARRISTER TAMIZUL HAQUE",
+            title: "Founder Chairman",
             image: leaderImg1,
             badge: "1054",
         },
         {
-            name: "LIZA AKTER HAQUE",
-            title: "Director",
+            name: "NUSRAT AKTER HAQUE",
+            title: "Chairman",
             image: leaderImg2,
         },
         {
@@ -22,8 +22,8 @@ const LeadershipSection = () => {
             image: leaderImg3,
         },
         {
-            name: "NOOR JAFTER HAQUE",
-            title: "Managing Chairman",
+            name: "NUSRAT AKTER HAQUE",
+            title: "Director",
             image: leaderImg2,
         },
     ];
