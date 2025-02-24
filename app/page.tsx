@@ -1,8 +1,9 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import Navbar from '@/shared/Navbar';
+import Footer from '@/shared/Footer';
 import BrandsSection from '@/sections/BrandsSection';
 import Hero from '@/sections/HeroSection';
-import InfoCards from '@/components/InfoCards';
 import LeadershipSection from '@/sections/LeadershipSection';
 import AchievementStatsSection from '@/sections/AchievementStatsSection';
 import ProductsSection from '@/sections/ProductsSection';
@@ -10,6 +11,7 @@ import BlogSection from '@/sections/BlogSection';
 import NewsletterSection from '@/sections/NewsletterSection';
 import CEOMessageSection from '@/sections/CEOMessageSection';
 import InfoCardSection from '@/sections/InfoCardSection';
+
 
 const Home: NextPage = () => {
   return (
@@ -21,7 +23,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-
+        <Navbar />
         <Hero />
         <BrandsSection />
         <InfoCardSection />
@@ -31,7 +33,7 @@ const Home: NextPage = () => {
         <BlogSection />
         <NewsletterSection />
         <CEOMessageSection />
-
+        <Footer />
       </main>
     </>
   );
