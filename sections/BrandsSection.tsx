@@ -4,17 +4,16 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-
+import SectionHeader from '@/components/Header';
 import { brandImg1 } from "@/constants/image";
 import { brandImg2 } from "@/constants/image";
 import { brandImg3 } from "@/constants/image";
 import { brandImg4 } from "@/constants/image";
 import { brandImg5 } from "@/constants/image";
 import { brandImg6 } from "@/constants/image";
-import SectionHeader from '@/components/Header';
 
 const BrandsSection = () => {
-    // Updated brand data using imported images
+    //  brand data using imported images
     const brands = [
         { id: 1, name: 'Brand 1', logo: brandImg1 },
         { id: 2, name: 'Brand 2', logo: brandImg2 },

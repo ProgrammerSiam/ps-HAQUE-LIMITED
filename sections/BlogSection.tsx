@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const BlogSection = () => {
     return (
-        <section className="py-12 bg-white">
+        <section className="py-16 lg:py-24 bg-white">
             <div className="container mx-auto px-4">
                 {/* Section Header */}
                 <SectionHeader
@@ -18,7 +18,7 @@ const BlogSection = () => {
                     titleSize="md"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 md:mt-16">
                     <BlogCard
                         title="DISCOVER HAQUE'S CULINARY JOURNEY"
                         date="23 October 2023"

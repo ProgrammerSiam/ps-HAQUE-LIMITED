@@ -1,55 +1,8 @@
-// "use client";
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import { motion } from 'framer-motion';
-// import { StaticImageData } from 'next/image';
-
-// const BlogCard = ({ title, date, image, excerpt, link }: {
-//     title: string;
-//     date: string;
-//     image: string | StaticImageData;
-//     excerpt: string;
-//     link: string;
-// }) => {
-//     return (
-//         <motion.div
-//             // whileHover={{ y: -5 }}
-//             className="bg-white group rounded-lg overflow-hidden shadow-md"
-//         >
-//             <div className="relative h-48">
-//                 <Image src={image} alt={title} fill className="object-cover  transition-transform duration-700 ease-out  group-hover:scale-105" />
-//             </div>
-//             <div className="p-5">
-//                 <p className="text-sm text-gray-500 mb-2">
-//                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-//                     </svg>
-//                     {date}
-//                 </p>
-//                 <h3 className="font-bold text-lg mb-2">{title}</h3>
-//                 <p className="text-gray-600 text-sm mb-4">{excerpt}</p>
-//                 <Link href={link}>
-//                     <button className="text-red-600 hover:text-red-800 transition-colors text-sm flex items-center">
-//                         View details
-//                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-//                         </svg>
-//                     </button>
-//                 </Link>
-//             </div>
-//         </motion.div>
-//     );
-// };
-
-// export default BlogCard
-
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { StaticImageData } from 'next/image';
-// import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
 interface BlogCardProps {
     title: string;

@@ -16,7 +16,7 @@ const Navbar = () => {
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
-    // Enhanced scroll handling with debounce
+    // scroll handling with debounce
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
@@ -46,7 +46,7 @@ const Navbar = () => {
                 // Update scroll state
                 setScrolled(currentScrollY < 0);
                 setLastScrollY(currentScrollY);
-            }, 50); // 50ms debounce
+            }, 50);
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -173,7 +173,7 @@ const Navbar = () => {
                     </Link>
 
 
-                    {/* Desktop Navigation with Fixed Dropdown */}
+                    {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center space-x-8">
                         <Link
                             href="/"
@@ -245,7 +245,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2 md:space-x-4">
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}

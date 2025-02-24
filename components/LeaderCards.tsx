@@ -5,8 +5,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXing } from "react-icons/fa";
-import { RxCross1 } from "react-icons/rx";
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { useState } from "react";
 
 interface LeaderCardProps {
@@ -22,7 +21,6 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
   const socialLinks = [
     { icon: FaFacebookF, href: '#', label: 'Facebook' },
     { icon: FaInstagram, href: '#', label: 'Instagram' },
-    // { icon: FaXing, href: '#', label: 'Xing' },
     { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' }
   ];
 
@@ -58,7 +56,6 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
     <motion.div
       className="group relative h-[400px] w-full overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-300 ease-out hover:shadow-xl"
       variants={cardVariants}
-      // whileHover="hover"
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >

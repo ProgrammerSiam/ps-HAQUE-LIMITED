@@ -44,7 +44,7 @@ const products = [
 
 const ProductsSection = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState(2); // start with 3rd product highlighted
+    const [activeIndex, setActiveIndex] = useState(2);
 
     // Each card has a ~230px width (including margin). Adjust if needed.
     const cardWidth = 230;
@@ -70,7 +70,7 @@ const ProductsSection = () => {
     };
 
     return (
-        <section className="relative py-12 bg-white border-t-2 border-dotted border-gray-300">
+        <section className="relative mt-16 lg:mt-24 bg-white">
             <div className="container mx-auto px-4">
 
                 {/* Section Header */}
@@ -83,7 +83,7 @@ const ProductsSection = () => {
                 />
 
                 {/* Scrollable Row of Cards */}
-                <div className="relative mt-20">
+                <div className="relative mt-12 md:mt-16">
                     {/* Gradient Masks */}
                     <div className="pointer-events-none absolute left-0 top-0 z-10 w-24 bg-gradient-to-r from-white" style={{ height: '100%' }} />
                     <div className="pointer-events-none absolute right-0 top-0 z-10 w-24 bg-gradient-to-l from-white" style={{ height: '100%' }} />

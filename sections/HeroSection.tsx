@@ -47,12 +47,9 @@ const Hero = () => {
     return (
         <section
             className="relative h-[85vh] md:h-[95vh] overflow-hidden group "
-
-
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-
             {/* Background Pattern */}
             <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.2),rgba(0,0,0,0.4))] pointer-events-none" />
 
@@ -74,7 +71,7 @@ const Hero = () => {
                                 priority={index === 0}
                                 className="transition-transform duration-[3000ms] transform scale-100 group-hover:scale-105"
                             />
-                            {/* Enhanced Gradient Overlay */}
+                            {/* Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/75" />
                             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
 
@@ -149,7 +146,7 @@ const Hero = () => {
                 </AnimatePresence>
             ))}
 
-            {/* Enhanced Navigation Arrows */}
+            {/* Navigation Arrows */}
             <div className={`absolute hidden inset-x-0 top-1/2 md:flex items-center justify-between px-4 transform -translate-y-1/2 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                 <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -173,7 +170,7 @@ const Hero = () => {
                 </motion.button>
             </div>
 
-            {/* Enhanced Progress Indicators */}
+            {/* Progress Indicators */}
             <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center space-x-4 z-20">
                 {slides.map((_, idx) => (
                     <motion.button

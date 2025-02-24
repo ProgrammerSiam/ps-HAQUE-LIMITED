@@ -1,11 +1,9 @@
-"use client";
-
 import SectionHeader from "@/components/Header";
 import LeaderCard from "@/components/LeaderCards";
 import { leaderImg1, leaderImg2, leaderImg3 } from "@/constants/image";
-import { motion } from "framer-motion";
 
 const LeadershipSection = () => {
+
     const leaders = [
         {
             name: "ADAM TAMIZI HAQUE",
@@ -31,8 +29,8 @@ const LeadershipSection = () => {
     ];
 
     return (
-        <section className="py-12 bg-gray-50">
-            <div className="container mx-auto px-4 space-y-20">
+        <section className="py-16 lg:py-24 px-4 bg-gray-50">
+            <div className="container mx-auto ">
 
                 {/* Section Header */}
                 <SectionHeader
@@ -44,7 +42,7 @@ const LeadershipSection = () => {
                     titleSize="md"
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 md:mt-16">
                     {leaders.map((leader, idx) => (
                         <LeaderCard
                             key={idx}

@@ -1,6 +1,5 @@
 
 "use client";
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,7 +15,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-gray-900 to-black text-white pt-16 pb-8">
+    <footer className="bg-gradient-to-b from-gray-900 to-black text-white  py-16 lg:py-24">
       <div className="container mx-auto px-4 lg:px-8">
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">

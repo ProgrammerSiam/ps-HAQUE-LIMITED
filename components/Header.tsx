@@ -61,7 +61,7 @@
 //                     <span className="text-red-600">{highlightedText}</span>
 //                 )}
 //             </h2>
-            
+
 //             {showDivider && (
 //                 <div 
 //                     className={`h-1 bg-red-600 w-24 ${
@@ -70,7 +70,7 @@
 //                     }`}
 //                 />
 //             )}
-            
+
 //             {description && (
 //                 <p className={`max-w-2xl text-base text-gray-600 md:text-lg mt-4 ${
 //                     align === "center" ? "mx-auto" : ""
@@ -130,11 +130,11 @@ const SectionHeader = ({
 
     // Animation variants
     const containerVariants = {
-        hidden: { 
+        hidden: {
             opacity: 0,
             y: 20
         },
-        visible: { 
+        visible: {
             opacity: 1,
             y: 0,
             transition: {
@@ -147,11 +147,11 @@ const SectionHeader = ({
     };
 
     const titleVariants = {
-        hidden: { 
+        hidden: {
             opacity: 0,
             y: 20
         },
-        visible: { 
+        visible: {
             opacity: 1,
             y: 0,
             transition: {
@@ -162,11 +162,11 @@ const SectionHeader = ({
     };
 
     const dividerVariants = {
-        hidden: { 
+        hidden: {
             width: 0,
             opacity: 0
         },
-        visible: { 
+        visible: {
             width: "6rem", // w-24 equivalent
             opacity: 1,
             transition: {
@@ -177,11 +177,11 @@ const SectionHeader = ({
     };
 
     const descriptionVariants = {
-        hidden: { 
+        hidden: {
             opacity: 0,
             y: 10
         },
-        visible: { 
+        visible: {
             opacity: 1,
             y: 0,
             transition: {
@@ -196,20 +196,20 @@ const SectionHeader = ({
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ 
-                once: viewportOnce, 
+            viewport={{
+                once: viewportOnce,
                 margin: viewportMargin,
                 amount: 0.3 // Trigger animation when 30% of the element is in view
             }}
             className={`${alignments[align]} ${className}`}
         >
-            <motion.h2 
+            <motion.h2
                 variants={titleVariants}
                 className={`font-heading mb-4 font-bold tracking-tight text-gray-900 ${titleSizes[titleSize]}`}
             >
                 {title}{' '}
                 {highlightedText && (
-                    <motion.span 
+                    <motion.span
                         variants={titleVariants}
                         className="text-red-600"
                     >
@@ -217,23 +217,21 @@ const SectionHeader = ({
                     </motion.span>
                 )}
             </motion.h2>
-            
+
             {showDivider && (
-                <motion.div 
+                <motion.div
                     variants={dividerVariants}
-                    className={`h-1 bg-red-600 ${
-                        align === "center" ? "mx-auto" : 
-                        align === "right" ? "ml-auto" : ""
-                    }`}
+                    className={`h-1 bg-red-600 ${align === "center" ? "mx-auto" :
+                            align === "right" ? "ml-auto" : ""
+                        }`}
                 />
             )}
-            
+
             {description && (
-                <motion.p 
+                <motion.p
                     variants={descriptionVariants}
-                    className={`max-w-2xl text-base text-gray-600 md:text-lg mt-4 ${
-                        align === "center" ? "mx-auto" : ""
-                    }`}
+                    className={`max-w-2xl text-base text-gray-600 md:text-lg mt-4 ${align === "center" ? "mx-auto" : ""
+                        }`}
                 >
                     {description}
                 </motion.p>

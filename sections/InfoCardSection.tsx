@@ -5,7 +5,7 @@ import { infoImg3 } from "@/constants/image";
 
 const InfoCardSection = () => {
     return (
-        <section className="py-10 px-4 bg-gray-50">
+        <section className=" px-4 bg-gray-50">
             <div
                 className="
             container mx-auto

@@ -43,7 +43,7 @@ const NewsletterSection = () => {
     };
 
     return (
-        <section className="relative overflow-hidden bg-gray-50 py-24">
+        <section className="relative overflow-hidden bg-gray-50  py-16 lg:py-24">
             {/* Background Image with Parallax Effect */}
             <motion.div
                 className="absolute inset-0 z-0"
@@ -111,7 +111,7 @@ const NewsletterSection = () => {
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         type="submit"
-                                        className="bg-red-600 px-2 sm:px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none "
+                                        className="bg-red-600 px-4 sm:px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none "
                                     >
                                         Subscribe
                                     </motion.button>

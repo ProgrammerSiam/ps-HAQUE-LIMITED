@@ -9,7 +9,7 @@ import SectionHeader from '@/components/Header';
 
 const CEOMessageSection = () => {
   return (
-    <section className="py-12 md:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section className=" py-16 lg:py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 lg:px-8">
         <SectionHeader
           title="Leadership"
@@ -20,14 +20,14 @@ const CEOMessageSection = () => {
           titleSize="md"
         />
 
-        <div className="mt-12 rounded-2xl border-0 shadow-xl bg-white/80 backdrop-blur overflow-hidden">
+        <div className="mt-12 md:mt-16 rounded-2xl border-0 shadow-xl bg-white/80 backdrop-blur overflow-hidden">
           <div className="flex flex-col lg:flex-row items-stretch">
             {/* Image Column */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+            <div
+              // initial={{ opacity: 0, x: -20 }}
+              // whileInView={{ opacity: 1, x: 0 }}
+              // transition={{ duration: 0.6 }}
+              // viewport={{ once: true }}
               className="relative w-full lg:w-2/5 h-[400px] lg:h-[600px]"
             >
               <div className="absolute inset-0 bg-red-600/10 transform -skew-x-6 z-10" />
@@ -47,14 +47,14 @@ const CEOMessageSection = () => {
                   <p className="text-lg font-medium text-gray-200">Chief Executive Officer</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Content Column */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
+            <div
+              // initial={{ opacity: 0, x: 20 }}
+              // whileInView={{ opacity: 1, x: 0 }}
+              // transition={{ duration: 0.6, delay: 0.2 }}
+              // viewport={{ once: true }}
               className="w-full lg:w-3/5 p-6 md:p-8 lg:p-12 flex flex-col justify-center"
             >
               <div className="space-y-8">
@@ -102,7 +102,7 @@ const CEOMessageSection = () => {
                   </motion.button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
