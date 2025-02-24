@@ -78,7 +78,7 @@ const AchievementStatsSection = () => {
                             </h2>
                             <div className="w-20 h-1 bg-red-400" />
                             <p className="text-xl text-gray-100 leading-relaxed">
-                                A.T. Haque Limited is the most trusted and highly admired
+                                A.T. Haque Limited stands as Bangladesh's most trusted and highly admired leader in manufacturing excellence, setting new standards in innovation and quality since our inception.
                             </p>
                         </div>
                     </div>
