@@ -1,0 +1,63 @@
+"use client";
+
+import SectionHeader from "@/components/Header";
+import LeaderCard from "@/components/LeaderCards";
+import { leaderImg1, leaderImg2, leaderImg3 } from "@/constants/image";
+import { motion } from "framer-motion";
+
+const LeadershipSection = () => {
+    const leaders = [
+        {
+            name: "ADAM TAMIZI HAQUE",
+            title: "Managing Director",
+            image: leaderImg1,
+            badge: "1054",
+        },
+        {
+            name: "LIZA AKTER HAQUE",
+            title: "Director",
+            image: leaderImg2,
+        },
+        {
+            name: "ADAM TAMIZI HAQUE",
+            title: "Chairman",
+            image: leaderImg3,
+        },
+        {
+            name: "NOOR JAFTER HAQUE",
+            title: "Managing Chairman",
+            image: leaderImg2,
+        },
+    ];
+
+    return (
+        <section className="py-12 bg-gray-50">
+            <div className="container mx-auto px-4 space-y-20">
+
+                {/* Section Header */}
+                <SectionHeader
+                    title="Our"
+                    description=''
+                    highlightedText="Leaders"
+                    showDivider={true}
+                    align="center"
+                    titleSize="md"
+                />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {leaders.map((leader, idx) => (
+                        <LeaderCard
+                            key={idx}
+                            name={leader.name}
+                            title={leader.title}
+                            image={leader.image}
+
+                        />
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default LeadershipSection;
