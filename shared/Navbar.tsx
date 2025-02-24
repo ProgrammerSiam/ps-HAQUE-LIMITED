@@ -44,7 +44,7 @@ const Navbar = () => {
                 }
 
                 // Update scroll state
-                setScrolled(currentScrollY > 2);
+                setScrolled(currentScrollY < 0);
                 setLastScrollY(currentScrollY);
             }, 50); // 50ms debounce
         };

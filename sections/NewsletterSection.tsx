@@ -104,14 +104,14 @@ const NewsletterSection = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Enter your email address"
-                                        className="flex-1 px-6 py-4 text-base placeholder:text-gray-400 focus:outline-none"
+                                        className="flex-1 px-4 sm:px-6 py-4 text-base placeholder:text-gray-400 focus:outline-none"
                                         required
                                     />
                                     <motion.button
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         type="submit"
-                                        className="bg-red-600 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none "
+                                        className="bg-red-600 px-2 sm:px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none "
                                     >
                                         Subscribe
                                     </motion.button>

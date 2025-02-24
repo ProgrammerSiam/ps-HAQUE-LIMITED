@@ -87,7 +87,7 @@ const CEOMessageSection = () => {
                   >
                     Learn More About Our Vision
                     <svg
-                      className="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1"
+                      className="w-5 h-5 hidden sm:block transform transition-transform duration-300 group-hover:translate-x-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

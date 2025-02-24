@@ -104,7 +104,7 @@ const Hero = () => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.6, duration: 0.8 }}
-                                    className="text-sm md:text-base tracking-[0.3em] text-white/80 mb-4 font-light"
+                                    className="text-sm md:text-base tracking-[0.3em] text-white/80 mb-4 font-light mx-auto text-center"
                                 >
                                     {slide.subtitle}
                                 </motion.p>
