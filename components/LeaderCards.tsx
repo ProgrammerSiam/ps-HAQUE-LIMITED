@@ -73,7 +73,7 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
           animate={isHovered ? "visible" : "hidden"}
           variants={socialIconsVariants}
         >
-          {socialLinks.map((social, index) => (
+          {socialLinks.map((social) => (
             <motion.a
               key={social.label}
               href={social.href}

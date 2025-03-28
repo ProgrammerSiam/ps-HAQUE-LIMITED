@@ -27,6 +27,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
+        <Navbar />
         <Hero />
         <BrandsSection />
         <InfoCardSection />
@@ -36,6 +37,7 @@ const Home: NextPage = () => {
         <BlogSection />
         <NewsletterSection />
         <CEOMessageSection />
+        <Footer />
       </main>
     </>
   );

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+// import { Navbar } from "@/components/shared/Navbar";
+// import { Footer } from "@/components/shared/Footer";
+// import { usePathname } from "next/navigation";
 import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
+import MainWrapper from "@/components/layouts/MainWrapper";
 // import { Geist, Geist_Mono } from "next/font/google";
 
 // const geistSans = Geist({
@@ -24,15 +28,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+      <body>
+        <MainWrapper navbar={<Navbar />} footer={<Footer />}>
+          {children}
+        </MainWrapper>
       </body>
     </html>
   );

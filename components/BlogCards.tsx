@@ -20,7 +20,6 @@ const BlogCard = ({
   image,
   excerpt,
   link,
-  category = "Blog",
   readTime = "5 min read",
 }: BlogCardProps) => {
   return (

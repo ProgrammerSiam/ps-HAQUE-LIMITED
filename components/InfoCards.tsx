@@ -19,7 +19,6 @@ const InfoCard = ({
   description,
   image,
   linkText,
-  linkUrl,
   centerText = false,
   hideButton = false,
 }: InfoCardProps) => {
