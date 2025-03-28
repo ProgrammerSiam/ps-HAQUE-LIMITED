@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import Image, { StaticImageData } from "next/image";
@@ -12,23 +9,22 @@ interface LeaderCardProps {
   name: string;
   title: string;
   image: StaticImageData | string;
-
 }
 
 const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const socialLinks = [
-    { icon: FaFacebookF, href: '#', label: 'Facebook' },
-    { icon: FaInstagram, href: '#', label: 'Instagram' },
-    { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' }
+    { icon: FaFacebookF, href: "#", label: "Facebook" },
+    { icon: FaInstagram, href: "#", label: "Instagram" },
+    { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
   ];
 
   const cardVariants = {
     hover: {
       y: -8,
-      transition: { duration: 0.3, ease: 'easeOut' }
-    }
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
   };
 
   const socialIconsVariants = {
@@ -38,9 +34,9 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
       x: 0,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const iconVariant = {
@@ -48,8 +44,8 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
@@ -74,7 +70,7 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
         <motion.div
           className="absolute right-4 top-1/4 -translate-y-1/2 space-y-4"
           initial="hidden"
-          animate={isHovered ? 'visible' : 'hidden'}
+          animate={isHovered ? "visible" : "hidden"}
           variants={socialIconsVariants}
         >
           {socialLinks.map((social, index) => (
@@ -110,5 +106,3 @@ const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
 };
 
 export default LeaderCard;
-
-

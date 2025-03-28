@@ -1,5 +1,3 @@
-
-
 "use client";
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
@@ -25,8 +23,6 @@ const InfoCard = ({
   centerText = false,
   hideButton = false,
 }: InfoCardProps) => {
-
-
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -34,9 +30,9 @@ const InfoCard = ({
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   // Hover animation for the card
@@ -45,9 +41,9 @@ const InfoCard = ({
       y: -8,
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   return (
@@ -71,8 +67,9 @@ const InfoCard = ({
         {/* Content container */}
         <motion.div
           variants={contentVariants}
-          className={`absolute bottom-0 left-0 right-0 p-6 ${centerText ? 'text-center' : ''
-            }`}
+          className={`absolute bottom-0 left-0 right-0 p-6 ${
+            centerText ? "text-center" : ""
+          }`}
         >
           <h3 className="font-heading mb-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
             {title}
@@ -109,6 +106,5 @@ const InfoCard = ({
     </motion.div>
   );
 };
-
 
 export default InfoCard;
