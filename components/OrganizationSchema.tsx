@@ -1,37 +1,28 @@
-export function OrganizationSchema() {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: siteConfig.organization.name,
-    legalName: siteConfig.organization.legalName,
-    url: siteConfig.url,
-    logo: `${siteConfig.url}${siteConfig.organization.logo}`,
-    foundingDate: siteConfig.organization.foundingDate,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: siteConfig.address.street,
-      addressLocality: siteConfig.address.city,
-      addressCountry: siteConfig.address.country,
-      postalCode: siteConfig.address.postcode,
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: siteConfig.contact.phone,
-      email: siteConfig.contact.email,
-      contactType: "customer service",
-    },
-    sameAs: [
-      siteConfig.social.facebook,
-      siteConfig.social.instagram,
-      siteConfig.social.youtube,
-      siteConfig.social.linkedin,
-    ],
-  };
+import { siteConfig } from "@/config/site";
 
+export const OrganizationSchema = () => {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: siteConfig.organization.name,
+          legalName: siteConfig.organization.legalName,
+          url: siteConfig.url,
+          logo: `${siteConfig.url}${siteConfig.organization.logo}`,
+          address: {
+            "@type": "PostalAddress",
+            ...siteConfig.organization.address,
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            email: siteConfig.contact.email,
+            telephone: siteConfig.contact.phone,
+          },
+        }),
+      }}
     />
   );
-}
+};
