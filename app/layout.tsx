@@ -1,29 +1,60 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-// import { Navbar } from "@/components/shared/Navbar";
-// import { Footer } from "@/components/shared/Footer";
-// import { usePathname } from "next/navigation";
 import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
 import MainWrapper from "@/components/layouts/MainWrapper";
-// import { Geist, Geist_Mono } from "next/font/google";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// ${geistSans.variable} ${geistMono.variable}
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 export const metadata: Metadata = {
-  title: "A.T. Haque Limited - Leading Biscuit & Confectionery Manufacturer",
+  title: {
+    template: "%s | Haque Galaxy",
+    default: "Haque Galaxy - Premium Confectionery Products",
+  },
   description:
-    "A.T. Haque Limited is Bangladesh's leading biscuit, confectionery, wafer and candy manufacturing company. Explore our quality products.",
+    "Discover premium quality biscuits, wafers, chocolates and candies from Haque Galaxy",
+  keywords: [
+    "biscuits",
+    "wafers",
+    "chocolate",
+    "candy",
+    "confectionery",
+    "Haque Galaxy",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://haquegalaxy.com",
+    siteName: "Haque Galaxy",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Haque Galaxy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Haque Galaxy",
+    description: "Premium Confectionery Products",
+    images: ["/twitter-image.jpg"],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/apple-touch-icon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
+    other: [
+      {
+        rel: "manifest",
+        url: "/site.webmanifest",
+      },
+    ],
+  },
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  robots: "index, follow",
 };
 
 export default function RootLayout({
