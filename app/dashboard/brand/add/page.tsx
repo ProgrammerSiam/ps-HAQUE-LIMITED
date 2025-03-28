@@ -2,9 +2,41 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/dashboard/PageLayout";
+import Image from "next/image";
 
 export default function AddBrand() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImagePreview(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  // const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setVideoPreview(URL.createObjectURL(file));
+  //   }
+  // };
+
+  // const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setThumbnailPreview(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <PageLayout title="Add New Brand">
@@ -34,6 +66,37 @@ export default function AddBrand() {
               />
             </div>
           </div>
+
+          {/* Image Preview */}
+          {imagePreview && (
+            <Image
+              src={imagePreview || "/placeholder.jpg"}
+              alt="Preview"
+              width={128}
+              height={128}
+              className="mx-auto object-cover rounded-lg"
+            />
+          )}
+
+          {/* Video Preview */}
+          {videoPreview && (
+            <video
+              src={videoPreview}
+              controls
+              className="w-full h-32 object-cover"
+            />
+          )}
+
+          {/* Thumbnail Preview */}
+          {thumbnailPreview && (
+            <Image
+              src={thumbnailPreview}
+              alt="Thumbnail Preview"
+              width={128}
+              height={128}
+              className="mx-auto object-cover"
+            />
+          )}
 
           {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4">

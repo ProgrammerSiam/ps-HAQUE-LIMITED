@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+// import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 
 export default function AddNews() {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   return (
     <PageLayout title="Add News">

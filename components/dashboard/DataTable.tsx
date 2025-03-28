@@ -1,9 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
+// import { IconType } from "react-icons";
 
-export const DataTable = ({ columns, data }: {
+interface TableData {
+  [key: string]: string | number | boolean;
+}
+
+export const DataTable = ({
+  columns,
+  data,
+}: {
   columns: { key: string; label: string }[];
-  data: any[];
+  data: TableData[];
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -39,4 +47,4 @@ export const DataTable = ({ columns, data }: {
       </table>
     </div>
   );
-}; 
+};

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AddProduct() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -33,7 +34,7 @@ export default function AddProduct() {
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
               <div className="space-y-1 text-center">
                 {imagePreview ? (
-                  <img
+                  <Image
                     src={imagePreview}
                     alt="Preview"
                     className="mx-auto h-32 w-32 object-cover rounded-lg"

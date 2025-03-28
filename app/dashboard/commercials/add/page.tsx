@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+// import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 
 export default function AddCommercial() {
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  // const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  // const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   return (
     <PageLayout title="Add New Commercial">
