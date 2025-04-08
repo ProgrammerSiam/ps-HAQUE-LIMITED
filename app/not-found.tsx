@@ -150,7 +150,8 @@ export default function NotFoundPage() {
             Page Not Found
           </h2>
           <p className="text-lg text-gray-400 max-w-md">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved.
           </p>
           {glitch && (
             <motion.div
@@ -165,7 +166,8 @@ export default function NotFoundPage() {
             >
               <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
               <p className="text-lg max-w-md">
-                The page you&apos;re looking for doesn&apos;t exist or has been moved.
+                The page you&apos;re looking for doesn&apos;t exist or has been
+                moved.
               </p>
             </motion.div>
           )}

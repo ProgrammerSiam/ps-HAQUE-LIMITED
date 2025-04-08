@@ -1,7 +1,5 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Navbar from "@/shared/Navbar";
-import Footer from "@/shared/Footer";
 import BrandsSection from "@/sections/BrandsSection";
 import Hero from "@/sections/HeroSection";
 import LeadershipSection from "@/sections/LeadershipSection";
@@ -11,7 +9,7 @@ import BlogSection from "@/sections/BlogSection";
 import NewsletterSection from "@/sections/NewsletterSection";
 import CEOMessageSection from "@/sections/CEOMessageSection";
 import InfoCardSection from "@/sections/InfoCardSection";
-
+import TestimonialSection from "@/sections/TestimonialSection";
 const Home: NextPage = () => {
   return (
     <>
@@ -31,10 +29,13 @@ const Home: NextPage = () => {
         <BrandsSection />
         <InfoCardSection />
         <LeadershipSection />
-        <AchievementStatsSection />
         <ProductsSection />
-        <BlogSection />
+        <AchievementStatsSection />
+
+        <TestimonialSection />
         <NewsletterSection />
+        <BlogSection />
+
         <CEOMessageSection />
       </main>
     </>

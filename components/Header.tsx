@@ -129,22 +129,53 @@ const SectionHeader = ({
       </motion.h2>
 
       {showDivider && (
-        <motion.div
-          variants={dividerVariants}
-          className={`h-1 bg-red-600 ${
-            align === "center" ? "mx-auto" : align === "right" ? "ml-auto" : ""
-          }`}
-        />
+        <div
+          className={`${align === "center" ? "flex justify-center" : align === "right" ? "flex justify-end" : "flex justify-start"}`}
+        >
+          <div className="flex items-center mb-4">
+            <motion.div
+              className="h-px bg-gray-300 w-8"
+              variants={{
+                hidden: { width: 0 },
+                visible: { width: "2rem", transition: { duration: 0.8 } },
+              }}
+            />
+            <motion.div
+              className="h-1 bg-red-600 mx-2 rounded-full"
+              variants={{
+                hidden: { width: 0 },
+                visible: {
+                  width: "4rem",
+                  transition: {
+                    duration: 0.8,
+                    delay: 0.2,
+                    ease: "easeOut",
+                  },
+                },
+              }}
+            />
+            <motion.div
+              className="h-px bg-gray-300 w-8"
+              variants={{
+                hidden: { width: 0 },
+                visible: {
+                  width: "2rem",
+                  transition: { duration: 0.8, delay: 0.4 },
+                },
+              }}
+            />
+          </div>
+        </div>
       )}
-
       {description && (
         <motion.p
           variants={descriptionVariants}
-          className={`max-w-2xl text-base text-gray-600 md:text-lg mt-4 ${
+          className={`max-w-2xl text-gray-700 text-base md:text-lg relative mt-2 ${
             align === "center" ? "mx-auto" : ""
           }`}
         >
           {description}
+          {/* <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gray-200" /> */}
         </motion.p>
       )}
     </motion.div>

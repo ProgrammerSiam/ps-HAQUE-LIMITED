@@ -1,109 +1,142 @@
-"use client";
-import Image, { StaticImageData } from "next/image";
+// Premium InfoCard component with enhanced UI/UX
+
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
-interface InfoCardProps {
-  title: string;
-  description: string;
-  image: StaticImageData | string;
-  linkText: string;
-  linkUrl: string;
-  /** Center text inside the overlay if true */
-  centerText?: boolean;
-  /** Hide the button if true */
-  hideButton?: boolean;
-}
-
-const InfoCard = ({
+const PremiumInfoCard = ({
   title,
   description,
   image,
   linkText,
+  linkUrl,
   centerText = false,
   hideButton = false,
-}: InfoCardProps) => {
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
+  accentColor = "bg-red-600",
+}: {
+  title: string;
+  description: string;
+  image: string;
+  linkText: string;
+  linkUrl: string;
+  centerText?: boolean;
+  hideButton?: boolean;
+  accentColor?: string;
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
-  // Hover animation for the card
-  const cardVariants = {
-    hover: {
-      y: -8,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut",
-      },
-    },
+  // Handle image loading errors
+  const handleImageError = () => {
+    console.error(`Failed to load image for card: ${title}`);
+    setImgError(true);
   };
 
   return (
     <motion.div
-      className="group relative w-full overflow-hidden rounded-xl bg-white shadow-lg transition-shadow hover:shadow-xl"
-      initial="hidden"
-      animate="visible"
-      // whileHover="hover"
-      variants={cardVariants}
+      className="bg-white rounded-2xl overflow-hidden h-full flex flex-col relative group"
+      initial={{
+        boxShadow:
+          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      }}
+      animate={{
+        boxShadow: isHovered
+          ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+          : "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3 }}
     >
-      <div className="relative h-[400px] w-full overflow-hidden">
-        <Image
-          src={image}
-          alt={title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      {/* Accent color bar at top */}
+      <div className={`h-1 w-full ${accentColor}`}></div>
+
+      {/* Image container */}
+      <div className="relative overflow-hidden h-52">
+        {imgError ? (
+          // Fallback colored background if image fails to load
+          <div
+            className={`w-full h-full ${accentColor.replace("bg", "bg-opacity-20")}`}
+          >
+            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+              <span>{title}</span>
+            </div>
+          </div>
+        ) : (
+          // Try Next.js Image component first with proper error handling
+          <div className="relative w-full h-full">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+              onError={handleImageError}
+              priority={true}
+            />
+            <motion.div
+              className="absolute inset-0 bg-black bg-opacity-0"
+              animate={{
+                scale: isHovered ? 1.08 : 1,
+                backgroundColor: isHovered
+                  ? "rgba(0,0,0,0.1)"
+                  : "rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+            />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 z-10" />
+      </div>
+
+      {/* Content area */}
+      <div
+        className={`p-8 flex-grow flex flex-col relative ${centerText ? "text-center items-center" : ""}`}
+      >
+        {/* Title */}
+        <h3 className="text-xl font-bold mb-4 text-gray-900">{title}</h3>
+
+        {/* Animated underline on hover */}
+        <motion.div
+          className={`h-0.5 ${accentColor} mb-4`}
+          initial={{ width: 40 }}
+          animate={{ width: isHovered ? (centerText ? 80 : 60) : 40 }}
+          style={{ alignSelf: centerText ? "center" : "flex-start" }}
         />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80" />
+        {/* Description */}
+        <p className="text-gray-700 mb-6 flex-grow leading-relaxed">
+          {description}
+        </p>
 
-        {/* Content container */}
-        <motion.div
-          variants={contentVariants}
-          className={`absolute bottom-0 left-0 right-0 p-6 ${
-            centerText ? "text-center" : ""
-          }`}
-        >
-          <h3 className="font-heading mb-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
-            {title}
-          </h3>
-
-          <p className="mb-6 max-w-prose text-sm font-medium leading-relaxed text-gray-200 md:text-base">
-            {description}
-          </p>
-
-          {!hideButton && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        {/* Button/Link */}
+        {!hideButton && (
+          <motion.a
+            href={linkUrl}
+            className={`inline-flex items-center font-medium text-gray-900 ${centerText ? "justify-center" : ""}`}
+            animate={{
+              color: isHovered
+                ? accentColor === "bg-red-600"
+                  ? "#DC2626"
+                  : "#4F46E5"
+                : "#111827",
+            }}
+            whileHover={{ x: 5 }}
+          >
+            <span className="mr-2">{linkText}</span>
+            <motion.div
+              animate={{ x: isHovered ? 3 : 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <span>{linkText}</span>
-              <svg
-                className="ml-2 h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </motion.button>
-          )}
-        </motion.div>
+              <ArrowRight size={18} />
+            </motion.div>
+          </motion.a>
+        )}
       </div>
     </motion.div>
   );
 };
 
-export default InfoCard;
+export default PremiumInfoCard;

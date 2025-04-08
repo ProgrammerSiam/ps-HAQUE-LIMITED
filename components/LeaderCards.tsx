@@ -2,106 +2,102 @@
 
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import {
+  FaLinkedinIn,
+  FaTwitter,
+  FaInstagram,
+  FaEnvelope,
+} from "react-icons/fa";
 import { useState } from "react";
 
 interface LeaderCardProps {
   name: string;
   title: string;
   image: StaticImageData | string;
+  bio?: string;
 }
 
-const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
+const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
+  const [isNameHovered, setIsNameHovered] = useState(false);
+  const [isTitleHovered, setIsTitleHovered] = useState(false);
 
   const socialLinks = [
-    { icon: FaFacebookF, href: "#", label: "Facebook" },
-    { icon: FaInstagram, href: "#", label: "Instagram" },
+    { icon: FaEnvelope, href: "#", label: "Email" },
     { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
+    { icon: FaTwitter, href: "#", label: "Twitter" },
+    { icon: FaInstagram, href: "#", label: "Instagram" },
   ];
 
-  const cardVariants = {
-    hover: {
-      y: -8,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-  };
-
-  const socialIconsVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const iconVariant = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3 },
-    },
-  };
-
   return (
-    <motion.div
-      className="group relative h-[400px] w-full overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-300 ease-out hover:shadow-xl"
-      variants={cardVariants}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-    >
-      {/* Image Container */}
-      <div className="relative h-full w-full">
-        <Image
-          src={image}
-          alt={name}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
+    <div className="w-full bg-white overflow-hidden shadow-lg rounded-2xl">
+      {/* Image with overlay text */}
+      <div className="relative">
+        <div className="relative h-64 w-full rounded-t-2xl">
+          <Image
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover rounded-t-2xl"
+            priority
+          />
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 " />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent rounded-t-2xl" />
 
-        {/* Social Icons */}
-        <motion.div
-          className="absolute right-4 top-1/4 -translate-y-1/2 space-y-4"
-          initial="hidden"
-          animate={isHovered ? "visible" : "hidden"}
-          variants={socialIconsVariants}
-        >
-          {socialLinks.map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              variants={iconVariant}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-lg backdrop-blur-sm transition-colors duration-200 hover:bg-white hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 "
-              aria-label={social.label}
+          {/* Name and title positioned over image */}
+          <div className="absolute flex flex-col bottom-0 left-0 w-full p-5 text-white">
+            <div
+              className="relative inline-block"
+              onMouseEnter={() => setIsNameHovered(true)}
+              onMouseLeave={() => setIsNameHovered(false)}
             >
-              <social.icon className="h-4 w-4" />
-            </motion.a>
-          ))}
-        </motion.div>
-
-        {/* Text Content */}
-        <motion.div
-          className="absolute bottom-0 w-full p-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h3 className="font-heading mb-1 text-2xl font-bold tracking-tight text-white md:text-3xl">
-            {name}
-          </h3>
-          <p className="text-base font-medium text-gray-200 md:text-lg">
-            {title}
-          </p>
-        </motion.div>
+              <h3 className="text-2xl font-bold tracking-tight">{name}</h3>
+            </div>
+            <div
+              className="relative inline-block mt-1"
+              onMouseEnter={() => setIsTitleHovered(true)}
+              onMouseLeave={() => setIsTitleHovered(false)}
+            >
+              <p className="text-base text-gray-200">{title}</p>
+              {/* <motion.div
+                className="absolute bottom-0 left-0 h-0.5 bg-red-500"
+                initial={{ width: 0 }}
+                animate={{ width: isTitleHovered ? "100%" : 0 }}
+                transition={{ duration: 0.3 }}
+              /> */}
+            </div>
+          </div>
+        </div>
       </div>
-    </motion.div>
+
+      {/* Always visible content section */}
+      <div className="bg-white p-5">
+        {/* Bio section */}
+        {bio && (
+          <div className="mb-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-2">About</h4>
+            <p className="text-gray-600">{bio}</p>
+          </div>
+        )}
+
+        {/* Contact section - always visible */}
+        <div>
+          <h4 className="text-lg font-semibold text-gray-800 mb-2">Connect</h4>
+          <div className="flex flex-wrap gap-3">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                className="flex items-center justify-center px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-red-500 hover:text-white transition-colors duration-200"
+                aria-label={`Connect with ${name} on ${social.label}`}
+              >
+                <social.icon className="h-4 w-4 mr-2" />
+                <span>{social.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
