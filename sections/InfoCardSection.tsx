@@ -85,7 +85,16 @@ const InfoCardSection = () => {
         >
           {cardsData.map((card, index) => (
             <motion.div key={index} variants={cardVariants} className="flex">
-              <PremiumInfoCard {...card} />
+              <PremiumInfoCard
+                title={card.title}
+                description={card.description}
+                image={card.image.src}
+                linkText={card.linkText}
+                linkUrl={card.linkUrl}
+                accentColor={card.accentColor}
+                centerText={card.centerText}
+                hideButton={card.hideButton}
+              />
             </motion.div>
           ))}
         </motion.div>

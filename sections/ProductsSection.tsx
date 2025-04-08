@@ -49,14 +49,14 @@ const duplicatedRow1 = [...productsRow1, ...productsRow1, ...productsRow1];
 const duplicatedRow2 = [...productsRow2, ...productsRow2, ...productsRow2];
 
 const ProductsSection = () => {
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [hoveredRow, setHoveredRow] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
 
   // Animation references
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
-  const row1AnimRef = useRef(null);
-  const row2AnimRef = useRef(null);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
+  const row1AnimRef = useRef<number | null>(null);
+  const row2AnimRef = useRef<number | null>(null);
 
   // Animation speeds in pixels per second
   const row1Speed = 30;
@@ -111,13 +111,19 @@ const ProductsSection = () => {
 
   // Row 1 animation (left to right)
   const startRow1Animation = () => {
-    let lastTimestamp = null;
-    let xPosition = parseFloat(
-      row1Ref.current?.style.transform?.match(/-?\d+\.?\d*/)?.[0] || 0
-    );
+    let lastTimestamp: number | null = null;
+    let xPosition = 0;
 
-    const animate = (timestamp) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
+    if (row1Ref.current) {
+      const transform = row1Ref.current.style.transform;
+      xPosition = parseFloat(transform?.match(/-?\d+\.?\d*/)?.[0] || "0");
+    } else {
+      console.error("row1Ref.current is null");
+      return;
+    }
+
+    const animate = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
       const elapsed = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
@@ -133,7 +139,6 @@ const ProductsSection = () => {
       if (row1Ref.current) {
         row1Ref.current.style.transform = `translateX(${xPosition}px)`;
       }
-
       // Continue the animation
       row1AnimRef.current = requestAnimationFrame(animate);
     };
@@ -143,14 +148,18 @@ const ProductsSection = () => {
 
   // Row 2 animation (right to left)
   const startRow2Animation = () => {
-    let lastTimestamp = null;
-    let xPosition = parseFloat(
-      row2Ref.current?.style.transform?.match(/-?\d+\.?\d*/)?.[0] ||
-        -1 * totalWidth2
-    );
+    let lastTimestamp: number | null = null;
+    let xPosition = -1 * totalWidth2;
 
-    const animate = (timestamp) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
+    if (row2Ref.current) {
+      const transform = row2Ref.current.style.transform;
+      xPosition = parseFloat(
+        transform?.match(/-?\d+\.?\d*/)?.[0] || `${-1 * totalWidth2}`
+      );
+    }
+
+    const animate = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
       const elapsed = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
@@ -175,7 +184,11 @@ const ProductsSection = () => {
   };
 
   // Handle card hover
-  const handleCardHover = (cardId, isHovering, rowIndex) => {
+  const handleCardHover = (
+    cardId: string,
+    isHovering: boolean,
+    rowIndex: number
+  ) => {
     if (isHovering) {
       setHoveredCard(cardId);
       setHoveredRow(rowIndex);

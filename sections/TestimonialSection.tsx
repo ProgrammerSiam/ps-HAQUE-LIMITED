@@ -79,17 +79,19 @@ const tripleTestimonials2 = [
   ...testimonials2,
 ];
 
-const ImprovedTestimonialSection = () => {
-  const sectionRef = useRef(null);
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
+const TestimonialSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-  const [hoveredRow, setHoveredRow] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const controls = useAnimation();
 
-  // Track animation state
-  const row1AnimRef = useRef(null);
-  const row2AnimRef = useRef(null);
+  // Animation references
+  const row1AnimRef = useRef<number | null>(null);
+  const row2AnimRef = useRef<number | null>(null);
 
   // Animation speeds in pixels per second
   const row1Speed = 30;
@@ -148,14 +150,18 @@ const ImprovedTestimonialSection = () => {
 
   // Row 1 animation (right to left)
   const startRow1Animation = () => {
-    let lastTimestamp = null;
-    let xPosition = parseFloat(
-      row1Ref.current?.style.transform?.match(/-?\d+\.?\d*/)?.[0] ||
-        -1 * totalWidth1
-    );
+    let lastTimestamp: number | null = null;
+    let xPosition = -1 * totalWidth1;
 
-    const animate = (timestamp) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
+    if (row1Ref.current) {
+      const transform = row1Ref.current.style.transform;
+      xPosition = parseFloat(
+        transform?.match(/-?\d+\.?\d*/)?.[0] || `${-1 * totalWidth1}`
+      );
+    }
+
+    const animate = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
       const elapsed = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
@@ -163,7 +169,7 @@ const ImprovedTestimonialSection = () => {
       xPosition += (row1Speed * elapsed) / 1000;
 
       // Reset position when we complete a cycle for infinite loop
-      if (xPosition > 0) {
+      if (xPosition >= 0) {
         xPosition = -1 * totalWidth1;
       }
 
@@ -181,13 +187,16 @@ const ImprovedTestimonialSection = () => {
 
   // Row 2 animation (left to right)
   const startRow2Animation = () => {
-    let lastTimestamp = null;
-    let xPosition = parseFloat(
-      row2Ref.current?.style.transform?.match(/-?\d+\.?\d*/)?.[0] || 0
-    );
+    let lastTimestamp: number | null = null;
+    let xPosition = 0;
 
-    const animate = (timestamp) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
+    if (row2Ref.current) {
+      const transform = row2Ref.current.style.transform;
+      xPosition = parseFloat(transform?.match(/-?\d+\.?\d*/)?.[0] || "0");
+    }
+
+    const animate = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
       const elapsed = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
@@ -211,27 +220,64 @@ const ImprovedTestimonialSection = () => {
     row2AnimRef.current = requestAnimationFrame(animate);
   };
 
-  // Handle row hover
-  const handleRowHover = (rowIndex) => {
+  // Handle card hover
+  const handleCardHover = (
+    cardId: string,
+    isHovering: boolean,
+    rowIndex: number
+  ) => {
+    if (isHovering) {
+      setHoveredCard(cardId);
+      setHoveredRow(rowIndex);
+    } else {
+      setHoveredCard(null);
+      setHoveredRow(null);
+    }
+  };
+
+  // Handle rating hover
+  const handleRatingHover = (rating: number) => {
+    setHoveredRating(rating);
+  };
+
+  // Handle mouse enter/leave for rows
+  const handleRowMouseEnter = (rowIndex: number) => {
     setHoveredRow(rowIndex);
   };
 
+  const handleRowMouseLeave = () => {
+    setHoveredRow(null);
+  };
+
+  // Handle scroll events
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    const scrollLeft = target.scrollLeft;
+    const scrollWidth = target.scrollWidth;
+    const clientWidth = target.clientWidth;
+
+    // Check if we've scrolled to the end
+    if (scrollLeft + clientWidth >= scrollWidth) {
+      // Reset scroll position to create infinite scroll effect
+      target.scrollLeft = 0;
+    }
+  };
+
   // Generate star rating UI
-  const renderStars = (rating) => {
-    return (
-      <div className="flex items-center">
-        {[...Array(5)].map((_, i) => (
-          <svg
-            key={i}
-            className={`w-4 h-4 ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
-      </div>
-    );
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }).map((_, index) => (
+      <motion.span
+        key={index}
+        className={`text-2xl ${
+          index < rating ? "text-yellow-400" : "text-gray-300"
+        }`}
+        whileHover={{ scale: 1.2 }}
+        onMouseEnter={() => handleRatingHover(index + 1)}
+        onMouseLeave={() => setHoveredRating(null)}
+      >
+        ★
+      </motion.span>
+    ));
   };
 
   // Animation variants for header elements
@@ -325,8 +371,8 @@ const ImprovedTestimonialSection = () => {
         {/* First Row - Scrolls Right to Left */}
         <div
           className="relative overflow-hidden mt-12 md:mt-16"
-          onMouseEnter={() => handleRowHover(1)}
-          onMouseLeave={() => handleRowHover(null)}
+          onMouseEnter={() => handleRowMouseEnter(1)}
+          onMouseLeave={handleRowMouseLeave}
         >
           {/* Gradient Masks */}
           <div className="pointer-events-none absolute left-0 top-0 z-10 w-16 md:w-32 bg-gradient-to-r from-white to-transparent h-full" />
@@ -376,8 +422,11 @@ const ImprovedTestimonialSection = () => {
                           fill
                           sizes="56px"
                           style={{ objectFit: "cover" }}
-                          onError={(e) => {
-                            e.target.style.display = "none";
+                          onError={(
+                            e: React.SyntheticEvent<HTMLImageElement>
+                          ) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
                           }}
                         />
                       )}
@@ -420,8 +469,8 @@ const ImprovedTestimonialSection = () => {
         {/* Second Row - Scrolls Left to Right */}
         <div
           className="relative overflow-hidden"
-          onMouseEnter={() => handleRowHover(2)}
-          onMouseLeave={() => handleRowHover(null)}
+          onMouseEnter={() => handleRowMouseEnter(2)}
+          onMouseLeave={handleRowMouseLeave}
         >
           {/* Gradient Masks */}
           <div className="pointer-events-none absolute left-0 top-0 z-10 w-16 md:w-32 bg-gradient-to-r from-white to-transparent h-full" />
@@ -471,8 +520,11 @@ const ImprovedTestimonialSection = () => {
                           fill
                           sizes="56px"
                           style={{ objectFit: "cover" }}
-                          onError={(e) => {
-                            e.target.style.display = "none";
+                          onError={(
+                            e: React.SyntheticEvent<HTMLImageElement>
+                          ) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
                           }}
                         />
                       )}
@@ -516,4 +568,4 @@ const ImprovedTestimonialSection = () => {
   );
 };
 
-export default ImprovedTestimonialSection;
+export default TestimonialSection;
