@@ -2,9 +2,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-
+import { useRouter } from "next/navigation";
 export const DashboardHeader = () => {
   const [showProfile, setShowProfile] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
 
   return (
     <header className="bg-white shadow-sm">
@@ -55,7 +61,7 @@ export const DashboardHeader = () => {
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Sign out
+                    <button onClick={handleLogout}> Sign out</button>
                   </a>
                 </motion.div>
               )}

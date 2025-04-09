@@ -3,6 +3,10 @@ import "@/styles/globals.css";
 import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
 import MainWrapper from "@/components/layouts/MainWrapper";
+import { Inter } from "next/font/google";
+import { ToasterProvider } from "@/components/layouts/ToasterProvider";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -64,7 +68,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
+        <ToasterProvider />
         <MainWrapper navbar={<Navbar />} footer={<Footer />}>
           {children}
         </MainWrapper>

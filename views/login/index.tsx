@@ -1,14 +1,45 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { login, setAuthToken } from "@/lib/services/auth";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await login(formData.username, formData.password);
+      Cookies.set("token", response.access);
+      toast.success("Login successful!");
+      router.push("/dashboard");
+    } catch (error) {
+      toast.error("Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div>
@@ -27,82 +58,55 @@ const Login = () => {
           </div>
 
           {/* Form */}
-          <div className="px-4 md:px-6">
-            <div className="max-w-[660px] mx-auto bg-card p-6 rounded-lg shadow-sm">
-              <div className="w-full _center flex-col">
-                <Image
-                  src={"/logo.png"}
-                  alt="login"
-                  width={136}
-                  height={74}
-                  className="object-cover"
-                />
-                <h2 className="text-2xl font-bold text-app-black text-center my-5">
-                  Welcome back to A.T.Haque!
-                </h2>
-              </div>
-              <form className="space-y-6">
-                <div className="space-y-1">
-                  <Input
-                    id="email"
-                    name="email"
-                    type="text"
-                    placeholder="Username or Email Address"
-                    className="h-12"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-1 relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    className="h-12 pr-10"
-                    required
-                  />
-                </div>
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Checkbox id="remember-me" />
-                    <label
-                      htmlFor="remember-me"
-                      className="ml-2 block text-sm text-muted-foreground"
-                    >
-                      Remember Me
-                    </label>
-                  </div>
-                  <div className="text-sm">
-                    <Link
-                      href="/forgot-password"
-                      className="text-destructive hover:text-destructive/80"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                </div> */}
-
-                <Button
-                  type="submit"
-                  variant={"destructive"}
-                  className="w-full"
-                >
-                  LOG IN
-                </Button>
-
-                {/* <div className="text-center text-sm text-gray-500">
-                  Don&apos;t have an account?{" "}
-                  <Link
-                    href="/register"
-                    className="text-destructive hover:text-destructive/80"
-                  >
-                    Sign up
-                  </Link>
-                </div> */}
-              </form>
+          <div className="max-w-[660px] mx-auto bg-card p-6 rounded-lg shadow-sm">
+            <div className="w-full _center flex-col">
+              <Image
+                src={"/logo.png"}
+                alt="login"
+                width={136}
+                height={74}
+                className="object-cover"
+              />
+              <h2 className="text-2xl font-bold text-app-black text-center my-5">
+                Welcome back to A.T.Haque!
+              </h2>
             </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-1">
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="Username"
+                  className="h-12"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  className="h-12"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                variant={"destructive"}
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "LOG IN"}
+              </Button>
+            </form>
           </div>
         </div>
       </div>
