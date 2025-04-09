@@ -1,5 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
+import FloatingContactIcons from "@/components/FloatingContactIcons";
 
 export default function MainWrapper({
   children,
@@ -17,7 +18,12 @@ export default function MainWrapper({
     <>
       {!isDashboard && navbar}
       <main>{children}</main>
-      {!isDashboard && footer}
+      {!isDashboard && (
+        <>
+          {footer}
+          <FloatingContactIcons />
+        </>
+      )}
     </>
   );
 }
