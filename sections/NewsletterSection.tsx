@@ -4,14 +4,6 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { hero } from "@/constants/image";
 
-/**
- * Newsletter Section with Geometric Elements
- * Features:
- * - Geometric background elements
- * - Animated linear accents
- * - Frame corner decorations
- * - Consistent with other sections
- */
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -55,59 +47,6 @@ const NewsletterSection = () => {
 
   return (
     <section className="relative overflow-hidden bg-white py-16 lg:py-24">
-      {/* Geometric background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Red circle in top right */}
-        <motion.div
-          className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-red-600/5"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-        />
-
-        {/* Gray circle in bottom left */}
-        <motion.div
-          className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-gray-200/40"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
-        />
-
-        {/* Animated diagonal lines */}
-        <div className="absolute inset-0">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={`line-${i}`}
-              className="absolute h-px bg-gray-200/40"
-              style={{
-                top: `${20 + i * 12}%`,
-                left: "0",
-                right: "0",
-                transformOrigin: "left",
-              }}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{
-                duration: 1.5,
-                delay: 0.1 * i,
-                ease: "easeOut",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Vertical accent lines */}
-        <div className="absolute right-24 top-0 bottom-0 w-px bg-red-200/30" />
-        <div className="absolute right-28 top-0 bottom-0 w-px bg-red-200/20" />
-        <div className="absolute left-1/4 top-0 bottom-0 w-px bg-gray-200/30" />
-
-        {/* Decorative elements */}
-        <div className="absolute top-24 left-24 w-8 h-8 border-l-2 border-t-2 border-red-600/20" />
-        <div className="absolute bottom-24 right-24 w-8 h-8 border-r-2 border-b-2 border-red-600/20" />
-        <div className="absolute top-1/2 right-12 w-4 h-4 bg-red-600/10 rounded-full" />
-        <div className="absolute bottom-12 left-1/3 w-3 h-3 bg-red-600/10 rounded-full" />
-      </div>
-
       {/* Background Image with Parallax Effect */}
       <motion.div
         className="absolute inset-0 z-0"
@@ -139,12 +78,6 @@ const NewsletterSection = () => {
         onHoverEnd={() => setIsHovered(false)}
       >
         <div className="mx-auto max-w-2xl relative">
-          {/* Frame corners for the entire content */}
-          <div className="absolute -left-4 -top-4 w-10 h-10 border-l-2 border-t-2 border-red-600/30" />
-          <div className="absolute -right-4 -top-4 w-10 h-10 border-r-2 border-t-2 border-red-600/30" />
-          <div className="absolute -left-4 -bottom-4 w-10 h-10 border-l-2 border-b-2 border-red-600/30" />
-          <div className="absolute -right-4 -bottom-4 w-10 h-10 border-r-2 border-b-2 border-red-600/30" />
-
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center">
             <div className="relative inline-block">
@@ -155,12 +88,8 @@ const NewsletterSection = () => {
                 transition={{ duration: 0.6 }}
               >
                 Join Our{" "}
-                <span className="text-red-600 relative">
-                  Newsletter
-                  <span className="absolute -bottom-1 left-0 w-full h-1 bg-red-600/30 rounded-full"></span>
-                </span>
+                <span className="text-red-600 relative">Newsletter</span>
               </motion.h2>
-              <div className="absolute -right-6 top-0 w-4 h-4 border-t border-r border-red-600/30" />
             </div>
 
             <div className="flex items-center justify-center mb-4">
@@ -196,11 +125,6 @@ const NewsletterSection = () => {
 
           {/* Subscription Form with geometric accents */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute -left-2 -top-2 w-4 h-4 border-l-2 border-t-2 border-red-600/30" />
-            <div className="absolute -right-2 -top-2 w-4 h-4 border-r-2 border-t-2 border-red-600/30" />
-            <div className="absolute -left-2 -bottom-2 w-4 h-4 border-l-2 border-b-2 border-red-600/30" />
-            <div className="absolute -right-2 -bottom-2 w-4 h-4 border-r-2 border-b-2 border-red-600/30" />
-
             <form onSubmit={handleSubmit} className="relative">
               <div className="overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
                 <div className="flex">
@@ -243,14 +167,6 @@ const NewsletterSection = () => {
               )}
             </AnimatePresence>
           </motion.div>
-
-          {/* Bottom decorative line */}
-          <motion.div
-            className="absolute -bottom-6 left-1/4 right-1/4 h-px bg-gray-400/30"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.5, delay: 0.8 }}
-          />
         </div>
       </motion.div>
     </section>
