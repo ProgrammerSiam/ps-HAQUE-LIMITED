@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [],
+    domains: ["res.cloudinary.com"], // Allow Cloudinary image URLs
+
     remotePatterns: [],
     unoptimized: true,
   },

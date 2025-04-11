@@ -2,11 +2,11 @@
 
 import { PageLayout } from "@/components/dashboard/PageLayout";
 import { uploadImage } from "@/lib/cloudinary";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function AddBrand() {
+export default function EditBrand({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -15,6 +15,24 @@ export default function AddBrand() {
     description: "",
     imageUrl: "",
   });
+
+  useEffect(() => {
+    // Load brand data
+    try {
+      const brands = JSON.parse(localStorage.getItem("brands") || "[]");
+      const brand = brands.find((b: any) => b.id === params.id);
+      if (brand) {
+        setFormData(brand);
+        setImagePreview(brand.imageUrl);
+      } else {
+        alert("Brand not found");
+        router.push("/dashboard/brand");
+      }
+    } catch (error) {
+      console.error("Error loading brand:", error);
+      router.push("/dashboard/brand");
+    }
+  }, [params.id, router]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -50,29 +68,24 @@ export default function AddBrand() {
     try {
       setLoading(true);
 
-      // Save brand data to localStorage
-      const existingBrands = JSON.parse(localStorage.getItem("brands") || "[]");
-      const newBrand = {
-        id: Date.now().toString(), // Simple unique ID
-        ...formData,
-      };
-      localStorage.setItem(
-        "brands",
-        JSON.stringify([...existingBrands, newBrand])
+      // Update brand data in localStorage
+      const brands = JSON.parse(localStorage.getItem("brands") || "[]");
+      const updatedBrands = brands.map((brand: any) =>
+        brand.id === params.id ? { ...formData, id: params.id } : brand
       );
+      localStorage.setItem("brands", JSON.stringify(updatedBrands));
 
-      // Redirect after successful save
       router.push("/dashboard/brand");
     } catch (error) {
-      console.error("Error saving brand:", error);
-      alert("Failed to save brand. Please try again.");
+      console.error("Error updating brand:", error);
+      alert("Failed to update brand. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <PageLayout title="Add New Brand">
+    <PageLayout title="Edit Brand">
       <div className="max-w-2xl mx-auto">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4 bg-white p-6 rounded-xl shadow-sm">
@@ -166,7 +179,7 @@ export default function AddBrand() {
                 loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
               }`}
             >
-              {loading ? "Saving..." : "Add Brand"}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

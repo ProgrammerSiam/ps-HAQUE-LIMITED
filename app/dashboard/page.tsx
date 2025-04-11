@@ -6,6 +6,8 @@ import {
   UserGroupIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const statsCards = [
   {
@@ -39,8 +41,42 @@ const statsCards = [
 ];
 
 export default function Dashboard() {
+  const [blogs, setBlogs] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [admins, setAdmins] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const blogsResponse = await axios.get("/api/blogs");
+        const brandsResponse = await axios.get("/api/brands");
+        const adminsResponse = await axios.get("/api/admins");
+
+        setBlogs(blogsResponse.data);
+        setBrands(brandsResponse.data);
+        setAdmins(adminsResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="space-y-6">
+      {/* Recent Activity */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="bg-white rounded-lg shadow"
+      >
+        <div className="p-6">
+          <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
+          {/* Add your activity content here */}
+        </div>
+      </motion.div>
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card, index) => (
           <motion.div
@@ -79,18 +115,35 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Recent Activity */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white rounded-lg shadow"
-      >
-        <div className="p-6">
-          <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
-          {/* Add your activity content here */}
-        </div>
-      </motion.div>
+      {/* Blogs */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900">Blogs</h3>
+        <ul>
+          {blogs.map((blog) => (
+            <li key={blog.id}>{blog.title}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Brands */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900">Brands</h3>
+        <ul>
+          {brands.map((brand) => (
+            <li key={brand.id}>{brand.name}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Admins */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900">Admins</h3>
+        <ul>
+          {admins.map((admin) => (
+            <li key={admin.id}>{admin.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

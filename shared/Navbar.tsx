@@ -193,8 +193,8 @@ const Navbar = () => {
               <Image
                 src={logo}
                 alt="Haque Logo"
-                width={140}
-                height={60}
+                width={240}
+                height={100}
                 className="transition-transform duration-300"
               />
             </motion.div>
