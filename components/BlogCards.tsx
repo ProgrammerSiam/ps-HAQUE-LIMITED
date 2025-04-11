@@ -27,7 +27,7 @@ const BlogCard = ({
       // whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className="h-full"
     >
-      <div className="group h-full overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className="group h-full overflow-hidden shadow-lg rounded-2xl transition-shadow duration-300">
         <div className="relative h-60 overflow-hidden">
           <Image
             src={image}
