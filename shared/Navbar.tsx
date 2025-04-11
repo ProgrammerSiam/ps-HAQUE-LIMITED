@@ -14,9 +14,15 @@ const Navbar = () => {
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState<
     number | null
   >(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<
+    Array<{ title: string; path: string }>
+  >([]);
 
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // scroll handling with debounce
   useEffect(() => {
@@ -171,6 +177,70 @@ const Navbar = () => {
     },
   };
 
+  // Search popup animation variants
+  const searchVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+  };
+
+  // Focus search input when popup opens
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  // Close search on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
+
+  // Sample product data - replace with your actual product data
+  const products = [
+    { title: "Biscuits", path: "/products/biscuits" },
+    { title: "Wafers", path: "/products/wafers" },
+    { title: "Chocolate", path: "/products/chocolate" },
+    { title: "Candy", path: "/products/candy" },
+    { title: "Our Plants", path: "/gallery/#Our Plants" },
+    { title: "TV Commercials", path: "/gallery/#TV Commercials" },
+    { title: "Show Cards", path: "/gallery/#Show Cards" },
+    { title: "Talk Show", path: "/news/#Talk Show" },
+    { title: "Press Release", path: "/news/#Press Release" },
+    { title: "Events", path: "/news/#Events" },
+  ];
+
+  // Search functionality
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const results = products.filter((product) =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery]);
+
   return (
     <motion.nav
       variants={navbarVariants}
@@ -287,6 +357,7 @@ const Navbar = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setIsSearchOpen(true)}
               className="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-full transition-all duration-300 hover:shadow-lg"
             >
               <svg
@@ -504,6 +575,155 @@ const Navbar = () => {
                     Sign in
                   </Link>
                 </motion.div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Search Popup */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black bg-opacity-50 z-50"
+              onClick={() => setIsSearchOpen(false)}
+            />
+            <motion.div
+              variants={searchVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="fixed top-0 left-0 w-full h-screen md:h-auto md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 md:w-[90%] md:max-w-2xl z-50"
+            >
+              <div className="bg-white h-full md:h-auto md:rounded-xl shadow-2xl p-4 md:p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="flex-1">
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search products, news, gallery..."
+                      className="w-full px-4 py-3 text-lg border-2 border-gray-200 rounded-lg focus:outline-none focus:border-red-500 transition-colors duration-200"
+                    />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsSearchOpen(false)}
+                    className="p-2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </motion.button>
+                </div>
+
+                {/* Search results */}
+                <div className="max-h-[calc(100vh-200px)] md:max-h-96 overflow-y-auto">
+                  {searchQuery ? (
+                    searchResults.length > 0 ? (
+                      <div className="space-y-2">
+                        {searchResults.map((result, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                          >
+                            <Link
+                              href={result.path}
+                              className="block p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                              onClick={() => setIsSearchOpen(false)}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5 text-gray-400"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                  />
+                                </svg>
+                                <span className="text-gray-700">
+                                  {result.title}
+                                </span>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-12 w-12 mx-auto text-gray-400 mb-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <p className="text-gray-500 text-lg">
+                          No results found for "{searchQuery}"
+                        </p>
+                        <p className="text-gray-400 text-sm mt-2">
+                          Try different keywords or check your spelling
+                        </p>
+                      </div>
+                    )
+                  ) : (
+                    <div className="text-center py-8">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-12 w-12 mx-auto text-gray-400 mb-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                      <p className="text-gray-500 text-lg">
+                        Start typing to search products
+                      </p>
+                      <p className="text-gray-400 text-sm mt-2">
+                        Search for products, news, or gallery items
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </>
