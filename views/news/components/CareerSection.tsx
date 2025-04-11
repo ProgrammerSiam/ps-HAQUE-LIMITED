@@ -88,7 +88,7 @@ export default function CareerSection() {
           </div>
 
           <Tabs defaultValue="values" className="w-full">
-            <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
+            <TabsList className="flex justify-center grid-cols-3 w-full max-w-md mx-auto mb-8">
               <TabsTrigger
                 value="values"
                 className="rounded-md data-[state=active]:bg-red-600 data-[state=active]:text-white"

@@ -6,15 +6,15 @@ import DirectorMessage from "./components/DirectorMessage";
 import CareerSection from "./components/CareerSection";
 
 const News = () => {
-    return (
-        <>
-            <HeroSection />
-            <Paper />
-            <Interview />
-            <DirectorMessage />
-            <CareerSection />
-        </>
-    );
+  return (
+    <>
+      {/* <HeroSection /> */}
+      <Paper />
+      <Interview />
+      <DirectorMessage />
+      <CareerSection />
+    </>
+  );
 };
 
 export default News;

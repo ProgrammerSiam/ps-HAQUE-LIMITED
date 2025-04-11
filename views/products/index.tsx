@@ -2,17 +2,10 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { ProductType } from "@/data/products";
 import Sort from "./components/Sort";
 import Link from "next/link";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
@@ -20,7 +13,6 @@ interface Props {
 }
 
 export default function ProductGrid({ products }: Props) {
-  // console.log(products);
   const [sortBy, setSortBy] = useState("Default-Sorting");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
@@ -36,12 +28,10 @@ export default function ProductGrid({ products }: Props) {
   const endRange = Math.min(startRange + productsPerPage - 1, totalProducts);
   const showing = `${startRange}-${endRange}`;
 
-  // console.log(productsToRender[1].img);
-
   return (
-    <section className="py-12 bg-white">
+    <section className="bg-white">
       <div className="container px-4 md:px-6">
-        <div className="flex  justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8 mt-40">
           <div className="text-center sm:text-left">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               All Products
@@ -56,9 +46,9 @@ export default function ProductGrid({ products }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {productsToRender?.map((product) => (
-            <Card
+            <div
               key={product.id}
-              className="group overflow-hidden h-full flex flex-col border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg"
+              className="group overflow-hidden h-full flex flex-col border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg rounded-lg"
             >
               <div className="relative aspect-square overflow-hidden bg-gray-50">
                 <Image
@@ -75,7 +65,7 @@ export default function ProductGrid({ products }: Props) {
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-300" />
               </div>
-              <CardContent className="p-4 flex flex-col flex-grow">
+              <div className="p-4 flex flex-col flex-grow">
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                     {product.name}
@@ -86,32 +76,26 @@ export default function ProductGrid({ products }: Props) {
                   </p>
                 </div>
                 <Link href={`/products/${product.id}`} className="mt-4">
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="w-full transition-all duration-300 hover:scale-[1.02] bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-sm hover:shadow-md flex items-center justify-center gap-2"
-                  >
+                  <button className="w-full transition-all duration-300 hover:scale-[1.02] bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm">
                     <span>View Details</span>
                     <ChevronRight className="h-4 w-4" />
-                  </Button>
+                  </button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Pagination Controls */}
         <div className="flex justify-center mt-12">
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
+            <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="hover:bg-gray-100 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 rounded-full"
+              className="p-2 border border-gray-300 rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="h-5 w-5" />
-            </Button>
+            </button>
             <div className="flex gap-2">
               <AnimatePresence mode="wait">
                 {Array.from({ length: totalPages }, (_, i) => (
@@ -122,33 +106,29 @@ export default function ProductGrid({ products }: Props) {
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={`transition-all duration-300 rounded-full ${
+                    <button
+                      className={`w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 transition-all duration-300 ${
                         currentPage === i + 1
-                          ? "bg-red-600 text-white hover:bg-red-700 scale-105"
+                          ? "bg-red-600 text-white border-red-600 hover:bg-red-700 scale-105"
                           : "hover:bg-gray-100 hover:scale-105"
                       }`}
                       onClick={() => setCurrentPage(i + 1)}
                     >
                       {i + 1}
-                    </Button>
+                    </button>
                   </motion.div>
                 ))}
               </AnimatePresence>
             </div>
-            <Button
-              variant="outline"
-              size="icon"
+            <button
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="hover:bg-gray-100 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 rounded-full"
+              className="p-2 border border-gray-300 rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
             >
               <ChevronRight className="h-5 w-5" />
-            </Button>
+            </button>
           </div>
         </div>
       </div>
