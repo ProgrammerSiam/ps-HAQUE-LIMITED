@@ -151,10 +151,10 @@ const AchievementStatsSection = () => {
           <div className="flex flex-col lg:flex-col lg:items-center lg:justify-between gap-16 py-16 lg:py-24 ">
             <div className="relative flex-1">
               {/* Frame corners */}
-              <div className="absolute -left-3 -top-3 w-8 h-8 border-l-2 border-t-2 border-red-600/30" />
+              {/* <div className="absolute -left-3 -top-3 w-8 h-8 border-l-2 border-t-2 border-red-600/30" />
               <div className="absolute -right-3 -top-3 w-8 h-8 border-r-2 border-t-2 border-red-600/30" />
               <div className="absolute -left-3 -bottom-3 w-8 h-8 border-l-2 border-b-2 border-red-600/30" />
-              <div className="absolute -right-3 -bottom-3 w-8 h-8 border-r-2 border-b-2 border-red-600/30" />
+              <div className="absolute -right-3 -bottom-3 w-8 h-8 border-r-2 border-b-2 border-red-600/30" /> */}
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 lg:w-full">
                 {stats.map((stat, index) => (
