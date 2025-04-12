@@ -4,49 +4,74 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-
-interface Brand {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-}
+import { brandService } from "@/lib/supabaseService";
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
+import { Brand } from "@/lib/supabase";
+import { toast } from "react-hot-toast";
 
 export default function BrandList() {
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load initial data
   useEffect(() => {
-    // Load brands from localStorage
-    const loadBrands = () => {
+    const loadBrands = async () => {
       try {
-        const savedBrands = localStorage.getItem("brands");
-        if (savedBrands) {
-          setBrands(JSON.parse(savedBrands));
-        }
-      } catch (error) {
+        const data = await brandService.getAll();
+        setBrands(data);
+      } catch (error: any) {
         console.error("Error loading brands:", error);
+        toast.error(error.message || "Failed to load brands");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadBrands();
-
-    // Add event listener for storage changes
-    window.addEventListener("storage", loadBrands);
-    return () => window.removeEventListener("storage", loadBrands);
   }, []);
 
-  const handleDelete = (id: string) => {
+  // Set up real-time subscriptions
+  useRealtimeSubscription<Brand>({
+    table: "brands",
+    onInsert: (newBrand) => {
+      setBrands((prev) => [newBrand, ...prev]);
+      toast.success("New brand added");
+    },
+    onUpdate: (updatedBrand) => {
+      setBrands((prev) =>
+        prev.map((brand) =>
+          brand.id === updatedBrand.id ? updatedBrand : brand
+        )
+      );
+      toast.success("Brand updated");
+    },
+    onDelete: (deletedBrand) => {
+      setBrands((prev) => prev.filter((brand) => brand.id !== deletedBrand.id));
+      toast.success("Brand deleted");
+    },
+  });
+
+  const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this brand?")) {
       try {
-        const updatedBrands = brands.filter((brand) => brand.id !== id);
-        localStorage.setItem("brands", JSON.stringify(updatedBrands));
-        setBrands(updatedBrands);
-      } catch (error) {
+        await brandService.delete(id);
+        toast.success("Brand deleted successfully");
+      } catch (error: any) {
         console.error("Error deleting brand:", error);
-        alert("Failed to delete brand. Please try again.");
+        toast.error(error.message || "Failed to delete brand");
       }
     }
   };
+
+  if (isLoading) {
+    return (
+      <PageLayout title="All Brands">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-gray-500">Loading brands...</div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout
@@ -74,7 +99,7 @@ export default function BrandList() {
                 <div className="flex items-center space-x-4">
                   <div className="relative w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
                     <Image
-                      src={brand.imageUrl}
+                      src={brand.image_url}
                       alt={brand.name || "Brand image"}
                       fill
                       className="object-cover"

@@ -5,33 +5,42 @@ import { uploadImage } from "@/lib/cloudinary";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { brandService } from "@/lib/supabaseService";
+import { toast } from "react-hot-toast";
+import { Brand } from "@/lib/supabase";
 
 export default function EditBrand({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Partial<Brand>>({
     name: "",
     description: "",
-    imageUrl: "",
+    image_url: "",
   });
 
   useEffect(() => {
-    // Load brand data
-    try {
-      const brands = JSON.parse(localStorage.getItem("brands") || "[]");
-      const brand = brands.find((b: any) => b.id === params.id);
-      if (brand) {
-        setFormData(brand);
-        setImagePreview(brand.imageUrl);
-      } else {
-        alert("Brand not found");
+    const loadBrand = async () => {
+      try {
+        setLoading(true);
+        const brand = await brandService.getById(params.id);
+        if (brand) {
+          setFormData(brand);
+          setImagePreview(brand.image_url);
+        } else {
+          toast.error("Brand not found");
+          router.push("/dashboard/brand");
+        }
+      } catch (error: any) {
+        console.error("Error loading brand:", error);
+        toast.error(error.message || "Failed to load brand");
         router.push("/dashboard/brand");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading brand:", error);
-      router.push("/dashboard/brand");
-    }
+    };
+
+    loadBrand();
   }, [params.id, router]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,10 +57,11 @@ export default function EditBrand({ params }: { params: { id: string } }) {
     try {
       setLoading(true);
       const imageUrl = await uploadImage(file);
-      setFormData((prev) => ({ ...prev, imageUrl }));
-    } catch (error) {
+      setFormData((prev) => ({ ...prev, image_url: imageUrl }));
+      toast.success("Image uploaded successfully");
+    } catch (error: any) {
       console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
+      toast.error(error.message || "Failed to upload image");
     } finally {
       setLoading(false);
     }
@@ -60,29 +70,33 @@ export default function EditBrand({ params }: { params: { id: string } }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.imageUrl) {
-      alert("Please upload an image first");
+    if (!formData.image_url) {
+      toast.error("Please upload an image first");
       return;
     }
 
     try {
       setLoading(true);
-
-      // Update brand data in localStorage
-      const brands = JSON.parse(localStorage.getItem("brands") || "[]");
-      const updatedBrands = brands.map((brand: any) =>
-        brand.id === params.id ? { ...formData, id: params.id } : brand
-      );
-      localStorage.setItem("brands", JSON.stringify(updatedBrands));
-
+      await brandService.update(params.id, formData);
+      toast.success("Brand updated successfully");
       router.push("/dashboard/brand");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating brand:", error);
-      alert("Failed to update brand. Please try again.");
+      toast.error(error.message || "Failed to update brand");
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading && !formData.id) {
+    return (
+      <PageLayout title="Edit Brand">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-gray-500">Loading brand...</div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout title="Edit Brand">
@@ -134,7 +148,7 @@ export default function EditBrand({ params }: { params: { id: string } }) {
               </label>
               <input
                 type="text"
-                value={formData.name}
+                value={formData.name || ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
@@ -149,7 +163,7 @@ export default function EditBrand({ params }: { params: { id: string } }) {
                 Description (Optional)
               </label>
               <textarea
-                value={formData.description}
+                value={formData.description || ""}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,

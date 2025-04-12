@@ -19,6 +19,8 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
     const file = formData.get("file");
+    const folderValue = formData.get("folder");
+    const folder = typeof folderValue === "string" ? folderValue : "products"; // Default to products if no folder specified
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -31,7 +33,7 @@ export async function POST(request: Request) {
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
         dataURI,
-        { folder: "brands" },
+        { folder }, // Use the specified folder
         (error, result) => {
           if (error) {
             console.error("Cloudinary upload error:", error);

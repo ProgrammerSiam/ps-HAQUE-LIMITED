@@ -32,7 +32,7 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
     <div className="w-full bg-white overflow-hidden shadow-lg rounded-2xl">
       {/* Image with overlay text */}
       <div className="relative">
-        <div className="relative h-64 w-full rounded-t-2xl">
+        <div className="relative h-56 w-full rounded-t-2xl">
           <Image
             src={image}
             alt={name}
@@ -44,54 +44,52 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent rounded-t-2xl" />
 
           {/* Name and title positioned over image */}
-          <div className="absolute flex flex-col bottom-0 left-0 w-full p-5 text-white">
+          <div className="absolute flex flex-col bottom-0 left-0 w-full p-4 text-white">
             <div
               className="relative inline-block"
               onMouseEnter={() => setIsNameHovered(true)}
               onMouseLeave={() => setIsNameHovered(false)}
             >
-              <h3 className="text-2xl font-bold tracking-tight">{name}</h3>
+              <h3 className="text-xl font-bold tracking-tight">{name}</h3>
             </div>
             <div
-              className="relative inline-block mt-1"
+              className="relative inline-block"
               onMouseEnter={() => setIsTitleHovered(true)}
               onMouseLeave={() => setIsTitleHovered(false)}
             >
-              <p className="text-base text-gray-200">{title}</p>
-              {/* <motion.div
-                className="absolute bottom-0 left-0 h-0.5 bg-red-500"
-                initial={{ width: 0 }}
-                animate={{ width: isTitleHovered ? "100%" : 0 }}
-                transition={{ duration: 0.3 }}
-              /> */}
+              <p className="text-sm text-gray-200">{title}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Always visible content section */}
-      <div className="bg-white p-5">
+      <div className="bg-white p-4">
         {/* Bio section */}
         {bio && (
-          <div className="mb-4">
-            <h4 className="text-lg font-semibold text-gray-800 mb-2">About</h4>
-            <p className="text-gray-600">{bio}</p>
+          <div className="mb-3">
+            <h4 className="text-base font-semibold text-gray-800 mb-1">
+              About
+            </h4>
+            <p className="text-sm text-gray-600">{bio}</p>
           </div>
         )}
 
         {/* Contact section - always visible */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-800 mb-2">Connect</h4>
-          <div className="flex flex-wrap gap-3">
+          <h4 className="text-base font-semibold text-gray-800 mb-2">
+            Connect
+          </h4>
+          <div className="grid grid-cols-2 gap-2">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
-                className="flex items-center justify-center px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-red-500 hover:text-white transition-colors duration-200"
+                className="flex items-center justify-center px-2 py-1.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-red-500 hover:text-white transition-colors duration-200"
                 aria-label={`Connect with ${name} on ${social.label}`}
               >
-                <social.icon className="h-4 w-4 mr-2" />
-                <span>{social.label}</span>
+                <social.icon className="h-3.5 w-3.5 mr-1.5" />
+                <span className="text-sm">{social.label}</span>
               </a>
             ))}
           </div>

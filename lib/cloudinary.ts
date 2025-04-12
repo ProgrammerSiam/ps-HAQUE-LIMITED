@@ -55,7 +55,7 @@
 
 // lib/cloudinary.js - Updated to use the server API route
 
-export const uploadImage = async (file) => {
+export const uploadImage = async (file: File, folder: string = "products") => {
   if (!file) {
     throw new Error("No file provided");
   }
@@ -63,6 +63,7 @@ export const uploadImage = async (file) => {
   // Create form data for the API request
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("folder", folder);
 
   try {
     console.log("Starting upload through server API...");
