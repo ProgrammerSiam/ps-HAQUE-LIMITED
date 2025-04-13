@@ -4,26 +4,26 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { brandService } from "@/lib/supabaseService";
+import { databaseService } from "@/lib/supabaseService";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
-import { Brand } from "@/lib/supabase";
+import type { Brand } from "@/lib/types/database.types";
 import { toast } from "react-hot-toast";
 
 export default function BrandList() {
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // Load initial data
   useEffect(() => {
     const loadBrands = async () => {
       try {
-        const data = await brandService.getAll();
+        const data = await databaseService.brands.getAll();
         setBrands(data);
       } catch (error: any) {
         console.error("Error loading brands:", error);
         toast.error(error.message || "Failed to load brands");
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -54,7 +54,7 @@ export default function BrandList() {
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this brand?")) {
       try {
-        await brandService.delete(id);
+        await databaseService.brands.delete(id);
         toast.success("Brand deleted successfully");
       } catch (error: any) {
         console.error("Error deleting brand:", error);
@@ -63,7 +63,7 @@ export default function BrandList() {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <PageLayout title="All Brands">
         <div className="flex items-center justify-center h-64">
@@ -98,12 +98,14 @@ export default function BrandList() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
                   <div className="relative w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-                    <Image
-                      src={brand.image_url}
-                      alt={brand.name || "Brand image"}
-                      fill
-                      className="object-cover"
-                    />
+                    {brand.logo_url && (
+                      <Image
+                        src={brand.logo_url}
+                        alt={brand.name}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                   <div className="flex-1">
                     <h3 className="font-medium">

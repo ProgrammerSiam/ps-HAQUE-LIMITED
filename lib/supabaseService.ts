@@ -1,319 +1,476 @@
-import { supabase as supabaseClient } from "./supabase";
-import type { Brand, Product, Blog, News } from "./supabase";
+import { createClient } from "./supabase";
+import type { Database } from "./types/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
+// Initialize Supabase clients
+const supabaseClient = createClient();
+const supabase = createClientComponentClient<Database>();
+
+type Tables = Database["public"]["Tables"];
+export type Brand = Tables["brands"]["Row"];
+export type Product = Tables["products"]["Row"];
+export type Blog = Tables["blogs"]["Row"];
+export type News = Tables["news"]["Row"];
+export type Subscriber = Tables["subscribers"]["Row"];
+export type MessageDelivery = Tables["message_deliveries"]["Row"];
+export type NewsletterMessage = Tables["newsletter_messages"]["Row"];
+
 const handleError = (error: any) => {
-  console.error("Database operation failed:", error);
+  console.error("Database error:", error);
   throw new Error(
-    error.message || "An error occurred during the database operation"
+    error?.message || error?.error_description || "An unknown error occurred"
   );
 };
 
-const supabaseAuth = createClientComponentClient();
-
 // Use supabaseClient for all database operations
-export type ProductType = Product;
-
-// Brand operations
-export const brandService = {
-  async getAll() {
-    try {
+export const databaseService = {
+  brands: {
+    async getAll() {
       const { data, error } = await supabaseClient
         .from("brands")
         .select("*")
         .order("created_at", { ascending: false });
-      if (error) throw error;
+
+      if (error) handleError(error);
       return data as Brand[];
-    } catch (error) {
-      handleError(error);
-      return [];
-    }
+    },
+
+    async getById(id: string) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("brands")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data as Brand;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async create(brand: Omit<Brand, "id" | "created_at" | "updated_at">) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("brands")
+          .insert(brand)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Brand;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async update(id: string, brand: Partial<Brand>) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("brands")
+          .update(brand)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Brand;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        const { error } = await supabaseClient
+          .from("brands")
+          .delete()
+          .eq("id", id);
+        if (error) throw error;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
   },
 
-  async getById(id: string) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("brands")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) throw error;
-      return data as Brand;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async create(brand: Omit<Brand, "id" | "created_at" | "updated_at">) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("brands")
-        .insert(brand)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Brand;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async update(id: string, brand: Partial<Brand>) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("brands")
-        .update(brand)
-        .eq("id", id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Brand;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async delete(id: string) {
-    try {
-      const { error } = await supabaseClient
-        .from("brands")
-        .delete()
-        .eq("id", id);
-      if (error) throw error;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-};
-
-// Product operations
-export const productService = {
-  async getAll() {
-    try {
+  products: {
+    async getAll() {
       const { data, error } = await supabaseClient
         .from("products")
         .select("*")
         .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as ProductType[];
-    } catch (error) {
-      handleError(error);
-      return [];
-    }
+
+      if (error) handleError(error);
+      return data as Product[];
+    },
+
+    async getById(id: string) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data as Product;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async create(product: Omit<Product, "id" | "created_at" | "updated_at">) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("products")
+          .insert([product])
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Product;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async update(id: string, product: Partial<Product>) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("products")
+          .update({
+            ...product,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Product;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        const { error } = await supabaseClient
+          .from("products")
+          .delete()
+          .eq("id", id);
+        if (error) throw error;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
   },
 
-  async getById(id: string) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("products")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) throw error;
-      return data as ProductType;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async create(product: Omit<ProductType, "id" | "created_at" | "updated_at">) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("products")
-        .insert([product])
-        .select()
-        .single();
-      if (error) throw error;
-      return data as ProductType;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async update(id: string, product: Partial<ProductType>) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("products")
-        .update({
-          ...product,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as ProductType;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async delete(id: string) {
-    try {
-      const { error } = await supabaseClient
-        .from("products")
-        .delete()
-        .eq("id", id);
-      if (error) throw error;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-};
-
-// Blog operations
-export const blogService = {
-  async getAll() {
-    try {
+  blogs: {
+    async getAll() {
       const { data, error } = await supabaseClient
         .from("blogs")
         .select("*")
         .order("created_at", { ascending: false });
-      if (error) throw error;
+
+      if (error) handleError(error);
       return data as Blog[];
-    } catch (error) {
-      handleError(error);
-      return [];
-    }
+    },
+
+    async getById(id: string) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("blogs")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data as Blog;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async create(blog: Omit<Blog, "id" | "created_at" | "updated_at">) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("blogs")
+          .insert(blog)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Blog;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async update(id: string, blog: Partial<Blog>) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("blogs")
+          .update(blog)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Blog;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        const { error } = await supabaseClient
+          .from("blogs")
+          .delete()
+          .eq("id", id);
+        if (error) throw error;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
   },
 
-  async getById(id: string) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("blogs")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) throw error;
-      return data as Blog;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async create(blog: Omit<Blog, "id" | "created_at" | "updated_at">) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("blogs")
-        .insert(blog)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Blog;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async update(id: string, blog: Partial<Blog>) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("blogs")
-        .update(blog)
-        .eq("id", id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Blog;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-
-  async delete(id: string) {
-    try {
-      const { error } = await supabaseClient
-        .from("blogs")
-        .delete()
-        .eq("id", id);
-      if (error) throw error;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
-};
-
-// News operations
-export const newsService = {
-  async getAll() {
-    try {
+  news: {
+    async getAll() {
       const { data, error } = await supabaseClient
         .from("news")
         .select("*")
         .order("created_at", { ascending: false });
-      if (error) throw error;
+
+      if (error) handleError(error);
       return data as News[];
-    } catch (error) {
-      handleError(error);
-      return [];
-    }
+    },
+
+    async getById(id: string) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("news")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data as News;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async create(news: Omit<News, "id" | "created_at" | "updated_at">) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("news")
+          .insert([news])
+          .select()
+          .single();
+        if (error) throw error;
+        return data as News;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async update(id: string, news: Partial<News>) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("news")
+          .update({
+            ...news,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as News;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        const { error } = await supabaseClient
+          .from("news")
+          .delete()
+          .eq("id", id);
+        if (error) throw error;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
   },
 
-  async getById(id: string) {
-    try {
+  subscribers: {
+    async getAll() {
       const { data, error } = await supabaseClient
-        .from("news")
+        .from("subscribers")
         .select("*")
-        .eq("id", id)
-        .single();
-      if (error) throw error;
-      return data as News;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
+        .eq("status", "active")
+        .order("created_at", { ascending: false });
 
-  async create(news: Omit<News, "id" | "created_at" | "updated_at">) {
-    try {
+      if (error) handleError(error);
+      return data as Subscriber[];
+    },
+
+    async create(email: string) {
       const { data, error } = await supabaseClient
-        .from("news")
-        .insert(news)
+        .from("subscribers")
+        .insert([{ email, status: "active" }])
         .select()
         .single();
-      if (error) throw error;
-      return data as News;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
+
+      if (error) handleError(error);
+      return data as Subscriber;
+    },
+
+    async unsubscribe(id: string) {
+      const { error } = await supabaseClient
+        .from("subscribers")
+        .update({ status: "unsubscribed" })
+        .eq("id", id);
+
+      if (error) handleError(error);
+    },
+
+    async delete(id: string) {
+      const { error } = await supabaseClient
+        .from("subscribers")
+        .delete()
+        .eq("id", id);
+
+      if (error) handleError(error);
+    },
   },
 
-  async update(id: string, news: Partial<News>) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("news")
-        .update(news)
-        .eq("id", id)
+  newsletter: {
+    async sendMessage(message: {
+      subject: string;
+      body: string;
+      sender: string;
+      recipient_type: "all" | "selected" | "single";
+      recipient_ids?: string[];
+    }) {
+      // First, create the message record
+      const { data: messageData, error: messageError } = await supabaseClient
+        .from("newsletter_messages")
+        .insert([message])
         .select()
         .single();
-      if (error) throw error;
-      return data as News;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  },
 
-  async delete(id: string) {
-    try {
-      const { error } = await supabaseClient.from("news").delete().eq("id", id);
-      if (error) throw error;
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
+      if (messageError) handleError(messageError);
+
+      // Get recipients based on type
+      let recipients: Subscriber[] = [];
+      if (message.recipient_type === "all") {
+        const { data, error } = await supabaseClient
+          .from("subscribers")
+          .select("*")
+          .eq("status", "active");
+        if (error) handleError(error);
+        recipients = data as Subscriber[];
+      } else if (message.recipient_ids?.length) {
+        const { data, error } = await supabaseClient
+          .from("subscribers")
+          .select("*")
+          .in("id", message.recipient_ids)
+          .eq("status", "active");
+        if (error) handleError(error);
+        recipients = data as Subscriber[];
+      }
+
+      // Create delivery records for each recipient
+      const deliveries = recipients.map((recipient) => ({
+        message_id: messageData.id,
+        subscriber_id: recipient.id,
+        status: "sent" as const,
+      }));
+
+      if (deliveries.length > 0) {
+        const { error: deliveryError } = await supabaseClient
+          .from("message_deliveries")
+          .insert(deliveries);
+
+        if (deliveryError) handleError(deliveryError);
+      }
+
+      return messageData as NewsletterMessage;
+    },
+
+    async getMessageHistory() {
+      const { data, error } = await supabaseClient
+        .from("newsletter_messages")
+        .select(
+          `
+          *,
+          deliveries:message_deliveries(
+            status,
+            delivered_at,
+            subscriber:subscribers(email)
+          )
+        `
+        )
+        .order("sent_at", { ascending: false });
+
+      if (error) handleError(error);
+      return data;
+    },
+
+    async getMessageDeliveryStatus(messageId: string) {
+      const { data, error } = await supabaseClient
+        .from("message_deliveries")
+        .select(
+          `
+          *,
+          subscriber:subscribers(email)
+        `
+        )
+        .eq("message_id", messageId)
+        .order("created_at", { ascending: false });
+
+      if (error) handleError(error);
+      return data as MessageDelivery[];
+    },
+
+    async updateDeliveryStatus(
+      deliveryId: string,
+      status: "delivered" | "failed",
+      errorMessage?: string
+    ) {
+      const { error } = await supabaseClient
+        .from("message_deliveries")
+        .update({
+          status,
+          delivered_at:
+            status === "delivered" ? new Date().toISOString() : null,
+          error_message: errorMessage,
+        })
+        .eq("id", deliveryId);
+
+      if (error) handleError(error);
+    },
   },
+};
+
+export const getProducts = async () => {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data as Product[];
 };

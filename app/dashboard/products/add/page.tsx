@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { uploadImage } from "@/lib/cloudinary";
-import { productService } from "@/lib/supabaseService";
+import { databaseService } from "@/lib/supabaseService";
 
 export default function AddProduct() {
   const router = useRouter();
@@ -71,9 +71,9 @@ export default function AddProduct() {
 
     try {
       setLoading(true);
-      await productService.create({
+      await databaseService.products.create({
         ...formData,
-        stock_status: stockStatus,
+        stock_status: stockStatus as "in-stock" | "out-of-stock",
       });
       toast.success("Product created successfully");
       router.push("/dashboard/products");

@@ -1,12 +1,12 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { Database } from "./types/database.types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Realtime subscription types
-export type RealtimeChannel = ReturnType<typeof supabase.channel>;
+export const createClient = () => {
+  return createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
+};
 
 // Database types
 export interface Brand {
@@ -47,6 +47,7 @@ export interface News {
   title: string;
   content: string;
   image_url: string;
+  publication_date: string;
   created_at?: string;
   updated_at?: string;
 }

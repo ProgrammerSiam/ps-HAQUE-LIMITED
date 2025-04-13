@@ -14,6 +14,7 @@ import {
   BuildingOfficeIcon,
   VideoCameraIcon,
   SparklesIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 
 const menuItems = [
@@ -70,6 +71,11 @@ const menuItems = [
       { title: "Add News", path: "/dashboard/news/add" },
     ],
   },
+  {
+    title: "Newsletter",
+    icon: EnvelopeIcon,
+    path: "/dashboard/newsletter",
+  },
 ];
 
 export const Sidebar = () => {
@@ -96,56 +102,72 @@ export const Sidebar = () => {
       <nav className="mt-8 space-y-1">
         {menuItems.map((item) => (
           <div key={item.title}>
-            <button
-              onClick={() =>
-                setActiveDropdown(
-                  activeDropdown === item.title ? null : item.title
-                )
-              }
-              className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg ${
-                pathname === item.path
-                  ? "bg-primary-50 text-primary-600"
-                  : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <div className="flex items-center">
+            {item.subItems ? (
+              // Menu item with subitems
+              <>
+                <button
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === item.title ? null : item.title
+                    )
+                  }
+                  className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg ${
+                    pathname === item.path
+                      ? "bg-primary-50 text-primary-600"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <item.icon className="w-5 h-5 mr-3" />
+                    <span>{item.title}</span>
+                  </div>
+                  <ChevronDownIcon
+                    className={`w-4 h-4 transition-transform ${
+                      activeDropdown === item.title ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {activeDropdown === item.title && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="bg-gray-50"
+                    >
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.path}
+                          href={subItem.path}
+                          className={`block pl-14 pr-6 py-2 text-sm ${
+                            pathname === subItem.path
+                              ? "text-blue-600 bg-blue-50"
+                              : "text-gray-600 hover:bg-gray-100"
+                          }`}
+                        >
+                          {subItem.title}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            ) : (
+              // Menu item without subitems
+              <Link
+                href={item.path}
+                className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg ${
+                  pathname === item.path
+                    ? "bg-primary-50 text-primary-600"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
                 <item.icon className="w-5 h-5 mr-3" />
                 <span>{item.title}</span>
-              </div>
-              {item.subItems && (
-                <ChevronDownIcon
-                  className={`w-4 h-4 transition-transform ${
-                    activeDropdown === item.title ? "rotate-180" : ""
-                  }`}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {item.subItems && activeDropdown === item.title && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-gray-50"
-                >
-                  {item.subItems.map((subItem) => (
-                    <Link
-                      key={subItem.path}
-                      href={subItem.path}
-                      className={`block pl-14 pr-6 py-2 text-sm ${
-                        pathname === subItem.path
-                          ? "text-blue-600 bg-blue-50"
-                          : "text-gray-600 hover:bg-gray-100"
-                      }`}
-                    >
-                      {subItem.title}
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+              </Link>
+            )}
           </div>
         ))}
       </nav>

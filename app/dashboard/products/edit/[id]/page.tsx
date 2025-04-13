@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { productService } from "@/lib/supabaseService";
-import { ProductType } from "@/lib/supabaseService";
-import { uploadToCloudinary } from "@/lib/cloudinaryService";
+import { databaseService } from "@/lib/supabaseService";
+import type { Product } from "@/lib/types/database.types";
+import { uploadImage } from "@/lib/cloudinary";
 
 export default function EditProduct({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
-  const [formData, setFormData] = useState<Partial<ProductType>>({
+  const [formData, setFormData] = useState<Partial<Product>>({
     title: "",
     description: "",
     category: "",
@@ -30,7 +30,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const product = await productService.getById(params.id);
+        const product = await databaseService.products.getById(params.id);
         if (product) {
           setFormData(product);
           setImagePreview(product.image_url);
@@ -61,10 +61,10 @@ export default function EditProduct({ params }: { params: { id: string } }) {
     try {
       let imageUrl = formData.image_url;
       if (imageFile) {
-        imageUrl = await uploadToCloudinary(imageFile);
+        imageUrl = await uploadImage(imageFile);
       }
 
-      await productService.update(params.id, {
+      await databaseService.products.update(params.id, {
         ...formData,
         image_url: imageUrl,
       });
@@ -147,7 +147,12 @@ export default function EditProduct({ params }: { params: { id: string } }) {
                 <select
                   value={formData.stock_status}
                   onChange={(e) =>
-                    setFormData({ ...formData, stock_status: e.target.value })
+                    setFormData({
+                      ...formData,
+                      stock_status: e.target.value as
+                        | "in-stock"
+                        | "out-of-stock",
+                    })
                   }
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                   required

@@ -8,6 +8,8 @@ const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const controls = useAnimation();
 
   // Start animations when component mounts
@@ -15,14 +17,38 @@ const NewsletterSection = () => {
     controls.start("visible");
   }, [controls]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    console.log("Subscribed with email:", email);
-    setTimeout(() => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to subscribe");
+      }
+
+      setIsSubmitted(true);
       setEmail("");
-      setIsSubmitted(false);
-    }, 3000);
+
+      // Reset after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to subscribe");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -140,9 +166,10 @@ const NewsletterSection = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="relative bg-red-600 px-4 sm:px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none"
+                    disabled={isLoading}
+                    className="relative bg-red-600 px-4 sm:px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-red-700 focus:outline-none disabled:bg-red-400"
                   >
-                    Subscribe
+                    {isLoading ? "Subscribing..." : "Subscribe"}
                     <span className="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-white/40"></span>
                     <span className="absolute -bottom-1 -left-1 w-2 h-2 border-b border-l border-white/40"></span>
                   </motion.button>
@@ -163,6 +190,20 @@ const NewsletterSection = () => {
                   <div className="absolute -right-4 top-1/2 w-3 h-px bg-red-600/40"></div>
                   Thank you for subscribing! We'll keep you updated with our
                   latest news.
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Add error message */}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4 text-center text-sm font-medium text-red-400"
+                >
+                  {error}
                 </motion.div>
               )}
             </AnimatePresence>

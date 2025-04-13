@@ -4,34 +4,33 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { productService } from "@/lib/supabaseService";
+import { databaseService } from "@/lib/supabaseService";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
-import { ProductType } from "@/lib/supabaseService";
+import type { Product } from "@/lib/types/database.types";
 import { toast } from "react-hot-toast";
 
 export default function ProductList() {
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load initial data
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const data = await productService.getAll();
-        setProducts(data);
-      } catch (error: any) {
-        console.error("Error loading products:", error);
-        toast.error(error.message || "Failed to load products");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     loadProducts();
   }, []);
 
+  const loadProducts = async () => {
+    try {
+      const data = await databaseService.products.getAll();
+      setProducts(data);
+    } catch (error: any) {
+      console.error("Error loading products:", error);
+      toast.error(error.message || "Failed to load products");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Set up real-time subscriptions
-  useRealtimeSubscription<ProductType>({
+  useRealtimeSubscription<Product>({
     table: "products",
     onInsert: (newProduct) => {
       setProducts((prev) => [newProduct, ...prev]);
@@ -56,7 +55,7 @@ export default function ProductList() {
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        await productService.delete(id);
+        await databaseService.products.delete(id);
         toast.success("Product deleted successfully");
       } catch (error: any) {
         console.error("Error deleting product:", error);
@@ -65,7 +64,7 @@ export default function ProductList() {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <PageLayout title="All Products">
         <div className="flex items-center justify-center h-64">
