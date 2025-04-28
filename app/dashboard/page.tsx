@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Blog, Brand } from "@/lib/supabaseService";
 
 const statsCards = [
   {
@@ -41,8 +42,8 @@ const statsCards = [
 ];
 
 export default function Dashboard() {
-  const [blogs, setBlogs] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
