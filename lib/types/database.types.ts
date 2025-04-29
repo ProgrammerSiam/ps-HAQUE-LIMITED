@@ -69,7 +69,8 @@ export type News = {
     title: string;
     content: string;
     image_url?: string;
-    published_at: string;
+    // published_at: string;
+    publication_date: string;
     created_at: string;
     updated_at: string;
 };
