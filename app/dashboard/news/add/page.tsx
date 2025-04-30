@@ -155,7 +155,7 @@ export default function AddNews() {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"
                 placeholder="Enter news title"
                 disabled={isSaving}
               />
@@ -171,7 +171,7 @@ export default function AddNews() {
                 value={formData.publication_date}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"
                 disabled={isSaving}
               />
             </div>
@@ -186,7 +186,7 @@ export default function AddNews() {
                 onChange={handleChange}
                 required
                 rows={6}
-                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"
                 placeholder="Enter news content"
                 disabled={isSaving}
               />

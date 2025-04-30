@@ -67,15 +67,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { blogService } from "@/lib/services/blogService";
 
-interface RouteContext {
-  params: {
-    id: string;
-  };
-}
-
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const blog = await blogService.getBlogById(context.params.id);
+    const blog = await blogService.getBlogById(params.id);
     if (!blog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
@@ -89,7 +86,10 @@ export async function GET(request: NextRequest, context: RouteContext) {
   }
 }
 
-export async function PUT(request: NextRequest, context: RouteContext) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const formData = await request.formData();
     const data = {
@@ -110,7 +110,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       cover_image: coverImage || coverImageUrl || undefined,
     };
 
-    const blog = await blogService.updateBlog(context.params.id, updateData);
+    const blog = await blogService.updateBlog(params.id, updateData);
     return NextResponse.json(blog);
   } catch (error) {
     console.error("Error updating blog:", error);
@@ -121,9 +121,12 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 }
 
-export async function DELETE(request: NextRequest, context: RouteContext) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    await blogService.deleteBlog(context.params.id);
+    await blogService.deleteBlog(params.id);
     return NextResponse.json({ message: "Blog deleted successfully" });
   } catch (error) {
     console.error("Error deleting blog:", error);
