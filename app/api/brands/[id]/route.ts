@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { databaseService } from "@/lib/supabaseService";
 
 // GET /api/brands/[id] - Get a single brand
 export async function GET(
@@ -7,9 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const brand = await prisma.brand.findUnique({
-      where: { id: params.id },
-    });
+    const brand = await databaseService.brands.getById(params.id);
     if (!brand) {
       return NextResponse.json({ error: "Brand not found" }, { status: 404 });
     }
@@ -30,14 +28,7 @@ export async function PUT(
 ) {
   try {
     const data = await request.json();
-    const brand = await prisma.brand.update({
-      where: { id: params.id },
-      data: {
-        name: data.name,
-        description: data.description,
-        imageUrl: data.imageUrl,
-      },
-    });
+    const brand = await databaseService.brands.update(params.id, data);
     return NextResponse.json(brand);
   } catch (error) {
     console.error("Error updating brand:", error);
@@ -54,9 +45,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await prisma.brand.delete({
-      where: { id: params.id },
-    });
+    await databaseService.brands.delete(params.id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting brand:", error);
