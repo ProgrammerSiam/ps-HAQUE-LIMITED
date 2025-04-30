@@ -1,7 +1,6 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import { motion } from "framer-motion";
 import {
   FaLinkedinIn,
   FaTwitter,
@@ -20,7 +19,8 @@ interface LeaderCardProps {
 const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
   const [isNameHovered, setIsNameHovered] = useState(false);
   const [isTitleHovered, setIsTitleHovered] = useState(false);
-
+  console.log(isNameHovered, isTitleHovered);
+  
   const socialLinks = [
     { icon: FaEnvelope, href: "#", label: "Email" },
     { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },

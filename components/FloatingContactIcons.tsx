@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { MessageSquare, Phone, Mail, X, MessageCircle } from "lucide-react";
+import { MessageSquare, Mail, X, MessageCircle } from "lucide-react";
 import { FaWhatsapp, FaFacebookMessenger } from "react-icons/fa";
 import { useState } from "react";
 

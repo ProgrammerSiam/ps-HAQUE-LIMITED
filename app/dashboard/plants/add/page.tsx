@@ -33,9 +33,15 @@ export default function AddPlant() {
       const imageUrl = await uploadImage(file);
       setFormData((prev) => ({ ...prev, image_url: imageUrl }));
       toast.success("Image uploaded successfully");
-    } catch (error: any) {
-      console.error("Error uploading image:", error);
-      toast.error(error.message || "Failed to upload image");
+    } catch (error: unknown) {
+      // console.error("Error uploading image:", error);
+      // toast.error(error.message || "Failed to upload image");
+      if (error instanceof Error) {
+        console.error("Error uploading image:", error);
+        toast.error(error.message || "Failed to upload image");
+      } else {
+        toast.error("Failed to upload image");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -73,9 +79,15 @@ export default function AddPlant() {
       } else {
         throw new Error(result.error || "Failed to add plant");
       }
-    } catch (error: any) {
-      console.error("Error adding plant:", error);
-      toast.error(error.message || "Failed to add plant");
+    } catch (error: unknown) {
+      // console.error("Error adding plant:", error);
+      // toast.error(error.message || "Failed to add plant");
+      if (error instanceof Error) {
+        console.error("Error adding plant:", error);
+        toast.error(error.message || "Failed to add plant");
+      } else {
+        toast.error("Failed to add plant");
+      }
     } finally {
       setIsLoading(false);
     }

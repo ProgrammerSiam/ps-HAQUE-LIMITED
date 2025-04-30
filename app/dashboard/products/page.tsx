@@ -21,9 +21,15 @@ export default function ProductList() {
     try {
       const data = await databaseService.products.getAll();
       setProducts(data);
-    } catch (error: any) {
-      console.error("Error loading products:", error);
-      toast.error(error.message || "Failed to load products");
+    } catch (error: unknown) {
+      // console.error("Error loading products:", error);
+      // toast.error(error.message || "Failed to load products");
+      if (error instanceof Error) {
+        console.error("Error loading products:", error);
+        toast.error(error.message || "Failed to load products");
+      } else {
+        toast.error("Failed to load products");
+      }
     } finally {
       setLoading(false);
     }
@@ -57,9 +63,15 @@ export default function ProductList() {
       try {
         await databaseService.products.delete(id);
         toast.success("Product deleted successfully");
-      } catch (error: any) {
-        console.error("Error deleting product:", error);
-        toast.error(error.message || "Failed to delete product");
+      } catch (error: unknown) {
+        // console.error("Error deleting product:", error);
+        // toast.error(error.message || "Failed to delete product");
+        if (error instanceof Error) {
+          console.error("Error deleting product:", error);
+          toast.error(error.message || "Failed to delete product");
+        } else {
+          toast.error("Failed to delete product");
+        }
       }
     }
   };

@@ -39,9 +39,13 @@ export default function AddNews() {
       const imageUrl = await uploadImage(file);
       setFormData((prev) => ({ ...prev, image_url: imageUrl }));
       toast.success("Image uploaded successfully");
-    } catch (error: any) {
-      console.error("Error uploading image:", error);
-      toast.error(error.message || "Failed to upload image");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error uploading image:", error);
+        toast.error(error.message || "Failed to upload image");
+      } else {
+        toast.error("Failed to upload image");
+      }
     } finally {
       setIsSaving(false);
     }
@@ -60,9 +64,13 @@ export default function AddNews() {
       await databaseService.news.create(formData);
       toast.success("News created successfully");
       router.push("/dashboard/news");
-    } catch (error: any) {
-      console.error("Error creating news:", error);
-      toast.error(error.message || "Failed to create news");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error creating news:", error);
+        toast.error(error.message || "Failed to create news");
+      } else {
+        toast.error("Failed to create news");
+      }
     } finally {
       setIsSaving(false);
     }

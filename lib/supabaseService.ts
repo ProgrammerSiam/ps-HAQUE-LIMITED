@@ -1,11 +1,11 @@
-import { create } from "domain";
+// import { create } from "domain";
 import { createClient } from "./supabase";
 import type { Database } from "./types/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 // Initialize Supabase clients
 const supabaseClient = createClient();
-const supabase = createClientComponentClient<Database>();
+// const supabase = createClientComponentClient<Database>();
 
 type Tables = Database["public"]["Tables"];
 export type Brand = Tables["brands"]["Row"];
@@ -17,14 +17,42 @@ export type MessageDelivery = Tables["message_deliveries"]["Row"];
 export type NewsletterMessage = Tables["newsletter_messages"]["Row"];
 export type TvCommercial = Tables["tv_commercials"]["Row"];
 
-const handleError = (error: any) => {
+// const handleError = (error: any) => {
+//     console.error("Database error:", error);
+//     throw new Error(
+//         error?.message ||
+//             error?.error_description ||
+//             "An unknown error occurred"
+//     );
+// };
+
+interface SupabaseError {
+    message?: string;
+    error_description?: string;
+}
+
+const handleError = (error: unknown): never => {
     console.error("Database error:", error);
-    throw new Error(
-        error?.message ||
-            error?.error_description ||
-            "An unknown error occurred"
-    );
+
+    if (isSupabaseError(error)) {
+        throw new Error(
+            error.message ||
+                error.error_description ||
+                "An unknown error occurred"
+        );
+    }
+
+    throw new Error("An unknown error occurred");
 };
+
+function isSupabaseError(error: unknown): error is SupabaseError {
+    return (
+        typeof error === "object" &&
+        error !== null &&
+        ("message" in error || "error_description" in error)
+    );
+}
+
 
 // Use supabaseClient for all database operations
 export const databaseService = {
@@ -478,7 +506,7 @@ export const databaseService = {
             tvCommercial: Omit<TvCommercial, "id" | "created_at" | "updated_at">
         ) {
             console.log("Creating TV commercial:", tvCommercial);
-            
+
             try {
                 const { data, error } = await supabaseClient
                     .from("tv_commercials")

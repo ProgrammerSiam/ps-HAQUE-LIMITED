@@ -1,4 +1,10 @@
-export function ProductSchema({ product }: { product: any }) {
+interface Product {
+  name: string;
+  description: string;
+  image: string;
+}
+
+export function ProductSchema({ product }: { product: Product }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",

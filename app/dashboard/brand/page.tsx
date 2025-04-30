@@ -19,9 +19,15 @@ export default function BrandList() {
             try {
                 const data = await databaseService.brands.getAll();
                 setBrands(data);
-            } catch (error: any) {
-                console.error("Error loading brands:", error);
-                toast.error(error.message || "Failed to load brands");
+            } catch (error: unknown) {
+                // console.error("Error loading brands:", error);
+                // toast.error(error.message || "Failed to load brands");
+                if (error instanceof Error) {
+                    console.error("Error loading brands:", error);
+                    toast.error(error.message || "Failed to load brands");
+                } else {
+                    toast.error("Failed to load brands");
+                }
             } finally {
                 setLoading(false);
             }
@@ -58,9 +64,15 @@ export default function BrandList() {
             try {
                 await databaseService.brands.delete(id);
                 toast.success("Brand deleted successfully");
-            } catch (error: any) {
-                console.error("Error deleting brand:", error);
-                toast.error(error.message || "Failed to delete brand");
+            } catch (error: unknown) {
+                // console.error("Error deleting brand:", error);
+                // toast.error(error.message || "Failed to delete brand");
+                if (error instanceof Error) {
+                    console.error("Error deleting brand:", error);
+                    toast.error(error.message || "Failed to delete brand");
+                } else {
+                    toast.error("Failed to delete brand");
+                }
             }
         }
     };

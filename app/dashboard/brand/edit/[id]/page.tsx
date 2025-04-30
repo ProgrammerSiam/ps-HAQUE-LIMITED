@@ -24,16 +24,22 @@ export default function EditBrand({ params }: { params: { id: string } }) {
   useEffect(() => {
     const loadBrand = async () => {
       try {
-        const brand = await databaseService.brands.getById(params.id);
-        if (brand) {
-          setFormData(brand);
-          setImagePreview(brand.image_url);
-        }
-      } catch (error: any) {
-        console.error("Error loading brand:", error);
-        toast.error(error.message || "Failed to load brand");
+          const brand = await databaseService.brands.getById(params.id);
+          if (brand) {
+              setFormData(brand);
+              setImagePreview(brand.image_url);
+          }
+      } catch (error: unknown) {
+          // console.error("Error loading brand:", error);
+          // toast.error(error.message || "Failed to load brand");
+          if (error instanceof Error) {
+              console.error("Error loading brand:", error);
+              toast.error(error.message || "Failed to load brand");
+          } else {
+              toast.error("Failed to load brand");
+          }
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
     };
 
@@ -83,9 +89,16 @@ export default function EditBrand({ params }: { params: { id: string } }) {
 
       toast.success("Brand updated successfully");
       router.push("/dashboard/brand");
-    } catch (error: any) {
-      console.error("Error updating brand:", error);
-      toast.error(error.message || "Failed to update brand");
+    } catch (error: unknown) {
+      // console.error("Error updating brand:", error);
+      // toast.error(error.message || "Failed to update brand");
+      if (error instanceof Error) {
+        console.error("Error updating brand:", error);
+        toast.error(error.message || "Failed to update brand");
+      } else {
+        console.error("Unknown error:", error);
+        toast.error("Failed to update brand");
+      }
     } finally {
       setSubmitting(false);
     }

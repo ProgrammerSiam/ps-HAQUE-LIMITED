@@ -26,7 +26,6 @@ export default function News() {
     const [error, setError] = useState<string | null>(null);
 
     console.log(news);
-    
 
     useEffect(() => {
         loadNews();
@@ -37,11 +36,19 @@ export default function News() {
             setError(null);
             const data = await databaseService.news.getAll();
             setNews(data);
-        } catch (error: any) {
-            console.error("Error loading news:", error);
-            const errorMessage = error.message || "Failed to load news";
-            setError(errorMessage);
-            toast.error(errorMessage);
+        } catch (error: unknown) {
+            // console.error("Error loading news:", error);
+            // const errorMessage = error.message || "Failed to load news";
+            // setError(errorMessage);
+            // toast.error(errorMessage);
+            if (error instanceof Error) {
+                console.error("Error loading news:", error);
+                const errorMessage = error.message || "Failed to load news";
+                setError(errorMessage);
+                toast.error(errorMessage);
+            } else {
+                toast.error("Failed to load news");
+            }
         } finally {
             setIsLoading(false);
         }
@@ -54,9 +61,15 @@ export default function News() {
             await databaseService.news.delete(id);
             toast.success("News deleted successfully");
             loadNews();
-        } catch (error: any) {
-            console.error("Error deleting news:", error);
-            toast.error(error.message || "Failed to delete news");
+        } catch (error: unknown) {
+            // console.error("Error deleting news:", error);
+            // toast.error(error.message || "Failed to delete news");
+            if (error instanceof Error) {
+                console.error("Error deleting news:", error);
+                toast.error(error.message || "Failed to delete news");
+            } else {
+                toast.error("Failed to delete news");
+            }
         }
     };
 

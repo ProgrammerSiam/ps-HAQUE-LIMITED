@@ -9,7 +9,7 @@ import BlogSection from "@/sections/BlogSection";
 import NewsletterSection from "@/sections/NewsletterSection";
 import CEOMessageSection from "@/sections/CEOMessageSection";
 import InfoCardSection from "@/sections/InfoCardSection";
-import TestimonialSection from "@/sections/TestimonialSection";
+// import TestimonialSection from "@/sections/TestimonialSection";
 const Home: NextPage = () => {
   return (
     <>

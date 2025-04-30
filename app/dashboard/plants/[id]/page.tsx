@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 import { toast } from "react-hot-toast";
-import { uploadImage } from "@/lib/cloudinary";
 import Image from "next/image";
 import { databaseService, type Product } from "@/lib/supabaseService";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 export default function EditProduct({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -42,10 +40,17 @@ export default function EditProduct({ params }: { params: { id: string } }) {
           selling_price: data.selling_price,
           image_url: data.image_url,
         });
-      } catch (error: any) {
-        console.error("Error loading product:", error);
-        toast.error(error.message || "Failed to load product");
-        router.push("/dashboard/plants");
+      } catch (error: unknown) {
+        // console.error("Error loading product:", error);
+        // toast.error(error.message || "Failed to load product");
+        // router.push("/dashboard/plants");
+        if (error instanceof Error) {
+           console.error("Error loading product:", error);
+           toast.error(error.message || "Failed to load product");
+           router.push("/dashboard/plants");
+        } else {
+          toast.error("Failed to load product");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -62,9 +67,15 @@ export default function EditProduct({ params }: { params: { id: string } }) {
       await databaseService.products.update(params.id, formData);
       toast.success("Product updated successfully");
       router.push("/dashboard/plants");
-    } catch (error: any) {
-      console.error("Error updating product:", error);
-      toast.error(error.message || "Failed to update product");
+    } catch (error: unknown) {
+      // console.error("Error updating product:", error);
+      // toast.error(error.message || "Failed to update product");
+      if (error instanceof Error) {
+        console.error("Error updating product:", error);
+        toast.error(error.message || "Failed to update product");
+      } else {
+        toast.error("Failed to update product");
+      }
     } finally {
       setIsSaving(false);
     }

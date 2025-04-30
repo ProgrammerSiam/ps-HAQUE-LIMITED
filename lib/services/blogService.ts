@@ -20,13 +20,14 @@ export interface Blog {
 const supabase = createClient();
 
 export interface CreateBlogInput {
-  title: string;
-  content: string;
-  short_description?: string;
-  cover_image?: File | string;
-  category: string;
-  tags?: string[];
-  meta_description?: string;
+    title: string;
+    content: string;
+    short_description?: string;
+    cover_image?: File | string;
+    category: string;
+    tags?: string[];
+    meta_description?: string;
+    slug?: string;
 }
 
 export const blogService = {
@@ -132,7 +133,8 @@ export const blogService = {
 
   async updateBlog(id: string, input: Partial<CreateBlogInput>): Promise<Blog> {
     try {
-      let updateData: any = { ...input };
+      // let updateData: any = { ...input };
+      const updateData: Partial<CreateBlogInput> = { ...input };
 
       // Handle slug update if title is changed
       if (input.title) {

@@ -25,8 +25,13 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
 
     const data = await response.json();
     return data.secure_url;
-  } catch (error: any) {
-    console.error("Error uploading to Cloudinary:", error);
-    throw new Error(error.message || "Failed to upload image");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error uploading to Cloudinary:", error);
+      throw new Error(error.message || "Failed to upload image");
+    } else {
+      console.error("Unexpected error:", error);
+      throw new Error("Failed to upload image");
+    }
   }
 };

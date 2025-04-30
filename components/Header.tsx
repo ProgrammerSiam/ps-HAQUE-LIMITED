@@ -74,20 +74,20 @@ const SectionHeader = ({
     },
   };
 
-  const dividerVariants = {
-    hidden: {
-      width: 0,
-      opacity: 0,
-    },
-    visible: {
-      width: "6rem", // w-24 equivalent
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
+  // const dividerVariants = {
+  //   hidden: {
+  //     width: 0,
+  //     opacity: 0,
+  //   },
+  //   visible: {
+  //     width: "6rem", // w-24 equivalent
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.5,
+  //       ease: "easeOut",
+  //     },
+  //   },
+  // };
 
   const descriptionVariants = {
     hidden: {

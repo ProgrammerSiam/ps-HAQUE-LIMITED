@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 import { BlogForm } from "@/components/blog/blog-form";

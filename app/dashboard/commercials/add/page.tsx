@@ -2,7 +2,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/dashboard/PageLayout";
-import { CldUploadWidget, CldImage } from "next-cloudinary";
+import {
+    CldUploadWidget,
+    CloudinaryUploadWidgetInfo,
+    CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { databaseService } from "@/lib/supabaseService";
 import toast from "react-hot-toast";
@@ -97,23 +101,45 @@ export default function AddCommercial() {
         }
     };
 
-    const handleVideoUpload = async (result: any) => {
-        console.log("upload called");
-        console.log(result);
-
+    // const handleVideoUpload = async (result: any) => {
+    //     if (result.event === "success") {
+    //         setFormData((prev) => ({
+    //             ...prev,
+    //             videoFile: result.info?.secure_url,
+    //         }));
+    //         setVideoPreview(result.info?.secure_url);
+    //         setIsUploading(false);
+    //     } else if (result.event === "progress") {
+    //         setUploadProgress(result.info?.progress);
+    //     } else if (result.event === "error") {
+    //         setErrors((prev) => ({
+    //             ...prev,
+    //             videoFile: "Upload failed. Please try again.",
+    //         }));
+    //         setIsUploading(false);
+    //     }
+    // };
+    const handleVideoUpload = async (result: CloudinaryUploadWidgetResults) => {
         if (result.event === "success") {
-            setFormData((prev) => ({
-                ...prev,
-                videoFile: result.info.secure_url,
-            }));
-            setVideoPreview(result.info.secure_url);
+            if (typeof result.info !== "string") {
+                const info = result.info as CloudinaryUploadWidgetInfo;
+                setFormData((prev) => ({
+                    ...prev,
+                    videoFile: info.secure_url,
+                }));
+                setVideoPreview(info.secure_url);
+            } else {
+                // Handle the case where result.info is a string, if necessary
+                console.warn("Unexpected result.info type:", result.info);
+            }
             setIsUploading(false);
-            console.log(result.info.secure_url);
         } else if (result.event === "progress") {
-            setUploadProgress(result.info.progress);
-            console.log("progress");
+            if (typeof result.info !== "string") {
+                // const info = result.info as CloudinaryUploadWidgetInfo;
+                // setUploadProgress(info.progress);
+                setUploadProgress(0);
+            }
         } else if (result.event === "error") {
-            console.log("error");
             setErrors((prev) => ({
                 ...prev,
                 videoFile: "Upload failed. Please try again.",
@@ -158,9 +184,15 @@ export default function AddCommercial() {
             setIsUploading(true);
             await databaseService.tv_commercials.create(newCommercial);
             toast.success("Commercial created successfully");
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.message || "Failed to create product");
+        } catch (error: unknown) {
+            // console.log(error);
+            // toast.error(error.message || "Failed to create product");
+            if (error instanceof Error) {
+                console.error("Error creating commercial:", error);
+                toast.error(error.message || "Failed to create commercial");
+            } else {
+                toast.error("Failed to create commercial");
+            }
         } finally {
             setIsUploading(false);
         }
@@ -221,7 +253,7 @@ export default function AddCommercial() {
                                             maxFileSize: 100000000, // 100MB
                                         }}
                                         // onUpload={handleVideoUpload}
-                                        onSuccess={(result, { widget }) => {
+                                        onSuccess={(result, {}) => {
                                             console.log(result);
                                             handleVideoUpload(result);
                                         }}
@@ -282,7 +314,7 @@ export default function AddCommercial() {
                                 name="youtubeUrl"
                                 value={formData.youtubeUrl}
                                 onChange={handleInputChange}
-                                className={`mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                className={`mt-6 p-3 block w-full rounded-lg border border-gray-300/50 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
                                     errors.youtubeUrl ? "border-red-500" : ""
                                 }`}
                                 placeholder="Or enter YouTube video URL"
@@ -306,7 +338,7 @@ export default function AddCommercial() {
                                 name="title"
                                 value={formData.title}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 p-3 block w-full rounded-lg border border-gray-300/50 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 placeholder="Enter commercial title"
                             />
                         </div>
@@ -320,7 +352,7 @@ export default function AddCommercial() {
                                 value={formData.description}
                                 onChange={handleInputChange}
                                 rows={4}
-                                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 p-3 block w-full rounded-lg border border-gray-300/50 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 placeholder="Enter commercial description"
                             />
                         </div>

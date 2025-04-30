@@ -63,9 +63,16 @@ export default function AddBrand() {
 
       toast.success("Brand created successfully");
       router.push("/dashboard/brand");
-    } catch (error: any) {
-      console.error("Error creating brand:", error);
-      toast.error(error.message || "Failed to create brand");
+    } catch (error: unknown) {
+      // console.error("Error creating brand:", error);
+      // toast.error(error.message || "Failed to create brand");
+      if (error instanceof Error) {
+          console.error("Error creating brand:", error);
+          toast.error(error.message);
+      } else {
+          console.error("Unknown error:", error);
+          toast.error("Failed to create brand");
+      }
     } finally {
       setLoading(false);
     }

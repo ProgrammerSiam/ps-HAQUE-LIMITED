@@ -9,7 +9,7 @@ export const StatsCard = ({
 }: {
   title: string;
   value: string;
-  icon: any;
+  icon: React.ElementType;
   change: string;
 }) => {
   return (

@@ -46,10 +46,17 @@ export default function EditNews({ params }: { params: { id: string } }) {
                     });
                     setImagePreview(data.image_url || null);
                 }
-            } catch (error: any) {
-                console.error("Error loading news:", error);
-                toast.error(error.message || "Failed to load news");
-                router.push("/dashboard/news");
+            } catch (error: unknown) {
+                // console.error("Error loading news:", error);
+                // toast.error(error.message || "Failed to load news");
+                // router.push("/dashboard/news");
+                if (error instanceof Error) {
+                    console.error("Error loading news:", error);
+                    toast.error(error.message || "Failed to load news");
+                    router.push("/dashboard/news");
+                } else {
+                    toast.error("Failed to load news");
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -76,9 +83,15 @@ export default function EditNews({ params }: { params: { id: string } }) {
             const imageUrl = await uploadImage(file);
             setFormData((prev) => ({ ...prev, image_url: imageUrl }));
             toast.success("Image uploaded successfully");
-        } catch (error: any) {
-            console.error("Error uploading image:", error);
-            toast.error(error.message || "Failed to upload image");
+        } catch (error: unknown) {
+            // console.error("Error uploading image:", error);
+            // toast.error(error.message || "Failed to upload image");
+            if (error instanceof Error) {
+                console.error("Error uploading image:", error);
+                toast.error(error.message || "Failed to upload image");
+            } else {
+                toast.error("Failed to upload image");
+            }
         } finally {
             setIsSaving(false);
         }
@@ -97,9 +110,15 @@ export default function EditNews({ params }: { params: { id: string } }) {
             await databaseService.news.update(params.id, formData);
             toast.success("News updated successfully");
             router.push("/dashboard/news");
-        } catch (error: any) {
-            console.error("Error updating news:", error);
-            toast.error(error.message || "Failed to update news");
+        } catch (error: unknown) {
+            // console.error("Error updating news:", error);
+            // toast.error(error.message || "Failed to update news");
+            if (error instanceof Error) {
+                console.error("Error updating news:", error);
+                toast.error(error.message || "Failed to update news");
+            } else {
+                toast.error("Failed to update news");
+            }
         } finally {
             setIsSaving(false);
         }

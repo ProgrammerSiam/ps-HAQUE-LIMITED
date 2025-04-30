@@ -35,9 +35,15 @@ export default function EditProduct({ params }: { params: { id: string } }) {
           setFormData(product);
           setImagePreview(product.image_url);
         }
-      } catch (error: any) {
-        console.error("Error loading product:", error);
-        toast.error(error.message || "Failed to load product");
+      } catch (error: unknown) {
+        // console.error("Error loading product:", error);
+        // toast.error(error.message || "Failed to load product");
+        if (error instanceof Error) {
+          console.error("Error loading product:", error);
+          toast.error(error.message || "Failed to load product");
+        } else {
+          toast.error("Failed to load product");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -71,9 +77,15 @@ export default function EditProduct({ params }: { params: { id: string } }) {
 
       toast.success("Product updated successfully");
       router.push("/dashboard/products");
-    } catch (error: any) {
-      console.error("Error updating product:", error);
-      toast.error(error.message || "Failed to update product");
+    } catch (error: unknown) {
+      // console.error("Error updating product:", error);
+      // toast.error(error.message || "Failed to update product");
+      if (error instanceof Error) {
+        console.error("Error updating product:", error);
+        toast.error(error.message || "Failed to update product");
+      } else {
+        toast.error("Failed to update product");
+      }
     } finally {
       setIsSubmitting(false);
     }
