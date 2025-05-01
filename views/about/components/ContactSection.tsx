@@ -181,7 +181,7 @@ export default function ContactSection() {
                   <h3 className="text-lg font-medium">Follow us</h3>
                 </motion.div>
                 <div className="flex space-x-4 pl-8">
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((social) => (
                     <motion.div
                       key={social.label}
                       whileHover={{ scale: 1.2, rotate: 5 }}

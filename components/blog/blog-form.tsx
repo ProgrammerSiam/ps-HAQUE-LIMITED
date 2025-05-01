@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Editor } from "@/components/editor";
 import { ImageUpload } from "@/components/image-upload";
 import { CategorySelect } from "@/components/category-select";
 import { TagSelect } from "@/components/tag-select";
+import { RichTextEditor } from "../dashboard/RichTextEditor";
+// import { Editor } from "@/components/editor";
 // import { RichTextEditor } from "@/components/dashboard/rich-text-editor";
 // import { ImageUpload } from "@/components/dashboard/image-upload";
 // import { CategorySelect } from "@/components/dashboard/category-select";
@@ -31,6 +32,7 @@ export function BlogForm({ blog }: BlogFormProps) {
     const [metaDescription, setMetaDescription] = useState("");
     const [coverImage, setCoverImage] = useState("");
     const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
+    console.log(blog);
 
     // Initialize form data when editing a blog
     useEffect(() => {
@@ -70,7 +72,8 @@ export function BlogForm({ blog }: BlogFormProps) {
                 formData.append("cover_image", coverImageFile);
             } else if (coverImage) {
                 // If no new file but we have an existing image URL, keep it
-                formData.append("cover_image_url", coverImage);
+                // formData.append("cover_image_url", coverImage);
+                formData.append("cover_image", coverImage);
             }
 
             const updatedInputs = {
@@ -216,10 +219,14 @@ export function BlogForm({ blog }: BlogFormProps) {
                 <div className="space-y-2">
                     <Label>Content *</Label>
                     <div className="relative z-10">
-                        <Editor
+                        {/* <Editor
                             value={content}
                             onChange={setContent}
                             placeholder="Write your blog content here..."
+                        /> */}
+                        <RichTextEditor
+                            content={content}
+                            onChange={setContent}
                         />
                     </div>
                 </div>

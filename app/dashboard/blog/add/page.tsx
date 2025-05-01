@@ -7,6 +7,7 @@ import { useState, useRef } from "react";
 import { blogService, CreateBlogInput } from "@/lib/services/blogService";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 interface CategoryOption {
     value: string;
@@ -295,11 +296,19 @@ export default function AddBlogPost() {
                         >
                             {coverImage ? (
                                 <div className="relative w-full aspect-[21/9] rounded-lg overflow-hidden">
-                                    <img
+                                    {/* <img
                                         src={coverImage}
                                         alt="Blog cover"
                                         className="object-cover w-full h-full"
-                                    />
+                                    /> */}
+                                    <div className="size-full">
+                                        <Image
+                                            src={coverImage}
+                                            alt="Blog cover"
+                                            fill
+                                            className="object-cover w-full h-full"
+                                        />
+                                    </div>
                                     <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-opacity" />
                                     <button
                                         type="button"

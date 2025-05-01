@@ -31,7 +31,7 @@ export default function LocationSection() {
 
   return (
     <section
-      id="location"
+      id="google_map"
       className="relative py-16 lg:py-24 overflow-hidden bg-muted/30"
       ref={sectionRef}
     >

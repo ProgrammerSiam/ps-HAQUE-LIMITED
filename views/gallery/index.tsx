@@ -1,14 +1,15 @@
 import React from "react";
 import PlantsSection from "./components/PlantsSection";
 import TvCommercialSection from "./components/TvCommercialSection";
-import AchievementSection from "./components/AchievementSection";
+import ShowCardsSection from "./components/ShowCardsSection";
+
 
 const Gallery = () => {
     return (
         <div>
             <PlantsSection />
             <TvCommercialSection />
-            <AchievementSection />
+            <ShowCardsSection />
         </div>
     );
 };
