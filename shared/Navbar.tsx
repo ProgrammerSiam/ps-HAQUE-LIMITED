@@ -114,10 +114,10 @@ const Navbar = () => {
         {
             title: "News",
             route: "/news",
-            items: ["Talk Show", "Press Release", "Events"],
+            items: ["Press Release", "Talk Show", "Events"],
             paths: [
-                "/news/#Talk Show",
-                "/news/#Press Release",
+                "/news/#press_release",
+                "/news/#talk_show",
                 "/news/#Events",
             ],
         },

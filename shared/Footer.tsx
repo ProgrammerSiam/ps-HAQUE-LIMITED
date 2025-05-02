@@ -40,7 +40,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {["Home", "Our Products", "About Us", "Contact", "FAQ"].map(
-                (item, index) => (
+                (item) => (
                   <motion.li
                     key={item}
                     whileHover={{ x: 6 }}
@@ -131,7 +131,7 @@ const Footer = () => {
 
               <div className="flex gap-4 pt-4">
                 {["facebook", "instagram", "twitter", "linkedin"].map(
-                  (social, index) => (
+                  (social) => (
                     <motion.a
                       key={social}
                       href={`https://${social}.com`}

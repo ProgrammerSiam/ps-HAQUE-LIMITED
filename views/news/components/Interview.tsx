@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   Quote,
   Search,
-  Book,
   ChevronDown,
   Filter,
   Clock,
@@ -39,18 +38,18 @@ export default function Interview() {
   const accordionRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const scrollToQuestion = (questionId: string) => {
-    setActiveQuestion(questionId);
-    if (accordionRef.current) {
-      const element = document.getElementById(`question-${questionId}`);
-      if (element) {
-        const yOffset = -100;
-        const y =
-          element.getBoundingClientRect().top + window.scrollY + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-    }
-  };
+  // const scrollToQuestion = (questionId: string) => {
+  //   setActiveQuestion(questionId);
+  //   if (accordionRef.current) {
+  //     const element = document.getElementById(`question-${questionId}`);
+  //     if (element) {
+  //       const yOffset = -100;
+  //       const y =
+  //         element.getBoundingClientRect().top + window.scrollY + yOffset;
+  //       window.scrollTo({ top: y, behavior: "smooth" });
+  //     }
+  //   }
+  // };
 
   // Click outside search to close focus state
   useEffect(() => {
@@ -189,7 +188,7 @@ export default function Interview() {
   });
 
   return (
-    <section className="py-16 bg-gradient-to-br from-amber-50/50 via-white to-amber-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <section id="talk_show" className="py-16 bg-gradient-to-br from-amber-50/50 via-white to-amber-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="container px-4 mx-auto">
         {/* Header */}
         <motion.div

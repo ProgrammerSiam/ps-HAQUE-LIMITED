@@ -147,12 +147,12 @@ export default function TvCommercialSection() {
   ];
 
   // State for currently playing video
-  const [playingVideo, setPlayingVideo] = useState(null);
+  const [playingVideo, setPlayingVideo] = useState<number | null>(null);
 
   return (
     <section
       id="tvCommercial"
-      className="py-16 bg-gradient-to-b from-white to-muted/30"
+      className="py-36 bg-gradient-to-b from-white to-muted/30"
     >
       <div className="container px-4 mx-auto">
         <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">

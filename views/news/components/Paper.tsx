@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Bookmark,
-  Share2,
   Calendar,
   ChevronDown,
   ChevronUp,
@@ -16,8 +15,6 @@ import {
   Linkedin,
   Copy,
   Check,
-  ArrowLeft,
-  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -26,7 +23,7 @@ const Paper = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [fontSize, setFontSize] = useState("medium");
-  const [activeRelatedArticle, setActiveRelatedArticle] = useState(0);
+  // const [activeRelatedArticle, setActiveRelatedArticle] = useState(0);
 
   const articleRef = useRef(null);
 
@@ -41,7 +38,7 @@ const Paper = () => {
     window.print();
   };
 
-  const changeFontSize = (size) => {
+  const changeFontSize = (size: string) => {
     setFontSize(size);
   };
 
@@ -52,31 +49,33 @@ const Paper = () => {
     });
   };
 
-  const relatedArticles = [
-    {
-      id: 1,
-      title: "হক গ্রুপের নতুন বিস্কুট লাইন উদ্বোধন অনুষ্ঠান",
-      source: "প্রথম আলো",
-      date: "১৫ মে, ২০২৪",
-      image: "/images/news/ittefaq.png",
-    },
-    {
-      id: 2,
-      title: "বাংলাদেশের শিল্প খাতে হক গ্রুপের অবদান",
-      source: "দৈনিক সমকাল",
-      date: "২২ জুন, ২০২৩",
-      image: "/images/news/ittefaq.png",
-    },
-    {
-      id: 3,
-      title: "বিশ্বমানের পণ্য উৎপাদনে হক গ্রুপের প্রতিশ্রুতি",
-      source: "বাংলাদেশ প্রতিদিন",
-      date: "১০ জানুয়ারি, ২০২৪",
-      image: "/images/news/ittefaq.png",
-    },
-  ];
+  // const relatedArticles = [
+  //   {
+  //     id: 1,
+  //     title: "হক গ্রুপের নতুন বিস্কুট লাইন উদ্বোধন অনুষ্ঠান",
+  //     source: "প্রথম আলো",
+  //     date: "১৫ মে, ২০২৪",
+  //     image: "/images/news/ittefaq.png",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "বাংলাদেশের শিল্প খাতে হক গ্রুপের অবদান",
+  //     source: "দৈনিক সমকাল",
+  //     date: "২২ জুন, ২০২৩",
+  //     image: "/images/news/ittefaq.png",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "বিশ্বমানের পণ্য উৎপাদনে হক গ্রুপের প্রতিশ্রুতি",
+  //     source: "বাংলাদেশ প্রতিদিন",
+  //     date: "১০ জানুয়ারি, ২০২৪",
+  //     image: "/images/news/ittefaq.png",
+  //   },
+  // ];
 
+  
   // Font size classes based on selection
+  
   const fontSizeClasses = {
     small: "text-sm/[22px] sm:text-sm/[24px]",
     medium: "text-base/[24px] sm:text-base/[28px]",
@@ -84,7 +83,7 @@ const Paper = () => {
   };
 
   return (
-    <div className="py-16 bg-muted/30" ref={articleRef}>
+    <div id="press_release" className="py-20 bg-muted/30" ref={articleRef}>
       <div className="container px-4 md:px-6">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Main content area */}
