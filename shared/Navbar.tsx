@@ -275,7 +275,7 @@ const Navbar = () => {
                                 alt="Haque Logo"
                                 width={240}
                                 height={100}
-                                className="transition-transform w-[180px] 
+                                className="transition-transform w-[180px]
                  sm:w-[200px]  md:w-[240px] duration-300 "
                             />
                         </motion.div>
@@ -417,7 +417,9 @@ const Navbar = () => {
                             onClick={() =>
                                 setIsMobileMenuOpen(!isMobileMenuOpen)
                             }
-                            className="lg:hidden rounded-lg p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-600"
+                            // className="lg:hidden rounded-lg p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-600"
+                            className={`lg:hidden rounded-lg p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-600
+                                 ${isMobileMenuOpen ? "z-[100]" : ""}`}
                         >
                             <span className="sr-only">Open menu</span>
                             <AnimatePresence mode="wait">
