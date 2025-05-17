@@ -101,53 +101,53 @@ export async function GET() {
 //   }
 // }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const formData = await request.formData();
-    const data = {
-      title: formData.get("title") as string,
-      content: formData.get("content") as string,
-      category: formData.get("category") as string,
-      tags: JSON.parse(formData.get("tags") as string),
-      short_description: formData.get("short_description") as string,
-      meta_description: formData.get("meta_description") as string,
-    };
+// export async function PUT(
+//   request: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     const formData = await request.formData();
+//     const data = {
+//       title: formData.get("title") as string,
+//       content: formData.get("content") as string,
+//       category: formData.get("category") as string,
+//       tags: JSON.parse(formData.get("tags") as string),
+//       short_description: formData.get("short_description") as string,
+//       meta_description: formData.get("meta_description") as string,
+//     };
 
-    // Handle cover image
-    const coverImage = formData.get("cover_image") as File | null;
-    const coverImageUrl = formData.get("cover_image_url") as string | null;
+//     // Handle cover image
+//     const coverImage = formData.get("cover_image") as File | null;
+//     const coverImageUrl = formData.get("cover_image_url") as string | null;
 
-    const updateData = {
-      ...data,
-      cover_image: coverImage || coverImageUrl || undefined,
-    };
+//     const updateData = {
+//       ...data,
+//       cover_image: coverImage || coverImageUrl || undefined,
+//     };
 
-    const blog = await blogService.updateBlog(params.id, updateData);
-    return NextResponse.json(blog);
-  } catch (error) {
-    console.error("Error updating blog:", error);
-    return NextResponse.json(
-      { error: "Failed to update blog" },
-      { status: 500 }
-    );
-  }
-}
+//     const blog = await blogService.updateBlog(params.id, updateData);
+//     return NextResponse.json(blog);
+//   } catch (error) {
+//     console.error("Error updating blog:", error);
+//     return NextResponse.json(
+//       { error: "Failed to update blog" },
+//       { status: 500 }
+//     );
+//   }
+// }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    await blogService.deleteBlog(params.id);
-    return NextResponse.json({ message: "Blog deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting blog:", error);
-    return NextResponse.json(
-      { error: "Failed to delete blog" },
-      { status: 500 }
-    );
-  }
-}
+// export async function DELETE(
+//   request: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     await blogService.deleteBlog(params.id);
+//     return NextResponse.json({ message: "Blog deleted successfully" });
+//   } catch (error) {
+//     console.error("Error deleting blog:", error);
+//     return NextResponse.json(
+//       { error: "Failed to delete blog" },
+//       { status: 500 }
+//     );
+//   }
+// }

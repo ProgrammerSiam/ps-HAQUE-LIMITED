@@ -1,3 +1,7 @@
+export default function NewsletterDashboard() {
+    return <div>NewsletterDashboard</div>;
+}
+
 // "use client";
 
 // import { useState, useEffect } from "react";
