@@ -1,3 +1,7 @@
+export default function TestDBPage() {
+    return <div>TestDBPage</div>;
+}
+
 // "use client";
 
 // import { useEffect, useState } from "react";

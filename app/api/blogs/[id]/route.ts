@@ -1,3 +1,18 @@
+import { NextResponse } from "next/server";
+
+// GET /api/brands/[id] - Get a single brand
+export async function GET() {
+    try {
+        return NextResponse.json({ message: "Hello, Next.js!" });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(
+            { error: "Failed to fetch blogs" },
+            { status: 500 }
+        );
+    }
+}
+
 // import { NextRequest, NextResponse } from "next/server";
 // import { blogService } from "@/lib/services/blogService";
 

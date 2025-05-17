@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { login, setAuthToken } from "@/lib/services/auth";
+import { login } from "@/lib/services/auth";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 
@@ -27,6 +27,7 @@ const Login = () => {
       toast.success("Login successful!");
       router.push("/dashboard");
     } catch (error) {
+      console.error("Error logging in:", error);
       toast.error("Invalid credentials");
     } finally {
       setLoading(false);

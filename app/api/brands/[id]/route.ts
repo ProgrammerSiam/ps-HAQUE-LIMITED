@@ -1,3 +1,18 @@
+import { NextResponse } from "next/server";
+
+// GET /api/brands/[id] - Get a single brand
+export async function GET() {
+    try {
+        return NextResponse.json({ message: "Hello, Next.js!" });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(
+            { error: "Failed to fetch brand" },
+            { status: 500 }
+        );
+    }
+}
+
 // import { NextResponse } from "next/server";
 // import { prisma } from "@/lib/prisma";
 
