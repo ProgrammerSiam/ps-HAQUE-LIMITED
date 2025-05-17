@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { blogService } from "@/lib/services/blogService";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const blogs = await blogService.getAllBlogs();

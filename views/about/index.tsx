@@ -7,16 +7,16 @@ import CompanyValues from "./components/CompanyValueSection";
 import CompanyConcern from "./components/CompanyConcernSection";
 
 const About = () => {
-    return (
-        <>
-            <HeroSection />
-            <CompanyValues />
-            <CompanyConcern />
-            <CompanyProfile />
-            <LocationSection />
-            <ContactSection />
-        </>
-    );
+  return (
+    <>
+      <HeroSection />
+      <CompanyValues />
+      <CompanyConcern />
+      <CompanyProfile />
+      <LocationSection />
+      <ContactSection />
+    </>
+  );
 };
 
 export default About;

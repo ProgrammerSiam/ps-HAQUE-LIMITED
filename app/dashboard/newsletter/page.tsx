@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PageLayout } from "@/components/dashboard/PageLayout";
-import { databaseService } from "@/lib/supabaseService";
 import { toast } from "react-hot-toast";
+import { databaseService } from "@/lib/supabaseService";
+import { PageLayout } from "@/components/dashboard/PageLayout";
+import { RichTextEditor } from "@/components/dashboard/RichTextEditor";
 import type {
   Subscriber,
   NewsletterMessage,
@@ -11,14 +12,10 @@ import type {
 } from "@/lib/types/database.types";
 
 type ExtendedNewsletterMessage = NewsletterMessage & {
-  deliveries?: Array<{
-    status: MessageDelivery["status"];
-    delivered_at: string | null;
-    subscriber: {
-      email: string;
-    };
-  }>;
+  deliveries?: MessageDelivery[];
 };
+
+type RecipientType = "all" | "selected" | "single";
 
 export default function NewsletterDashboard() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
@@ -26,9 +23,7 @@ export default function NewsletterDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [recipientType, setRecipientType] = useState<
-    "all" | "selected" | "single"
-  >("all");
+  const [recipientType, setRecipientType] = useState<RecipientType>("all");
   const [messageHistory, setMessageHistory] = useState<
     ExtendedNewsletterMessage[]
   >([]);
@@ -99,9 +94,11 @@ export default function NewsletterDashboard() {
       setMessage("");
       setSelectedSubscribers([]);
       loadData(); // Refresh data
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error sending newsletter:", error);
-      toast.error(error?.message || "Failed to send newsletter");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to send newsletter"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -122,8 +119,10 @@ export default function NewsletterDashboard() {
         recipient_ids: [senderEmail], // Send test to sender
       });
       toast.success("Test email sent successfully!");
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to send test email");
+    } catch (error: unknown) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to send test email"
+      );
     }
   };
 
@@ -203,7 +202,7 @@ export default function NewsletterDashboard() {
                 Message History
               </h3>
               <div className="mt-4 space-y-4">
-                {messageHistory.map((message: any) => (
+                {messageHistory.map((message: ExtendedNewsletterMessage) => (
                   <div key={message.id} className="border rounded-lg p-4">
                     <h4 className="font-medium">{message.subject}</h4>
                     <p className="text-sm text-gray-500">
@@ -219,7 +218,7 @@ export default function NewsletterDashboard() {
                       <span className="text-green-600">
                         ✓{" "}
                         {message.deliveries?.filter(
-                          (d: any) => d.status === "delivered"
+                          (d: MessageDelivery) => d.status === "delivered"
                         ).length || 0}{" "}
                         delivered
                       </span>
@@ -227,7 +226,7 @@ export default function NewsletterDashboard() {
                       <span className="text-red-600">
                         ✕{" "}
                         {message.deliveries?.filter(
-                          (d: any) => d.status === "failed"
+                          (d: MessageDelivery) => d.status === "failed"
                         ).length || 0}{" "}
                         failed
                       </span>
@@ -249,7 +248,9 @@ export default function NewsletterDashboard() {
               <div className="mb-4">
                 <select
                   value={recipientType}
-                  onChange={(e) => setRecipientType(e.target.value as any)}
+                  onChange={(e) =>
+                    setRecipientType(e.target.value as RecipientType)
+                  }
                   className="w-full rounded-md border-gray-300"
                 >
                   <option value="all">All Subscribers</option>
@@ -329,14 +330,7 @@ export default function NewsletterDashboard() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Message
                   </label>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={6}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Write your newsletter content here..."
-                    required
-                  />
+                  <RichTextEditor content={message} onChange={setMessage} />
                 </div>
 
                 <div className="flex space-x-4">
