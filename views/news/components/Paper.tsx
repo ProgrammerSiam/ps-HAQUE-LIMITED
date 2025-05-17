@@ -22,7 +22,7 @@ const Paper = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [fontSize, setFontSize] = useState("medium");
+  const [fontSize, setFontSize] = useState<"small" | "medium" | "large">("medium");
   // const [activeRelatedArticle, setActiveRelatedArticle] = useState(0);
 
   const articleRef = useRef(null);
@@ -38,15 +38,17 @@ const Paper = () => {
     window.print();
   };
 
-  const changeFontSize = (size: string) => {
+  const changeFontSize = (size: "small" | "medium" | "large") => {
     setFontSize(size);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: articleRef.current.offsetTop - 100,
-      behavior: "smooth",
-    });
+    if (articleRef.current) {
+      window.scrollTo({
+        top: (articleRef.current as HTMLElement).offsetTop - 100,
+        behavior: "smooth",
+      });
+    }
   };
 
   // const relatedArticles = [

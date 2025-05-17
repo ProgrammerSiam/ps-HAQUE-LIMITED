@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,12 @@ interface News {
     updated_at: string;
 }
 
-export default function EditNews({ params }: { params: { id: string } }) {
+export default function EditNews({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = use(params);
     const router = useRouter();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +41,7 @@ export default function EditNews({ params }: { params: { id: string } }) {
     useEffect(() => {
         const loadNews = async () => {
             try {
-                const data = await databaseService.news.getById(params.id);
+                const data = await databaseService.news.getById(id);
                 if (data) {
                     setFormData({
                         title: data.title,
@@ -63,7 +68,7 @@ export default function EditNews({ params }: { params: { id: string } }) {
         };
 
         loadNews();
-    }, [params.id, router]);
+    }, [id, router]);
 
     const handleImageChange = async (
         e: React.ChangeEvent<HTMLInputElement>
@@ -107,7 +112,7 @@ export default function EditNews({ params }: { params: { id: string } }) {
 
         try {
             setIsSaving(true);
-            await databaseService.news.update(params.id, formData);
+            await databaseService.news.update(id, formData);
             toast.success("News updated successfully");
             router.push("/dashboard/news");
         } catch (error: unknown) {
