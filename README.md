@@ -11,7 +11,6 @@ A modern, fully responsive website for A.T. Haque Limited – a leading biscuit,
 - [License](#license)
 - [Contact](#contact)
 
-
 ## Tech Stack
 
 - **Next.js** – React framework for server-side rendering and routing.
@@ -22,16 +21,16 @@ A modern, fully responsive website for A.T. Haque Limited – a leading biscuit,
 - **Next/Image** – Optimized image component provided by Next.js.
 - **Figma** – Design tool used for creating and refining the UI.
 
+## Clone the Repository:
 
- ## Clone the Repository:
+```bash
+git clone https://github.com/your-username/haque-website.git
 
-   ```bash
-   git clone https://github.com/your-username/haque-website.git
-  
 
 ```
 
 ## Installation & Setup:
+
 ```bash
 npm install
 # or
@@ -39,6 +38,7 @@ yarn install
 ```
 
 ## Run the Development Server:
+
 ```bash
 npm run dev
 # or
@@ -47,26 +47,29 @@ yarn dev
 
 ## Open your browser at http://localhost:3000.
 
-
 ## Deployment
+
 This project is deployed on Vercel for fast and reliable hosting with continuous integration using GitHub.
 
 ## Contributing
+
 Contributions are welcome! To contribute:
 
 ## Fork the repository.
+
 Create a feature branch (git checkout -b feature/YourFeature).
 Commit your changes with clear commit messages.
 Push to your branch and open a pull request.
 Please follow the coding guidelines and ensure your code is well tested.
 
 ## License
+
 This project is licensed under the MIT License.
 
 ## Contact
+
 For questions or inquiries, please contact - programmersiam.com@gmail.com.
 
-## Happy coding! 🚀 
+## Happy coding! 🚀
 
-This README outlines the project features, tech stack, and setup instructions while providing clear documentation for contributors and users. Adjust any section as needed to best match your project’s specifics.
-
+This README outlines the project features, tech stack, and setup instructions while providing clear documentation for contributors and users. Adjust any section as needed to best match your project’s specifics..........
