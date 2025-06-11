@@ -20,7 +20,7 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
   const [isNameHovered, setIsNameHovered] = useState(false);
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   console.log(isNameHovered, isTitleHovered);
-  
+
   const socialLinks = [
     { icon: FaEnvelope, href: "#", label: "Email" },
     { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
@@ -32,7 +32,7 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
     <div className="w-full bg-white overflow-hidden shadow-lg rounded-2xl">
       {/* Image with overlay text */}
       <div className="relative">
-        <div className="relative h-56 w-full rounded-t-2xl">
+        <div className="relative h-80 w-full rounded-t-2xl">
           <Image
             src={image}
             alt={name}
@@ -64,8 +64,8 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
       </div>
 
       {/* Always visible content section */}
-      <div className="bg-white p-4">
-        {/* Bio section */}
+      {/* <div className="bg-white p-4">
+  
         {bio && (
           <div className="mb-3">
             <h4 className="text-base font-semibold text-gray-800 mb-1">
@@ -75,7 +75,6 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
           </div>
         )}
 
-        {/* Contact section - always visible */}
         <div>
           <h4 className="text-base font-semibold text-gray-800 mb-2">
             Connect
@@ -94,7 +93,7 @@ const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
