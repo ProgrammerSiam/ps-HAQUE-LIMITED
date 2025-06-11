@@ -129,13 +129,13 @@ export default function FloatingContactIcons() {
   };
 
   const icons = [
-    {
-      Icon: MessageSquare,
-      href: "#contact",
-      color: "bg-red-500",
-      label: "Message",
-      hoverText: "Send us a message",
-    },
+    // {
+    //   Icon: MessageSquare,
+    //   href: "#contact",
+    //   color: "bg-red-500",
+    //   label: "Message",
+    //   hoverText: "Send us a message",
+    // },
     {
       Icon: FaWhatsapp,
       href: "https://wa.me/+8802-8891540",
@@ -143,13 +143,13 @@ export default function FloatingContactIcons() {
       label: "WhatsApp",
       hoverText: "Chat on WhatsApp",
     },
-    {
-      Icon: FaFacebookMessenger,
-      href: "https://m.me/athaqueltd",
-      color: "bg-blue-600",
-      label: "Messenger",
-      hoverText: "Chat on Messenger",
-    },
+    // {
+    //   Icon: FaFacebookMessenger,
+    //   href: "https://m.me/athaqueltd",
+    //   color: "bg-blue-600",
+    //   label: "Messenger",
+    //   hoverText: "Chat on Messenger",
+    // },
     // {
     //   Icon: Phone,
     //   href: "tel:+88-02-8891540",
