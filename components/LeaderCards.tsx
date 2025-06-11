@@ -1,32 +1,32 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import {
-  FaLinkedinIn,
-  FaTwitter,
-  FaInstagram,
-  FaEnvelope,
-} from "react-icons/fa";
+// import {
+//   FaLinkedinIn,
+//   FaTwitter,
+//   FaInstagram,
+//   FaEnvelope,
+// } from "react-icons/fa";
 import { useState } from "react";
 
 interface LeaderCardProps {
   name: string;
   title: string;
   image: StaticImageData | string;
-  bio?: string;
+  // bio?: string;
 }
 
-const LeaderCard = ({ name, title, image, bio }: LeaderCardProps) => {
+const LeaderCard = ({ name, title, image }: LeaderCardProps) => {
   const [isNameHovered, setIsNameHovered] = useState(false);
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   console.log(isNameHovered, isTitleHovered);
 
-  const socialLinks = [
-    { icon: FaEnvelope, href: "#", label: "Email" },
-    { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
-    { icon: FaTwitter, href: "#", label: "Twitter" },
-    { icon: FaInstagram, href: "#", label: "Instagram" },
-  ];
+  // const socialLinks = [
+  //   { icon: FaEnvelope, href: "#", label: "Email" },
+  //   { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
+  //   { icon: FaTwitter, href: "#", label: "Twitter" },
+  //   { icon: FaInstagram, href: "#", label: "Instagram" },
+  // ];
 
   return (
     <div className="w-full bg-white overflow-hidden shadow-lg rounded-2xl">
