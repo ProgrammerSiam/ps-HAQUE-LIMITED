@@ -112,7 +112,7 @@ const PremiumInfoCard = ({
         </p>
 
         {/* Button/Link */}
-        {!hideButton && (
+        {/* {!hideButton && (
           <motion.a
             href={linkUrl}
             className={`inline-flex items-center font-medium text-gray-900 ${centerText ? "justify-center" : ""}`}
@@ -133,7 +133,7 @@ const PremiumInfoCard = ({
               <ArrowRight size={18} />
             </motion.div>
           </motion.a>
-        )}
+        )} */}
       </div>
     </motion.div>
   );
