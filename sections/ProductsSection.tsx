@@ -308,7 +308,7 @@ const ProductsSection = () => {
 
         {/* All Products Button */}
         <div className="flex justify-center mt-10 mb-8">
-          <Link href="/products">
+          <Link href="/our-products">
             <motion.button
               className="px-6 py-3 bg-red-500 text-white font-medium rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
