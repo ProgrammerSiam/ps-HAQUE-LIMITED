@@ -5,7 +5,6 @@ import { PageLayout } from "@/components/dashboard/PageLayout";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import { databaseService, type Plant } from "@/lib/supabaseService";
-import { motion } from "framer-motion";
 
 export default function EditPlant({
   params,

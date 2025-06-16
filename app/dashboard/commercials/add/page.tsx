@@ -28,8 +28,8 @@ export default function AddCommercial() {
       await databaseService.tv_commercials.create(newCommercial);
       toast.success("Commercial created successfully");
       router.push("/dashboard/commercials");
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to create commercial");
+    } catch (error: unknown) {
+      toast.error((error as Error)?.message || "Failed to create commercial");
     } finally {
       setLoading(false);
     }

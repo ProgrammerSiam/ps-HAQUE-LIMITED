@@ -13,10 +13,10 @@ export async function GET() {
     if (error) throw error;
 
     return NextResponse.json(plants);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching plants:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch plants" },
+      { error: (error as Error).message || "Failed to fetch plants" },
       { status: 500 }
     );
   }
@@ -80,10 +80,10 @@ export async function POST(request: Request) {
     if (error) throw error;
 
     return NextResponse.json(plant);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating plant:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to create plant" },
+      { error: (error as Error).message || "Failed to create plant" },
       { status: 500 }
     );
   }

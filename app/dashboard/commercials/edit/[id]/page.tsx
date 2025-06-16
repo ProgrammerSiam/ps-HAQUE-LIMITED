@@ -27,7 +27,7 @@ export default function EditCommercial({ params }: { params: { id: string } }) {
         toast.error("Commercial not found");
         router.push("/dashboard/commercials");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch commercial");
       router.push("/dashboard/commercials");
     } finally {
@@ -53,8 +53,8 @@ export default function EditCommercial({ params }: { params: { id: string } }) {
       await databaseService.tv_commercials.update(params.id, updatedCommercial);
       toast.success("Commercial updated successfully");
       router.push("/dashboard/commercials");
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to update commercial");
+    } catch (error: unknown) {
+      toast.error((error as Error)?.message || "Failed to update commercial");
     } finally {
       setSaving(false);
     }

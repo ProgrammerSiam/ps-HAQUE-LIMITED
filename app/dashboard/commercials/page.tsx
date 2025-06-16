@@ -25,7 +25,7 @@ export default function Commercials() {
     try {
       const data = await databaseService.tv_commercials.getAll();
       setCommercials(data || []);
-    } catch (error) {
+    } catch {
       setCommercials([]);
       toast.error("Failed to fetch commercials");
     } finally {
@@ -50,7 +50,7 @@ export default function Commercials() {
         await databaseService.tv_commercials.delete(id);
         toast.success("Commercial deleted successfully");
         fetchCommercials();
-      } catch (error) {
+      } catch {
         toast.error("Failed to delete commercial");
       }
     }
