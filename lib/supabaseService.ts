@@ -16,6 +16,15 @@ export type Subscriber = Tables["subscribers"]["Row"];
 export type MessageDelivery = Tables["message_deliveries"]["Row"];
 export type NewsletterMessage = Tables["newsletter_messages"]["Row"];
 export type TvCommercial = Tables["tv_commercials"]["Row"];
+export type Plant = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  image_url: string;
+  created_at?: string;
+  updated_at?: string;
+};
 
 // const handleError = (error: any) => {
 //     console.error("Database error:", error);
@@ -521,6 +530,106 @@ export const databaseService = {
         .order("created_at", { ascending: false });
       if (error) handleError(error);
       return data as TvCommercial[];
+    },
+    async getById(id: string) {
+      const { data, error } = await supabaseClient
+        .from("tv_commercials")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) handleError(error);
+      return data as TvCommercial;
+    },
+    async update(id: string, tvCommercial: Partial<TvCommercial>) {
+      const { data, error } = await supabaseClient
+        .from("tv_commercials")
+        .update(tvCommercial)
+        .eq("id", id)
+        .select()
+        .single();
+      if (error) handleError(error);
+      return data as TvCommercial;
+    },
+    async delete(id: string) {
+      const { error } = await supabaseClient
+        .from("tv_commercials")
+        .delete()
+        .eq("id", id);
+      if (error) handleError(error);
+    },
+  },
+
+  plants: {
+    async getAll() {
+      const { data, error } = await supabaseClient
+        .from("plants")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) handleError(error);
+      return data as Plant[];
+    },
+
+    async getById(id: string) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("plants")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (error) throw error;
+        return data as Plant;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async create(plant: Omit<Plant, "id" | "created_at" | "updated_at">) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("plants")
+          .insert([plant])
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Plant;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async update(id: string, plant: Partial<Plant>) {
+      try {
+        const { data, error } = await supabaseClient
+          .from("plants")
+          .update({
+            ...plant,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data as Plant;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        const { error } = await supabaseClient
+          .from("plants")
+          .delete()
+          .eq("id", id);
+        if (error) throw error;
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
     },
   },
 };
