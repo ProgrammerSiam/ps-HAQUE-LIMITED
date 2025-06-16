@@ -1,106 +1,118 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { databaseService } from "@/lib/supabaseService";
-import { TvCommercial } from "@/lib/types/database.types";
-import { PageLayout } from "@/components/dashboard/PageLayout";
-import { CommercialForm } from "@/components/dashboard/CommercialForm";
-import toast from "react-hot-toast";
+// "use client";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { databaseService } from "@/lib/supabaseService";
+// import { TvCommercial } from "@/lib/types/database.types";
+// import { PageLayout } from "@/components/dashboard/PageLayout";
+// import { CommercialForm } from "@/components/dashboard/CommercialForm";
+// import toast from "react-hot-toast";
 
-export default function EditCommercial({ params }: { params: { id: string } }) {
-  const [commercial, setCommercial] = useState<TvCommercial | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const router = useRouter();
+// export default function EditCommercial({ params }: { params: { id: string } }) {
+//   const [commercial, setCommercial] = useState<TvCommercial | null>(null);
+//   const [loading, setLoading] = useState(true);
+//   const [saving, setSaving] = useState(false);
+//   const router = useRouter();
 
-  useEffect(() => {
-    fetchCommercial();
-    // eslint-disable-next-line
-  }, [params.id]);
+//   useEffect(() => {
+//     fetchCommercial();
+//     // eslint-disable-next-line
+//   }, [params.id]);
 
-  const fetchCommercial = async () => {
-    try {
-      const data = await databaseService.tv_commercials.getById(params.id);
-      if (data) {
-        setCommercial(data);
-      } else {
-        toast.error("Commercial not found");
-        router.push("/dashboard/commercials");
-      }
-    } catch {
-      toast.error("Failed to fetch commercial");
-      router.push("/dashboard/commercials");
-    } finally {
-      setLoading(false);
-    }
-  };
+//   const fetchCommercial = async () => {
+//     try {
+//       const data = await databaseService.tv_commercials.getById(params.id);
+//       if (data) {
+//         setCommercial(data);
+//       } else {
+//         toast.error("Commercial not found");
+//         router.push("/dashboard/commercials");
+//       }
+//     } catch {
+//       toast.error("Failed to fetch commercial");
+//       router.push("/dashboard/commercials");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  const handleEdit = async (formData: {
-    videoFile: string;
-    youtubeUrl: string;
-    title: string;
-    description: string;
-  }) => {
-    setSaving(true);
-    try {
-      const updatedCommercial = {
-        title: formData.title,
-        description: formData.description,
-        video_url: formData.videoFile
-          ? formData.videoFile
-          : formData.youtubeUrl,
-      };
-      await databaseService.tv_commercials.update(params.id, updatedCommercial);
-      toast.success("Commercial updated successfully");
-      router.push("/dashboard/commercials");
-    } catch (error: unknown) {
-      toast.error((error as Error)?.message || "Failed to update commercial");
-    } finally {
-      setSaving(false);
-    }
-  };
+//   const handleEdit = async (formData: {
+//     videoFile: string;
+//     youtubeUrl: string;
+//     title: string;
+//     description: string;
+//   }) => {
+//     setSaving(true);
+//     try {
+//       const updatedCommercial = {
+//         title: formData.title,
+//         description: formData.description,
+//         video_url: formData.videoFile
+//           ? formData.videoFile
+//           : formData.youtubeUrl,
+//       };
+//       await databaseService.tv_commercials.update(params.id, updatedCommercial);
+//       toast.success("Commercial updated successfully");
+//       router.push("/dashboard/commercials");
+//     } catch (error: unknown) {
+//       toast.error((error as Error)?.message || "Failed to update commercial");
+//     } finally {
+//       setSaving(false);
+//     }
+//   };
 
-  if (loading) {
-    return (
-      <PageLayout title="Edit Commercial">
-        <div className="text-center py-10 text-gray-500">Loading...</div>
-      </PageLayout>
-    );
-  }
+//   if (loading) {
+//     return (
+//       <PageLayout title="Edit Commercial">
+//         <div className="text-center py-10 text-gray-500">Loading...</div>
+//       </PageLayout>
+//     );
+//   }
 
-  if (!commercial) {
-    return null;
-  }
+//   if (!commercial) {
+//     return null;
+//   }
 
-  // Map commercial fields to form initial values
-  const initialValues = {
-    videoFile:
-      commercial.video_url &&
-      !(
-        commercial.video_url.includes("youtube.com") ||
-        commercial.video_url.includes("youtu.be")
-      )
-        ? commercial.video_url
-        : "",
-    youtubeUrl:
-      commercial.video_url &&
-      (commercial.video_url.includes("youtube.com") ||
-        commercial.video_url.includes("youtu.be"))
-        ? commercial.video_url
-        : "",
-    title: commercial.title || "",
-    description: commercial.description || "",
-  };
+//   // Map commercial fields to form initial values
+//   const initialValues = {
+//     videoFile:
+//       commercial.video_url &&
+//       !(
+//         commercial.video_url.includes("youtube.com") ||
+//         commercial.video_url.includes("youtu.be")
+//       )
+//         ? commercial.video_url
+//         : "",
+//     youtubeUrl:
+//       commercial.video_url &&
+//       (commercial.video_url.includes("youtube.com") ||
+//         commercial.video_url.includes("youtu.be"))
+//         ? commercial.video_url
+//         : "",
+//     title: commercial.title || "",
+//     description: commercial.description || "",
+//   };
 
-  return (
-    <PageLayout title="Edit Commercial">
-      <CommercialForm
-        mode="edit"
-        initialValues={initialValues}
-        onSubmit={handleEdit}
-        loading={saving}
-        onCancel={() => router.push("/dashboard/commercials")}
-      />
-    </PageLayout>
-  );
+//   return (
+//     <PageLayout title="Edit Commercial">
+//       <CommercialForm
+//         mode="edit"
+//         initialValues={initialValues}
+//         onSubmit={handleEdit}
+//         loading={saving}
+//         onCancel={() => router.push("/dashboard/commercials")}
+//       />
+//     </PageLayout>
+//   );
+// }
+
+// app/dashboard/commercials/edit/[id]/page.tsx (Server Component)
+import EditCommercialClient from "@/app/dashboard/commercials/edit/[id]/EditCommercialClient";
+
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function EditCommercialPage({ params }: PageProps) {
+  const { id } = await params;
+  return <EditCommercialClient id={id} />;
 }
