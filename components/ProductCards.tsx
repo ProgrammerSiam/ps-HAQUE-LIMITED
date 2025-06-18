@@ -4,23 +4,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import classNames from "classnames";
 
-// Define stock status type
-type StockStatus = "In Stock" | "Low Stock" | "Out of Stock";
-
-// Mapping stock status to styles
-const stockStatusStyles: Record<StockStatus, { bg: string; text: string }> = {
-  "In Stock": { bg: "bg-green-100", text: "text-green-800" },
-  "Low Stock": { bg: "bg-yellow-100", text: "text-yellow-800" },
-  "Out of Stock": { bg: "bg-red-100", text: "text-red-800" },
-};
-
 interface ProductCardProps {
   name: string;
   image: string;
   price: string;
   rating?: number;
-  stock?: StockStatus;
-  isCenter: boolean;
 }
 
 const ProductCard = ({
@@ -28,33 +16,15 @@ const ProductCard = ({
   image,
   price,
   rating = 4.5,
-  stock = "In Stock",
-  isCenter,
 }: ProductCardProps) => {
-  // Get styles for current stock status
-  const stockStyle = stockStatusStyles[stock];
-
   return (
     <motion.div
       className={classNames(
         "flex group flex-col items-center w-56 min-w-[14rem] flex-shrink-0 p-4 text-center transition-all relative",
         "bg-white rounded-md shadow-lg border-2",
-        isCenter ? "border-red-500 scale-110" : "border-gray-300"
+        "border-gray-300"
       )}
     >
-      {/* Stock Status Badge */}
-      <div className="absolute top-4 right-4">
-        <span
-          className={classNames(
-            "px-2 py-1 rounded-full text-xs font-medium",
-            stockStyle.bg,
-            stockStyle.text
-          )}
-        >
-          {stock}
-        </span>
-      </div>
-
       {/* Product Image */}
       <div className="mb-3">
         <Image
@@ -63,7 +33,7 @@ const ProductCard = ({
           width={150}
           height={150}
           className="h-40 object-contain transition-transform duration-700 ease-out group-hover:scale-125"
-          priority={isCenter}
+          priority={false}
         />
       </div>
 
@@ -86,12 +56,7 @@ const ProductCard = ({
         ))}
       </div>
 
-      <p
-        className={classNames(
-          "font-bold text-red-600 my-1",
-          isCenter ? "text-xl" : "text-base"
-        )}
-      >
+      <p className={classNames("font-bold text-red-600 my-1", "text-base")}>
         {price}
       </p>
 
@@ -102,13 +67,10 @@ const ProductCard = ({
             "w-full py-2 px-6 rounded-full text-sm font-medium",
             "transition-all duration-200 transform",
             "flex items-center justify-center gap-2",
-            isCenter
-              ? "bg-red-600 text-white hover:bg-red-700"
-              : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+            "border border-gray-300 text-gray-700 hover:bg-gray-50"
           )}
-          disabled={stock === "Out of Stock"}
         >
-          {stock === "Out of Stock" ? "Out of Stock" : "View details"}
+          "View details"
           <svg
             className="w-4 h-4 transition-transform group-hover:translate-x-1"
             fill="none"

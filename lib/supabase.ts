@@ -24,8 +24,6 @@ export interface Product {
   description: string;
   category: string;
   brand_name: string;
-  stock_status: "in-stock" | "out-of-stock";
-  stock_quantity: number;
   original_price: number;
   selling_price: number;
   image_url: string;

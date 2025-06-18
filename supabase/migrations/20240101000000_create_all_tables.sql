@@ -32,8 +32,6 @@ CREATE TABLE products (
     title TEXT NOT NULL,
     category TEXT NOT NULL,
     brand_name TEXT NOT NULL,
-    stock_status TEXT NOT NULL,
-    stock_quantity INTEGER NOT NULL,
     original_price NUMERIC NOT NULL,
     selling_price NUMERIC NOT NULL,
     description TEXT NOT NULL,
@@ -139,9 +137,9 @@ ALTER TABLE products ADD CONSTRAINT products_selling_price_check
     CHECK (selling_price >= 0);
 ALTER TABLE products ADD CONSTRAINT products_original_price_check 
     CHECK (original_price >= 0);
-ALTER TABLE products ADD CONSTRAINT products_stock_quantity_check 
-    CHECK (stock_quantity >= 0);
 
--- Add constraints for stock_status
-ALTER TABLE products ADD CONSTRAINT products_stock_status_check 
-    CHECK (stock_status IN ('in_stock', 'out_of_stock', 'low_stock')); 
+-- Remove constraints for stock_quantity and stock_status
+-- ALTER TABLE products ADD CONSTRAINT products_stock_quantity_check 
+--     CHECK (stock_quantity >= 0);
+-- ALTER TABLE products ADD CONSTRAINT products_stock_status_check 
+--     CHECK (stock_status IN ('in_stock', 'out_of_stock', 'low_stock')); 

@@ -133,25 +133,6 @@ export default function ProductList() {
                         </p>
                       )}
                     </div>
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${
-                        product.stock_status === "in-stock"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {product.stock_status === "in-stock"
-                        ? "In Stock"
-                        : "Out of Stock"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center pt-2">
-                    <p className="text-sm text-gray-600">
-                      Stock: {product.stock_quantity}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Brand: {product.brand_name}
-                    </p>
                   </div>
                 </div>
                 <div className="flex justify-end space-x-2 pt-2">
