@@ -1,10 +1,18 @@
-import { products } from "@/data/products";
 import Products from "@/views/products";
 
-export default function ProductsPage() {
-    return <Products products={products && products} />;
+async function getProducts() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${baseUrl}/api/products`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch products");
+  const products = await res.json();
+  return products;
 }
 
+export default async function ProductsPage() {
+  const products = await getProducts();
+  console.log(products);
+  return <Products products={products} />;
+}
 
 // const ProductsPage = async () => {
 //     // const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";

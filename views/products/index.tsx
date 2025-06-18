@@ -9,19 +9,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
-  products: ProductType[];
+  products: any[]; // Accepts array of product objects from DB
 }
 
 export default function ProductGrid({ products }: Props) {
   const [sortBy, setSortBy] = useState("Default-Sorting");
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const productsPerPage = products.length; // Show all products on one page
   const totalProducts = products?.length;
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const productsToRender = useMemo(() => {
+    if (!products) return [];
+    // If there are fewer products than productsPerPage, just return all products
+    if (products.length <= productsPerPage) return products;
     const startIndex = (currentPage - 1) * productsPerPage;
-    return products?.slice(startIndex, startIndex + productsPerPage);
+    return products.slice(startIndex, startIndex + productsPerPage);
   }, [currentPage, products]);
 
   const startRange = (currentPage - 1) * productsPerPage + 1;
@@ -51,16 +54,15 @@ export default function ProductGrid({ products }: Props) {
               className="group overflow-hidden h-full flex flex-col border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg rounded-lg"
             >
               <div className="relative aspect-square overflow-hidden bg-gray-50">
-                <Image
-                  src={product.img}
-                  alt={product.name}
+                <img
+                  src={product.image_url || "/images/products/placeholder.png"}
+                  alt={product.title}
                   width={300}
                   height={300}
-                  className="object-contain p-6 transition-transform duration-500 group-hover:scale-110"
+                  style={{ objectFit: "contain", padding: 24 }}
                   onError={(e) => {
-                    console.error("Image failed to load:", product.img);
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/images/products/placeholder.png";
+                    (e.target as HTMLImageElement).src =
+                      "/images/products/placeholder.png";
                   }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-300" />
@@ -68,14 +70,17 @@ export default function ProductGrid({ products }: Props) {
               <div className="p-4 flex flex-col flex-grow">
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {product.name}
+                    {product.title}
                   </h3>
-                  <p className="text-2xl font-bold text-red-600">
+                  <p className="text-gray-600 mt-1 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <p className="text-2xl font-bold text-red-600 mt-2">
                     <span className="font-extrabold">&#2547;</span>{" "}
-                    {product.price}
+                    {product.selling_price}
                   </p>
                 </div>
-                <Link href={`/products/${product.id}`} className="mt-4">
+                <Link href={`/our-products/${product.id}`} className="mt-4">
                   <button className="w-full transition-all duration-300 hover:scale-[1.02] bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm">
                     <span>View Details</span>
                     <ChevronRight className="h-4 w-4" />

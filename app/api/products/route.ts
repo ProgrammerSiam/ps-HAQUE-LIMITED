@@ -1,15 +1,22 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase";
 
 export async function GET() {
-    try {
-        return NextResponse.json({ message: "Hello, Next.js!" });
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json(
-            { error: "Failed to fetch products" },
-            { status: 500 }
-        );
-    }
+  const supabase = createClient();
+  try {
+    const { data: products, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to fetch products" },
+      { status: 500 }
+    );
+  }
 }
 
 // import { NextResponse } from "next/server";
