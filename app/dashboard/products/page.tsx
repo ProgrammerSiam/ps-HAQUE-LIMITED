@@ -15,6 +15,7 @@ export default function ProductList() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize] = useState(6); // 6 products per page
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     loadProducts();
@@ -59,11 +60,14 @@ export default function ProductList() {
     },
   });
 
+  const categories = Array.from(new Set(products.map((p) => p.category)));
+
   const filteredProducts = products.filter(
     (product) =>
-      product.title.toLowerCase().includes(search.toLowerCase()) ||
-      product.brand_name.toLowerCase().includes(search.toLowerCase()) ||
-      product.category.toLowerCase().includes(search.toLowerCase())
+      (category === "" || product.category === category) &&
+      (product.title.toLowerCase().includes(search.toLowerCase()) ||
+        product.brand_name.toLowerCase().includes(search.toLowerCase()) ||
+        product.category.toLowerCase().includes(search.toLowerCase()))
   );
 
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
@@ -114,7 +118,7 @@ export default function ProductList() {
       }
     >
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
           <input
             type="text"
             placeholder="Search products..."
@@ -125,6 +129,21 @@ export default function ProductList() {
             }}
             className="border border-gray-300 rounded px-3 py-2 w-full max-w-xs"
           />
+          <select
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setPage(1);
+            }}
+            className="border border-gray-300 rounded px-3 py-2 w-full max-w-xs"
+          >
+            <option value="">All Categories</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
