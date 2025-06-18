@@ -7,14 +7,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
     unoptimized: true,
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://haque-api.vercel.app/api/:path*", // Proxy to Backend
-      },
-    ];
-  },
+  // Commented out for local development to prevent infinite redirects
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination: "https://haque-api.vercel.app/api/:path*", // Proxy to Backend
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;

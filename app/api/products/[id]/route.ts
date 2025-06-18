@@ -1,12 +1,27 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase";
 
-export async function GET() {
+export async function GET(
+  request: Request,
+  context: { params: { id: string } }
+) {
+  const supabase = createClient();
   try {
-    return NextResponse.json({ message: "Hello, Next.js!" });
-  } catch (error) {
-    console.log(error);
+    const { data: product, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", context.params.id)
+      .single();
+
+    if (error) throw error;
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
+  } catch (error: any) {
     return NextResponse.json(
-      { error: "Failed to fetch products" },
+      { error: error.message || "Failed to fetch product" },
       { status: 500 }
     );
   }
