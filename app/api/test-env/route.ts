@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    try {
-        return NextResponse.json({ message: "Hello, Next.js!" });
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json(
-            { error: "Failed to fetch tests" },
-            { status: 500 }
-        );
-    }
+  try {
+    return NextResponse.json({ message: "Hello, Next.js!" });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Failed to fetch tests" },
+      { status: 500 }
+    );
+  }
 }
 
 // Create a test file to check your environment variables
