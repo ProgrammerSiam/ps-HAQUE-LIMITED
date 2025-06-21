@@ -22,7 +22,9 @@ const Paper = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [fontSize, setFontSize] = useState<"small" | "medium" | "large">("medium");
+  const [fontSize, setFontSize] = useState<"small" | "medium" | "large">(
+    "medium"
+  );
   // const [activeRelatedArticle, setActiveRelatedArticle] = useState(0);
 
   const articleRef = useRef(null);
@@ -75,9 +77,8 @@ const Paper = () => {
   //   },
   // ];
 
-  
   // Font size classes based on selection
-  
+
   const fontSizeClasses = {
     small: "text-sm/[22px] sm:text-sm/[24px]",
     medium: "text-base/[24px] sm:text-base/[28px]",
@@ -87,10 +88,10 @@ const Paper = () => {
   return (
     <div id="press_release" className="py-20 bg-muted/30" ref={articleRef}>
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:items-start">
           {/* Main content area */}
           <div className="w-full lg:w-2/3">
-            <div className="bg-card rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-card rounded-xl shadow-sm">
               {/* Article header */}
               <div className="border-b border-dashed border-primary/20 p-6 pb-8">
                 <div className="flex items-center justify-between flex-wrap gap-4">
@@ -431,7 +432,7 @@ const Paper = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="w-full lg:w-1/3">
+          <div className="w-full lg:w-1/3 lg:sticky lg:top-28">
             {/* Company info card */}
             <div className="bg-card rounded-xl shadow-sm overflow-hidden mb-6">
               <div className="p-6 pb-4 border-b border-border">

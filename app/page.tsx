@@ -3,15 +3,13 @@ import Head from "next/head";
 import BrandsSection from "@/sections/BrandsSection";
 import Hero from "@/sections/HeroSection";
 import LeadershipSection from "@/sections/LeadershipSection";
-import AchievementStatsSection from "@/sections/AchievementStatsSection";
 import ProductsSection from "@/sections/ProductsSection";
 import BlogSection from "@/sections/BlogSection";
 import NewsletterSection from "@/sections/NewsletterSection";
-import CEOMessageSection from "@/sections/CEOMessageSection";
-import InfoCardSection from "@/sections/InfoCardSection";
 import CommitmentSection from "@/sections/CommitmentSection";
 import GallerySection from "@/sections/GallerySection";
 // import TestimonialSection from "@/sections/TestimonialSection";
+
 const Home: NextPage = () => {
   return (
     <>
@@ -28,17 +26,17 @@ const Home: NextPage = () => {
 
       <main>
         <Hero />
-        <CommitmentSection/>
+        <CommitmentSection />
         <BrandsSection />
-         <LeadershipSection />
+        <LeadershipSection />
         {/* <InfoCardSection /> */}
-       
+
         <ProductsSection />
         {/* <AchievementStatsSection /> */}
 
         {/* <TestimonialSection /> */}
         <BlogSection />
-<GallerySection/>
+        <GallerySection />
         <NewsletterSection />
 
         {/* <CEOMessageSection /> */}

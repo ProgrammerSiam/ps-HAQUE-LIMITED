@@ -188,365 +188,179 @@ export default function Interview() {
   });
 
   return (
-    <section id="talk_show" className="py-16 bg-gradient-to-br from-amber-50/50 via-white to-amber-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <section id="talk_show" className="py-16 bg-white dark:bg-gray-900">
       <div className="container px-4 mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 space-y-5"
-        >
-          <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400 mb-4">
-            <Quote size={18} />
-            <span className="text-sm font-medium">Executive Interview</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-            In Conversation with Adam Tamizi Haque
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Get to know the visionary leader behind our company's success and
-            his insights on the industry, products, and future of Haque Group
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-12 gap-10 lg:gap-16">
-          {/* Sidebar */}
-          <div className="md:col-span-4 lg:col-span-3">
-            <div className="sticky top-24 space-y-8">
-              {/* Profile Card */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="group bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg mb-6">
-                  <Image
-                    src="/images/news/director.jpg"
-                    alt="Adam Tamizi Haque"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="text-center">
-                  <h3 className="font-bold text-xl mb-1 text-gray-900 dark:text-white">
-                    Adam Tamizi Haque
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    Managing Director
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                      <span className="block text-sm text-gray-500 dark:text-gray-400">
-                        Experience
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        20+ Years
-                      </span>
-                    </div>
-                    <div className="text-center px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                      <span className="block text-sm text-gray-500 dark:text-gray-400">
-                        Position
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        MD
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Search and Filter */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                ref={searchRef}
-                className={`bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md transition-all duration-300 ${
-                  isSearchFocused ? "ring-2 ring-amber-400 shadow-lg" : ""
-                }`}
-              >
-                <div className="relative mb-6">
-                  <Search
-                    className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-300 ${
-                      isSearchFocused
-                        ? "text-amber-600 dark:text-amber-400"
-                        : "text-gray-400"
-                    }`}
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Search questions..."
-                    className="pl-10 bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setIsSearchFocused(true)}
-                  />
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Filter className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
-                      Filter by Category
-                    </h4>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {categories.map((category) => (
-                      <Badge
-                        key={category}
-                        className={`cursor-pointer transition-all ${
-                          selectedCategory === category
-                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400 hover:bg-amber-200"
-                            : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                        }`}
-                        onClick={() => setSelectedCategory(category)}
-                      >
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Quick Actions */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
-              >
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-                  Quick Actions
-                </h4>
-                <div className="space-y-2">
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start hover:bg-amber-50 dark:hover:bg-amber-900/20"
-                    onClick={() => window.print()}
-                  >
-                    <Printer className="mr-2 h-4 w-4" />
-                    Print Interview
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start hover:bg-amber-50 dark:hover:bg-amber-900/20"
-                  >
-                    <Share2 className="mr-2 h-4 w-4" />
-                    Share Interview
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start hover:bg-amber-50 dark:hover:bg-amber-900/20"
-                  >
-                    <BookmarkPlus className="mr-2 h-4 w-4" />
-                    Save for Later
-                  </Button>
-                </div>
-              </motion.div>
-
-              {/* Interview Stats */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
-              >
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-                  Interview Stats
-                </h4>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        Reading Time
-                      </span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      15 mins
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        Questions
-                      </span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {interviewQuestions.length}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Eye className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        Views
-                      </span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      2.5K
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        Published
-                      </span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      Jun 22, 2015
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Main Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="md:col-span-8 lg:col-span-9"
-            ref={accordionRef}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-8"
           >
-            {/* Questions */}
-            <div className="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-xl shadow-md">
-              <div className="space-y-6">
-                <AnimatePresence>
-                  {filteredQuestions.length === 0 ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="text-center py-12"
-                    >
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/20 mb-4">
-                        <Search className="h-8 w-8 text-amber-600 dark:text-amber-400" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        No Results Found
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        No questions found matching your search criteria.
-                      </p>
-                    </motion.div>
-                  ) : (
-                    filteredQuestions.map((item, index) => (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        id={`question-${item.id}`}
-                        className="group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-md"
-                      >
-                        <button
-                          className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                          onClick={() =>
-                            setActiveQuestion(
-                              activeQuestion === item.id ? null : item.id
-                            )
-                          }
-                        >
-                          <div className="flex items-start gap-4 flex-1">
-                            <div className="h-8 w-8 rounded-full bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0 mt-1 group-hover:bg-amber-200 dark:group-hover:bg-amber-900/40 transition-colors">
-                              <span className="text-amber-700 dark:text-amber-400 font-semibold">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                              {item.question}
-                            </h3>
-                          </div>
-                          <div
-                            className={`transform transition-transform duration-300 ${
-                              activeQuestion === item.id ? "rotate-180" : ""
-                            }`}
-                          >
-                            <ChevronDown className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                          </div>
-                        </button>
-                        <AnimatePresence>
-                          {activeQuestion === item.id && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="px-6 pb-6 pt-2 bg-gray-50 dark:bg-gray-700/50">
-                                <div className="pl-11">
-                                  {formatAnswer(item.answer)}
-                                  <div className="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                                        Category:
-                                      </span>
-                                      <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400">
-                                        {item.category}
-                                      </Badge>
-                                    </div>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="ml-auto"
-                                    >
-                                      <Share2 className="h-4 w-4 mr-2" />
-                                      Share Answer
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    ))
-                  )}
-                </AnimatePresence>
+            <div className="mb-6">
+              <Badge className="bg-[#D93F21] text-white rounded-md px-3 py-1 text-sm font-medium mb-4">
+                Executive Interview
+              </Badge>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+                In Conversation With:
+                <br />
+                Adam Tamizi Haque
+              </h1>
+              <p className="text-base text-gray-600 dark:text-gray-400 max-w-2xl">
+                Get To Know The Visionary Leader Behind Our Company's Success
+                And His Insights On The Industry, Products, And Future Of Haque
+                Group
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 my-8 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/assets/blog-img/user.png"
+                  alt="M Tauhidul Islam Apu"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Interviewed By:
+                  </p>
+                  <p className="font-semibold text-gray-800 dark:text-gray-200">
+                    M Tawhidul Islam Apu
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Editor, The Front Page
+                  </p>
+                </div>
+              </div>
+              <div className="text-left sm:text-right">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Published On:
+                </p>
+                <p className="font-semibold text-gray-800 dark:text-gray-200">
+                  Jun 22, 2015
+                </p>
               </div>
             </div>
 
-            {/* Interviewer Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md mt-8"
-            >
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                  <Image
-                    src="/images/news/director.jpg"
-                    alt="M Tauhidul Islam Apu"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="text-center sm:text-left">
-                  <span className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    Interviewed by
-                  </span>
-                  <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
-                    M Tauhidul Islam Apu
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Editor, The Pages
-                  </p>
-                </div>
-                <Button className="ml-auto" variant="outline">
-                  <ArrowRight className="h-4 w-4 mr-2" />
-                  View Profile
-                </Button>
+            <div className="mb-8">
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                Questions:
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <Badge
+                    key={category}
+                    variant="outline"
+                    className={`cursor-pointer rounded-full px-4 py-1 text-sm transition-all border ${
+                      selectedCategory === category
+                        ? "bg-[#D93F21] text-white border-[#D93F21]"
+                        : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category === "all" ? "All" : category}
+                  </Badge>
+                ))}
               </div>
-            </motion.div>
+            </div>
+
+            {/* Questions Accordion */}
+            <div className="space-y-4">
+              <AnimatePresence>
+                {filteredQuestions.length > 0 ? (
+                  filteredQuestions.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+                    >
+                      <button
+                        className="w-full py-5 text-left flex items-center justify-between"
+                        onClick={() =>
+                          setActiveQuestion(
+                            activeQuestion === item.id ? null : item.id
+                          )
+                        }
+                      >
+                        <h3 className="text-base font-medium text-gray-800 dark:text-gray-200 flex-1 pr-4">
+                          {item.question}
+                        </h3>
+                        <div
+                          className={`transform transition-transform duration-300 ${
+                            activeQuestion === item.id ? "rotate-180" : ""
+                          }`}
+                        >
+                          <ChevronDown className="h-5 w-5 text-gray-500" />
+                        </div>
+                      </button>
+                      <AnimatePresence>
+                        {activeQuestion === item.id && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pb-6 text-gray-600 dark:text-gray-400">
+                              {formatAnswer(item.answer)}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  ))
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="text-center py-12"
+                  >
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/20 mb-4">
+                      <Search className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      No Results Found
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      No questions found matching your search criteria.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          {/* Right Sidebar */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-4 self-start sticky top-24"
+          >
+            {/* <div className="relative rounded-lg overflow-hidden shadow-lg group">
+              <Image
+                src="/assets/news/director.jpg"
+                alt="Adam Tamizi Haque"
+                width={800}
+                height={1067}
+                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md">
+                <Image
+                  src="/assets/logo/logo.png"
+                  alt="Haque Logo"
+                  width={40}
+                  height={40}
+                />
+              </div>
+            </div> */}
           </motion.div>
         </div>
       </div>

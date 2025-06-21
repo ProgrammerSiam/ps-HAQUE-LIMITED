@@ -3,17 +3,19 @@ export default function DirectorMessage() {
     <section id="d_message" className="">
       <div className="container px-4 md:px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="section_title mb-8">
-              Managing Director&apos;s Message
+          <div className="relative mb-10 py-4 text-center">
+            <h2 className="text-5xl font-extrabold uppercase text-gray-200 sm:text-7xl md:text-9xl">
+              Leadership Perspective
             </h2>
-            <div className="mt-4 mb-6 mx-auto w-24 h-[2px] bg-destructive/50" />
+            <p className="absolute inset-0 flex items-center justify-center text-xl font-bold text-destructive sm:text-2xl md:text-3xl">
+              MANAGING DIRECTOR&apos;S MESSAGE
+            </p>
           </div>
 
           <div className="mb-12">
             <div className="max-w-none _text">
-              <p className="font-medium text-primary mb-6 italic">
-                Over the years, we at A.T.Haque group have successfully created
+              <p className="mb-4">
+                Over the years, we at A.T.HAQUE group have successfully created
                 a remarkable reputation for our organization by establishing
                 unrivalled quality, standard and reliability in all our product
                 by using the state of the art technology and best practices.
