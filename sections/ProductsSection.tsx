@@ -245,7 +245,6 @@ const ProductsSection = () => {
                     name={product.name}
                     image={product.image}
                     price={product.price}
-                    isCenter={false}
                   />
                 </motion.div>
                 <AnimatePresence>
@@ -287,7 +286,6 @@ const ProductsSection = () => {
                     name={product.name}
                     image={product.image}
                     price={product.price}
-                    isCenter={false}
                   />
                 </motion.div>
                 <AnimatePresence>

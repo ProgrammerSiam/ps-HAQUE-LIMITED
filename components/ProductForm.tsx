@@ -4,9 +4,21 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { uploadImage } from "@/lib/cloudinary";
 import { databaseService } from "@/lib/supabaseService";
+import Image from "next/image";
 
 interface ProductFormProps {
   productId?: string;
+}
+
+interface Product {
+  id: string;
+  title: string;
+  category: string;
+  brand_name: string;
+  original_price: number;
+  selling_price: number;
+  description: string;
+  image_url: string;
 }
 
 const categories = ["Biscuits", "Wafers", "Chocolate", "Candy"];
@@ -32,7 +44,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
       setLoading(true);
       databaseService.products
         .getById(productId)
-        .then((product: any) => {
+        .then((product: Product | null) => {
           if (!product) {
             setNotFound(true);
             return;
@@ -150,7 +162,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                 <div className="space-y-1 text-center">
                   {imagePreview ? (
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
                       width={128}

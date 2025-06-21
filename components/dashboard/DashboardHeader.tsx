@@ -1,15 +1,14 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { logout } from "@/lib/services/auth";
+
 export const DashboardHeader = () => {
   const [showProfile, setShowProfile] = useState(false);
-  const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
+    logout();
   };
 
   return (
@@ -19,13 +18,13 @@ export const DashboardHeader = () => {
           <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
 
           <div className="flex items-center space-x-4">
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="p-2 text-gray-400 hover:text-gray-500"
             >
               <BellIcon className="h-6 w-6" />
-            </motion.button>
+            </motion.button> */}
 
             <div className="relative">
               <motion.button
@@ -46,22 +45,26 @@ export const DashboardHeader = () => {
                   className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1"
                 >
                   <a
-                    href="#"
+                    href="/dashboard/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Your Profile
                   </a>
                   <a
-                    href="#"
+                    href="/dashboard/settings"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings
                   </a>
                   <a
                     href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <button onClick={handleLogout}> Sign out</button>
+                    Sign out
                   </a>
                 </motion.div>
               )}
