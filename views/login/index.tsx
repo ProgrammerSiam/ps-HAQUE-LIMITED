@@ -5,9 +5,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { login } from "@/lib/services/auth";
 import { toast } from "react-hot-toast";
-import Cookies from "js-cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -22,13 +20,27 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await login(formData.username, formData.password);
-      Cookies.set("token", response.access);
+      const response = await fetch("/api/auth/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Invalid credentials");
+      }
+
+      // Store user info in localStorage for easy access
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       toast.success("Login successful!");
-      router.push("/dashboard");
-    } catch (error) {
+      window.location.href = "/dashboard";
+    } catch (error: any) {
       console.error("Error logging in:", error);
-      toast.error("Invalid credentials");
+      toast.error(error.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }

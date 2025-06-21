@@ -1,179 +1,82 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PageLayout } from "@/components/dashboard/PageLayout";
 import { BlogForm } from "@/components/blog/blog-form";
 import { Blog, blogService } from "@/lib/services/blogService";
 
-export default function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
-    const router = useRouter();
-    const [blog, setBlog] = useState<Blog | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const { id } = use(params);
-
-    useEffect(() => {
-        async function loadBlog() {
-            try {
-                // const response = await fetch(`/api/blogs/${params.id}`);
-                const response = await blogService.getBlogById(id);
-                console.log(response);
-                if (response) {
-                    setBlog(response);
-                }
-            } catch (error) {
-                toast.error("Blog not found");
-                console.error("Error loading blog:", error);
-                router.push("/dashboard/blog");
-                throw new Error("Failed to fetch blog");
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
-        loadBlog();
-    }, [id, router]);
-
-    if (isLoading) {
-        return (
-            <PageLayout title="Edit Blog">
-                <div className="flex items-center justify-center h-64">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-                </div>
-            </PageLayout>
-        );
-    }
-
-    if (!blog) {
-        return null;
-    }
-
-    return (
-        <PageLayout title="Edit Blog">
-            <BlogForm blog={blog} />
-        </PageLayout>
-    );
+// Updated interface to handle async params
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
-// "use client";
+export default function EditBlogPage({ params }: PageProps) {
+  const router = useRouter();
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [id, setId] = useState<string | null>(null);
 
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { toast } from "sonner";
-// import { PageLayout } from "@/components/dashboard/PageLayout";
-// import { BlogForm } from "@/components/blog/blog-form";
-// import { Blog, blogService } from "@/lib/services/blogService";
+  // Resolve params Promise first
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolvedParams = await params;
+      setId(resolvedParams.id);
+    };
 
-// export default function EditBlogPage({ params }: { params: { id: string } }) {
-//     const router = useRouter();
-//     const [blog, setBlog] = useState<Blog | null>(null);
-//     const [isLoading, setIsLoading] = useState(true);
+    resolveParams();
+  }, [params]);
 
-//     useEffect(() => {
-//         async function loadBlog() {
-//             try {
-//                 // const response = await fetch(`/api/blogs/${params.id}`);
-//                 const response = await blogService.getBlogById(params.id);
-//                 console.log(response);
-//                 if (response) {
-//                     setBlog(response);
-//                 }
-//             } catch (error) {
-//                 toast.error("Blog not found");
-//                 console.error("Error loading blog:", error);
-//                 router.push("/dashboard/blog");
-//                 throw new Error("Failed to fetch blog");
-//             } finally {
-//                 setIsLoading(false);
-//             }
-//         }
+  // Load blog data once we have the id
+  useEffect(() => {
+    if (!id) return; // Don't load until we have the id
 
-//         loadBlog();
-//     }, [params.id, router]);
+    async function loadBlog() {
+      try {
+        // At this point, we know id is not null due to the guard clause above
+        const response = await blogService.getBlogById(id!);
+        console.log(response);
+        if (response) {
+          setBlog(response);
+        }
+      } catch (error) {
+        toast.error("Blog not found");
+        console.error("Error loading blog:", error);
+        router.push("/dashboard/blog");
+        // Don't throw error here as it's already handled
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-//     if (isLoading) {
-//         return (
-//             <PageLayout title="Edit Blog">
-//                 <div className="flex items-center justify-center h-64">
-//                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-//                 </div>
-//             </PageLayout>
-//         );
-//     }
+    loadBlog();
+  }, [id, router]);
 
-//     if (!blog) {
-//         return null;
-//     }
+  // Show loading while resolving params or loading blog
+  if (isLoading || !id) {
+    return (
+      <PageLayout title="Edit Blog">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      </PageLayout>
+    );
+  }
 
-//     return (
-//         <PageLayout title="Edit Blog">
-//             <BlogForm blog={blog} />
-//         </PageLayout>
-//     );
-// }
+  if (!blog) {
+    return (
+      <PageLayout title="Edit Blog">
+        <div className="text-center py-12">
+          <p className="text-red-500">Blog not found</p>
+        </div>
+      </PageLayout>
+    );
+  }
 
-//! ----- previous EditBlogPage code. -----
-//! ----- Fetch request for getting blog is not properly working so fetch has been replaced with blogService -----
-
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { toast } from "sonner";
-// import { PageLayout } from "@/components/dashboard/PageLayout";
-// import { BlogForm } from "@/components/blog/blog-form";
-// import { Blog } from "@/lib/services/blogService";
-
-// export default function EditBlogPage() {
-//   const params = useParams();
-//   const router = useRouter();
-//   const [blog, setBlog] = useState<Blog | null>(null);
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   useEffect(() => {
-//     async function loadBlog() {
-//       try {
-//         const response = await fetch(`/api/blogs/${params.id}`);
-//         if (!response.ok) {
-//           if (response.status === 404) {
-//             toast.error("Blog not found");
-//             router.push("/dashboard/blog");
-//             return;
-//           }
-//           throw new Error("Failed to fetch blog");
-//         }
-//         const data = await response.json();
-
-//         setBlog(data);
-//       } catch (error) {
-//         console.error("Error loading blog:", error);
-//         toast.error("Failed to load blog");
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     }
-
-//     loadBlog();
-//   }, [params.id, router]);
-
-//   if (isLoading) {
-//     return (
-//       <PageLayout title="Edit Blog">
-//         <div className="flex items-center justify-center h-64">
-//           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-//         </div>
-//       </PageLayout>
-//     );
-//   }
-
-//   if (!blog) {
-//     return null;
-//   }
-
-//   return (
-//     <PageLayout title="Edit Blog">
-//       <BlogForm blog={blog} />
-//     </PageLayout>
-//   );
-// }
+  return (
+    <PageLayout title="Edit Blog">
+      <BlogForm blog={blog} />
+    </PageLayout>
+  );
+}

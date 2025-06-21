@@ -106,13 +106,25 @@
 // }
 
 // app/dashboard/commercials/edit/[id]/page.tsx (Server Component)
+// import EditCommercialClient from "@/app/dashboard/commercials/edit/[id]/EditCommercialClient";
+
+// interface PageProps {
+//   params: { id: string };
+// }
+
+// export default function EditCommercialPage({ params }: PageProps) {
+//   const { id } = params;
+//   return <EditCommercialClient id={id} />;
+// }
+
+// app/dashboard/commercials/edit/[id]/page.tsx (Server Component)
 import EditCommercialClient from "@/app/dashboard/commercials/edit/[id]/EditCommercialClient";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>; // Changed: params is now a Promise
 }
 
 export default async function EditCommercialPage({ params }: PageProps) {
-  const { id } = await params;
+  const { id } = await params; // Changed: await the params
   return <EditCommercialClient id={id} />;
 }
