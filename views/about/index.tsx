@@ -5,18 +5,20 @@ import LocationSection from "./components/LocationSection";
 import ContactSection from "./components/ContactSection";
 import CompanyValues from "./components/CompanyValueSection";
 import CompanyConcern from "./components/CompanyConcernSection";
+import WhoWeAreSection from "../../components/about-us/whoWeAreSection";
 
 const About = () => {
-  return (
-    <>
-      <HeroSection />
-      <CompanyValues />
-      <CompanyConcern />
-      <CompanyProfile />
-      <LocationSection />
-      <ContactSection />
-    </>
-  );
+    return (
+        <>
+            <HeroSection />
+            <WhoWeAreSection />
+            <CompanyValues />
+            <CompanyConcern />
+            <CompanyProfile />
+            <LocationSection />
+            <ContactSection />
+        </>
+    );
 };
 
 export default About;

@@ -1,172 +1,580 @@
 import { blogService } from "@/lib/services/blogService";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { format } from "date-fns";
-import {
-  Calendar,
-  Clock,
-  User,
-  Tag,
-  Facebook,
-  Twitter,
-  Linkedin,
-  FileText,
-} from "lucide-react";
 import Link from "next/link";
-import TocClient from "../components/TocClient";
+import blogBg from "@/assets/blog-img/blog-bg.png";
+import logo from "@/assets/logo/logo.png";
+import user from "@/assets/blog-img/user.png";
 
 type BlogDetailsPageProps = {
-  params: {
-    slug: string;
-  };
+    params: {
+        slug: string;
+    };
 };
 
 export default async function BlogDetailsPage({
-  params,
+    params,
 }: BlogDetailsPageProps) {
-  const blog = await blogService.getBlogBySlug(params.slug);
+    const blog = await blogService.getBlogBySlug(params.slug);
 
-  if (!blog) {
-    notFound();
-  }
+    if (!blog) {
+        notFound();
+    }
 
-  // A simple function to generate a table of contents
-  const generateToc = (content: string) => {
-    const headings = content.match(/<h[2-4][^>]*>(.*?)<\/h[2-4]>/g) || [];
-    return headings.map((heading) => {
-      const level = parseInt(heading.charAt(2), 10);
-      const text = heading.replace(/<[^>]+>/g, "");
-      const slug = text.toLowerCase().replace(/\s+/g, "-");
-      return { level, text, slug };
-    });
-  };
+    const generateToc = (content: string) => {
+        const headings = content.match(/<h[2-4][^>]*>(.*?)<\/h[2-4]>/g) || [];
+        return headings.map((heading) => {
+            const level = parseInt(heading.charAt(2), 10);
+            const text = heading.replace(/<[^>]+>/g, "");
+            const slug = text.toLowerCase().replace(/\s+/g, "-");
+            return { level, text, slug };
+        });
+    };
 
-  const toc = generateToc(blog.content);
+    const toc = generateToc(blog.content);
 
-  return (
-    <div className="bg-gray-100">
-      {/* Header Section */}
-      <div className="relative h-[400px] text-white">
-        <Image
-          src={blog.cover_image || "/images/placeholder.png"}
-          alt={blog.title}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 flex flex-col justify-center items-center">
-          <div className="text-sm breadcrumbs">
-            <ul>
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>
-                <Link href="/blog">Blogs</Link>
-              </li>
-              <li>Details</li>
-            </ul>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-center mt-4 max-w-4xl">
-            {blog.title}
-          </h1>
-        </div>
-      </div>
+    return (
+        <section className="w-full h-auto xl:px-32 px-6 mt-20 relative bg-[url('/assets/blog-img/blog-bg.png')]">
+            <Image
+                src={blogBg}
+                alt="blog background"
+                width={2500}
+                height={554}
+                className="absolute inset-0 w-full z-[-1] object-contain bg-cover"
+                priority={true}
+            />
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Left Sidebar */}
-            <aside className="lg:col-span-4 xl:col-span-3 space-y-8">
-              {/* Author */}
-              <div className="p-6 bg-gray-50 rounded-lg text-center">
-                <Image
-                  src={"/images/placeholder.png"} // Replace with author image if available
-                  alt="Author"
-                  width={80}
-                  height={80}
-                  className="rounded-full mx-auto"
-                />
-                <h3 className="mt-4 font-bold">Tahmeed Siraz</h3>
-                <p className="text-sm text-gray-500">se7enfold</p>
-              </div>
-
-              {/* Meta */}
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3 text-gray-600">
-                  <User className="w-5 h-5 text-red-600" />
-                  <span className="font-medium">Category:</span>
-                  <span className="text-gray-800 font-semibold">
-                    {blog.category}
-                  </span>
+            {/* Header */}
+            <header className="absolute sm:top-[30px] top-2 sm:left-[50px] left-0 max-sm:px-5 sm:w-[calc(50%+40px)] w-full flex items-center justify-between">
+                <Link
+                    href={"/blog"}
+                    className="sm:size-[50px] size-8 rounded-full bg-black/15 border border-white/15 _center"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={8}
+                        height={13}
+                        viewBox="0 0 8 13"
+                        fill="none"
+                        className="sm:w-2 sm:h-[13px] size-[10px]"
+                    >
+                        <path
+                            d="M7.56657 1.07499L6.50557 0.014986L0.726568 5.79199C0.633413 5.88455 0.559484 5.99463 0.509036 6.11588C0.458588 6.23713 0.432617 6.36716 0.432617 6.49849C0.432617 6.62981 0.458588 6.75984 0.509036 6.88109C0.559484 7.00234 0.633413 7.11242 0.726568 7.20499L6.50557 12.985L7.56557 11.925L2.14157 6.49999L7.56657 1.07499Z"
+                            fill="white"
+                        />
+                    </svg>
+                </Link>
+                <div className="sm:w-[153px] sm:h-[63px] size-[90px]">
+                    <Image
+                        src={logo}
+                        alt="Haque's Logo"
+                        width={153}
+                        height={100}
+                        className="w-full h-full object-contain"
+                    />
                 </div>
-                <div className="flex items-start gap-3 mt-4 text-gray-600">
-                  <Tag className="w-5 h-5 text-red-600 mt-1" />
-                  <div>
-                    <span className="font-medium">Tags:</span>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {blog.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 text-xs bg-white border border-gray-200 rounded-full text-gray-600"
+            </header>
+
+            <div className="max-sm:mt-14 w-full h-full flex flex-col items-center justify-center text-center">
+                <div className="max-sm:hidden px-4 py-1 border border-white/15 bg-black/15 rounded-[30px] _center mb-5">
+                    <span className="text-white/50 mr-2">Home</span>{" "}
+                    <span className="text-white/50 mr-2">&gt; </span>{" "}
+                    <span className="text-white/50 mr-2">Blogs</span>{" "}
+                    <span className="text-white/50 mr-2">&gt; </span>{" "}
+                    <span className="text-white">Details</span>
+                </div>
+
+                <h1 className="sm:text-[55px] text-4xl font-bold sm:text-white text-black">
+                    {blog.title}
+                </h1>
+            </div>
+
+            {/* Main Content */}
+            <div className="section_container mt-10">
+                <div className="w-full sm:h-[444px] h-[340px] rounded-[25px] overflow-hidden">
+                    <Image
+                        src={blog.cover_image || "/images/placeholder.png"}
+                        alt={blog.title}
+                        width={2000}
+                        height={1000}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+
+                {/* Date and Read time */}
+                <div className="flex justify-between items-center gap-4 text-sm text-gray-500 mb-6 mt-4">
+                    <span className="flex items-center text-[#DE2332] text-xm font-semibold">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="#DE2332"
                         >
-                          {tag}
-                        </span>
-                      ))}
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                        </svg>
+                        8 October 2024
+                    </span>
+                    <span className="flex items-center text-[#DE2332] text-xm font-semibold">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        7 min read
+                    </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-[73px]">
+                    {/* Left Sidebar */}
+                    <div className="sm:w-[276px] w-full flex flex-col gap-[34px]">
+                        {/* Profile Section */}
+                        <div className="">
+                            <div className="flex items-center gap-4">
+                                <div className="size-[70px] rounded-full overflow-hidden bg-gray-300">
+                                    <Image
+                                        src={user}
+                                        alt="Profile"
+                                        width={48}
+                                        height={48}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-black/75 text-[20px]">
+                                        Tahmeed Siraz
+                                    </h3>
+                                    <p className="text-lg text-[#686868]">
+                                        Designation
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Category Section and  Tags Section*/}
+                        <div>
+                            {/* Category Section */}
+                            <div className="mb-4">
+                                <p className="text-base font-medium text-[#686868]">
+                                    Category :{" "}
+                                    <span className="text-lg text-[#DE2332] font-bold">
+                                        Business
+                                    </span>
+                                </p>
+                            </div>
+
+                            {/* Tags Section */}
+                            <div className="">
+                                <p className="ext-base font-medium text-[#686868]">
+                                    Tag(s):
+                                </p>
+                                <div className="flex gap-2 mt-2">
+                                    <span className="px-3 py-1 bg-white border border-black rounded-full text-xs text-black">
+                                        Typescript
+                                    </span>
+                                    <span className="px-3 py-1 bg-white border border-black rounded-full text-xs ext-black">
+                                        React
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contents Section */}
+                        <div className="">
+                            <h4 className="text-lg font-bold text-[#686868]">
+                                Contents
+                            </h4>
+
+                            <div className="w-full h-[5px] rounded-[5px] bg-[#D9D9D9] relative my-[15px]">
+                                <div className="w-[15%] h-[5px] rounded-[5px] bg-[#de2332] absolute top-0 left-0"></div>
+                            </div>
+
+                            <div className="">
+                                <nav className="sm:space-y-[17px] space-y-[10px]">
+                                    <a
+                                        href="#heritage"
+                                        className="block text-[#686868] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        Our Heritage
+                                    </a>
+                                    <a
+                                        href="#now"
+                                        className="block text-[#de2332] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        Where Are We Now?
+                                    </a>
+                                    <a
+                                        href="#quality"
+                                        className="block text-[#686868] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        Crafting Quality with Care
+                                    </a>
+                                    <a
+                                        href="#innovation"
+                                        className="block text-[#686868] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        How Are We Innovating?
+                                    </a>
+                                    <a
+                                        href="#next"
+                                        className="block text-[#686868] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        What's Next?
+                                    </a>
+                                    <a
+                                        href="#conclusion"
+                                        className="block text-[#686868] sm:text-lg text-base font-medium hover:text-[#de2332]"
+                                    >
+                                        Conclusion
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+
+                        {/* Share Section */}
+                        <div className="mt-5">
+                            <h4 className="font-semibold text-gray-900 mb-4">
+                                Share
+                            </h4>
+                            <div className="flex items-center gap-3">
+                                <Link href={""} target="_blank">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={29}
+                                        height={29}
+                                        viewBox="0 0 29 29"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M28.7144 14.689C28.7144 6.74969 22.287 0.306152 14.3674 0.306152C6.44794 0.306152 0.0205078 6.74969 0.0205078 14.689C0.0205078 21.6504 4.95586 27.4467 11.4981 28.7843V19.0039H8.62867V14.689H11.4981V11.0933C11.4981 8.31743 13.7505 6.05931 16.5195 6.05931H20.1062V10.3742H17.2368C16.4478 10.3742 15.8021 11.0214 15.8021 11.8125V14.689H20.1062V19.0039H15.8021V29C23.0473 28.2809 28.7144 22.1538 28.7144 14.689Z"
+                                            fill="black"
+                                        />
+                                    </svg>
+                                </Link>
+                                <Link href={""} target="_blank">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={27}
+                                        height={27}
+                                        viewBox="0 0 27 27"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M14.6137 0.438965C16.1003 0.442929 16.8548 0.450857 17.5062 0.469357L17.7626 0.478607C18.0585 0.489178 18.3506 0.502392 18.7034 0.518249C20.1093 0.584318 21.0686 0.806313 21.9103 1.1327C22.7824 1.46833 23.5171 1.92289 24.2518 2.65627C24.9239 3.31661 25.4439 4.11571 25.7753 4.99778C26.1017 5.83951 26.3237 6.79885 26.3897 8.20613C26.4056 8.55762 26.4188 8.84965 26.4294 9.14697L26.4373 9.40332C26.4571 10.0534 26.465 10.808 26.4677 12.2945L26.469 13.2803V15.0113C26.4722 15.9752 26.4621 16.939 26.4386 17.9025L26.4307 18.1589C26.4201 18.4562 26.4069 18.7482 26.391 19.0997C26.325 20.507 26.1003 21.465 25.7753 22.3081C25.4439 23.1901 24.9239 23.9892 24.2518 24.6496C23.5914 25.3218 22.7924 25.8417 21.9103 26.1732C21.0686 26.4995 20.1093 26.7215 18.7034 26.7876L17.7626 26.8273L17.5062 26.8352C16.8548 26.8537 16.1003 26.8629 14.6137 26.8656L13.628 26.8669H11.8983C10.9341 26.8703 9.96985 26.8602 9.00589 26.8365L8.74954 26.8286C8.43586 26.8167 8.12226 26.803 7.80873 26.7876C6.4028 26.7215 5.44349 26.4995 4.60047 26.1732C3.71889 25.8416 2.92028 25.3216 2.26033 24.6496C1.58769 23.9894 1.06729 23.1903 0.735482 22.3081C0.409106 21.4663 0.187117 20.507 0.121049 19.0997L0.081408 18.1589L0.0748014 17.9025C0.0504435 16.939 0.0394309 15.9752 0.0417672 15.0113V12.2945C0.0381098 11.3307 0.0478008 10.3669 0.0708373 9.40332L0.0800868 9.14697C0.0906577 8.84965 0.103871 8.55762 0.119728 8.20613C0.185796 6.79885 0.407784 5.84083 0.734161 4.99778C1.06674 4.11535 1.58806 3.31622 2.26166 2.65627C2.92122 1.9844 3.71937 1.46447 4.60047 1.1327C5.44349 0.806313 6.40148 0.584318 7.80873 0.518249C8.16021 0.502392 8.45356 0.489178 8.74954 0.478607L9.00589 0.470678C9.96941 0.447201 10.9332 0.437069 11.897 0.440286L14.6137 0.438965ZM13.2554 7.04595C11.5032 7.04595 9.82268 7.74204 8.58367 8.98109C7.34465 10.2201 6.64858 11.9007 6.64858 13.6529C6.64858 15.4052 7.34465 17.0857 8.58367 18.3248C9.82268 19.5638 11.5032 20.2599 13.2554 20.2599C15.0076 20.2599 16.6881 19.5638 17.9271 18.3248C19.1661 17.0857 19.8622 15.4052 19.8622 13.6529C19.8622 11.9007 19.1661 10.2201 17.9271 8.98109C16.6881 7.74204 15.0076 7.04595 13.2554 7.04595ZM13.2554 9.68874C13.776 9.68865 14.2914 9.79111 14.7724 9.99024C15.2534 10.1894 15.6904 10.4813 16.0586 10.8494C16.4268 11.2174 16.7188 11.6544 16.9181 12.1353C17.1174 12.6162 17.22 13.1317 17.2201 13.6523C17.2202 14.1729 17.1178 14.6884 16.9186 15.1694C16.7195 15.6503 16.4276 16.0874 16.0595 16.4556C15.6915 16.8237 15.2546 17.1158 14.7736 17.3151C14.2927 17.5144 13.7773 17.617 13.2567 17.6171C12.2054 17.6171 11.1971 17.1995 10.4537 16.456C9.71027 15.7126 9.29262 14.7043 9.29262 13.6529C9.29262 12.6016 9.71027 11.5933 10.4537 10.8498C11.1971 10.1064 12.2054 9.68874 13.2567 9.68874M20.1939 5.06385C19.7558 5.06385 19.3357 5.23788 19.0259 5.54764C18.7162 5.8574 18.5422 6.27753 18.5422 6.7156C18.5422 7.15367 18.7162 7.5738 19.0259 7.88356C19.3357 8.19332 19.7558 8.36734 20.1939 8.36734C20.6319 8.36734 21.052 8.19332 21.3618 7.88356C21.6715 7.5738 21.8456 7.15367 21.8456 6.7156C21.8456 6.27753 21.6715 5.8574 21.3618 5.54764C21.052 5.23788 20.6319 5.06385 20.1939 5.06385Z"
+                                            fill="black"
+                                        />
+                                    </svg>
+                                </Link>
+                                <Link href={""} target="_blank">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={28}
+                                        height={27}
+                                        viewBox="0 0 28 27"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M14.0102 0.438965C21.3084 0.438965 27.2245 6.355 27.2245 13.6532C27.2245 20.9515 21.3084 26.8675 14.0102 26.8675C11.6749 26.8715 9.38068 26.2535 7.36341 25.077L0.801205 26.8675L2.58777 20.3027C1.41033 18.2848 0.791826 15.9895 0.795919 13.6532C0.795919 6.355 6.71195 0.438965 14.0102 0.438965ZM9.50677 7.44253L9.24248 7.4531C9.07161 7.46488 8.90466 7.50976 8.75091 7.58525C8.60764 7.66653 8.4768 7.768 8.36241 7.88653C8.20384 8.03585 8.11398 8.16535 8.01752 8.29089C7.52875 8.92637 7.26559 9.70655 7.26959 10.5082C7.27224 11.1557 7.44138 11.7861 7.70566 12.3754C8.24613 13.5673 9.13545 14.8293 10.3089 15.9988C10.5917 16.2802 10.8692 16.563 11.1678 16.826C12.6259 18.1096 14.3634 19.0354 16.2421 19.5296L16.9927 19.6446C17.2371 19.6578 17.4816 19.6393 17.7274 19.6274C18.1122 19.6071 18.4878 19.5029 18.8281 19.3222C19.001 19.2328 19.1699 19.1358 19.3342 19.0315C19.3342 19.0315 19.3902 18.9936 19.4994 18.9125C19.6778 18.7804 19.7875 18.6866 19.9355 18.532C20.0465 18.4174 20.139 18.2844 20.213 18.1329C20.316 17.9175 20.4191 17.5065 20.4614 17.1643C20.4931 16.9026 20.4839 16.7599 20.4799 16.6714C20.4746 16.53 20.357 16.3833 20.2288 16.3212L19.4598 15.9763C19.4598 15.9763 18.3101 15.4755 17.6071 15.1557C17.5335 15.1237 17.4547 15.1053 17.3745 15.1015C17.2841 15.0921 17.1927 15.1022 17.1065 15.1311C17.0204 15.1601 16.9414 15.2072 16.875 15.2693C16.8684 15.2667 16.7799 15.342 15.8245 16.4996C15.7697 16.5733 15.6941 16.629 15.6075 16.6596C15.5209 16.6902 15.4272 16.6943 15.3382 16.6714C15.2521 16.6484 15.1678 16.6193 15.0858 16.5842C14.922 16.5155 14.8652 16.489 14.7528 16.4415C13.9942 16.111 13.2919 15.6638 12.6716 15.1161C12.5051 14.9707 12.3505 14.8121 12.1919 14.6588C11.6721 14.1609 11.219 13.5977 10.8441 12.9833L10.7661 12.8577C10.7109 12.7729 10.6657 12.682 10.6313 12.5868C10.5811 12.3926 10.7119 12.2367 10.7119 12.2367C10.7119 12.2367 11.033 11.8852 11.1823 11.6949C11.3277 11.5099 11.4506 11.3302 11.5299 11.202C11.6858 10.9509 11.7347 10.6932 11.6528 10.4937C11.2828 9.58985 10.9004 8.69084 10.5058 7.79667C10.4278 7.6196 10.1966 7.49274 9.98645 7.46764C9.91509 7.45883 9.84373 7.45178 9.77238 7.4465C9.59495 7.43632 9.41703 7.43808 9.23984 7.45178L9.50677 7.44253Z"
+                                            fill="black"
+                                        />
+                                    </svg>
+                                </Link>
+                                <Link href={""} target="_blank">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={27}
+                                        height={27}
+                                        viewBox="0 0 27 27"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M24.0428 0.438965C24.8217 0.438965 25.5686 0.748346 26.1193 1.29905C26.67 1.84975 26.9794 2.59666 26.9794 3.37547V23.931C26.9794 24.7098 26.67 25.4568 26.1193 26.0075C25.5686 26.5582 24.8217 26.8675 24.0428 26.8675H3.48729C2.70848 26.8675 1.96157 26.5582 1.41086 26.0075C0.860162 25.4568 0.550781 24.7098 0.550781 23.931V3.37547C0.550781 2.59666 0.860162 1.84975 1.41086 1.29905C1.96157 0.748346 2.70848 0.438965 3.48729 0.438965H24.0428ZM23.3087 23.1969V15.4152C23.3087 14.1457 22.8044 12.9282 21.9068 12.0306C21.0091 11.1329 19.7917 10.6286 18.5222 10.6286C17.2742 10.6286 15.8206 11.3921 15.1159 12.5374V10.9076H11.0194V23.1969H15.1159V15.9584C15.1159 14.8279 16.0262 13.9029 17.1567 13.9029C17.7019 13.9029 18.2247 14.1194 18.6102 14.5049C18.9957 14.8904 19.2123 15.4132 19.2123 15.9584V23.1969H23.3087ZM6.24761 8.60246C6.90181 8.60246 7.52921 8.34258 7.9918 7.87999C8.45439 7.4174 8.71427 6.78999 8.71427 6.13579C8.71427 4.77031 7.61308 3.65444 6.24761 3.65444C5.58951 3.65444 4.95837 3.91587 4.49303 4.38121C4.02768 4.84655 3.76626 5.4777 3.76626 6.13579C3.76626 7.50127 4.88213 8.60246 6.24761 8.60246ZM8.28848 23.1969V10.9076H4.22142V23.1969H8.28848Z"
+                                            fill="black"
+                                        />
+                                    </svg>
+                                </Link>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              {/* Table of Contents */}
-              {/* {toc.length > 0 && <TocClient toc={toc} />} */}
+                    {/* Main Content */}
+                    <div className="flex-1">
+                        <div className="">
+                            {/* Our Heritage Section */}
+                            <div id="heritage" className="">
+                                <h1 className="text-[32px] font-semibold text-black mb-3">
+                                    Our Heritage
+                                </h1>
+                                <p className="md:text-[20px] text-base text-[#686868] text-justify mb-4">
+                                    Haque’s culinary journey began decades ago,
+                                    rooted in a vision to bring authentic,
+                                    delicious, and high-quality food products to
+                                    the tables of Bangladeshi families. From the
+                                    very start, we have believed that food is
+                                    more than nourishment—it’s culture, comfort,
+                                    and connection.
+                                    <br /> Founded with humble beginnings, Haque
+                                    started as a family business with a passion
+                                    for baking and confectionery. Over the
+                                    years, our small kitchen has evolved into a
+                                    large-scale production facility, backed by
+                                    world-class equipment and a team of
+                                    dedicated professionals. But one thing
+                                    remains unchanged: our commitment to quality
+                                    and authenticity.
+                                </p>
+                            </div>
 
-              {/* Share */}
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <h3 className="font-bold text-lg mb-4">Share</h3>
-                <div className="flex items-center gap-4">
-                  <a href="#" className="text-gray-500 hover:text-blue-600">
-                    <Facebook />
-                  </a>
-                  <a href="#" className="text-gray-500 hover:text-sky-500">
-                    <Twitter />
-                  </a>
-                  <a href="#" className="text-gray-500 hover:text-blue-700">
-                    <Linkedin />
-                  </a>
-                </div>
-              </div>
-            </aside>
+                            {/* Where are we now Section */}
+                            <div id="now" className="mb-12">
+                                <h2 className="text-[32px] font-semibold text-black mb-3">
+                                    Where are we now?
+                                </h2>
+                                <p className="md:text-[20px] text-base text-[#686868] text-justify mb-4">
+                                    Today, Haque has grown far beyond its roots.
+                                    What began as a small local brand is now a
+                                    recognized name in both national and
+                                    international markets. Our products are
+                                    found in homes, shops, and supermarkets not
+                                    only across Bangladesh but also in regions
+                                    with growing demand for quality Bangladeshi
+                                    food products.
+                                    <br /> With a strong distribution network
+                                    and a focus on export-ready standards, Haque
+                                    continues to expand its presence across
+                                    Asia, the Middle East, and beyond. This
+                                    growth isn't just about scale—it's about
+                                    maintaining the same level of trust, taste,
+                                    and tradition that defined us from day one.{" "}
+                                    <br />
+                                    Our expansion proves that locally crafted
+                                    food, made with care and consistency, can
+                                    compete on a global stage—bringing the
+                                    flavors of Bangladesh to the world.
+                                </p>
+                            </div>
 
-            {/* Right Content */}
-            <article className="lg:col-span-8 xl:col-span-9">
-              <div className="flex items-center gap-6 text-sm text-gray-500 mb-8">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-red-500" />
-                  <span>{format(new Date(blog.created_at), "PPP")}</span>
+                            {/* Crafting Quality with Care Div */}
+                            <div id="quality" className="mb-12">
+                                <h2 className="text-[32px] font-semibold text-black mb-3">
+                                    Crafting Quality with Care
+                                </h2>
+                                <p className="md:text-[20px] text-base text-[#686868] text-justify mb-4">
+                                    Behind every successful product is a
+                                    meticulous process—and at Haque, quality is
+                                    never compromised. Our factories are
+                                    equipped with modern, automated production
+                                    lines to ensure consistency, hygiene, and
+                                    efficiency. We follow strict international
+                                    food safety protocols including ISO and
+                                    HACCP certifications.
+                                    <br /> We source ingredients with care,
+                                    often partnering with local farmers and
+                                    international suppliers known for their
+                                    purity and sustainability. Our goal is not
+                                    just to make tasty food, but food you can
+                                    trust.
+                                    <br /> Each product is tested at multiple
+                                    stages, from raw materials to finished
+                                    packaging, by our in-house quality assurance
+                                    team. This attention to detail helps us
+                                    maintain our long-standing reputation as one
+                                    of Bangladesh’s most reliable food
+                                    manufacturers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-red-500" />
-                  <span>7 min read</span>
-                </div>
-              </div>
-
-              <div
-                className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-red-600 hover:prose-a:text-red-700"
-                dangerouslySetInnerHTML={{
-                  __html: blog.content.replace(
-                    /<h([2-4])(.*?)>(.*?)<\/h\1>/g,
-                    (match, level, attrs, text) => {
-                      const slug = text.toLowerCase().replace(/\s+/g, "-");
-                      return `<h${level}${attrs} id="${slug}">${text}</h${level}>`;
-                    }
-                  ),
-                }}
-              />
-            </article>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+            </div>
+        </section>
+    );
 }
+
+//! previous code
+// import { blogService } from "@/lib/services/blogService";
+// import { notFound } from "next/navigation";
+// import Image from "next/image";
+// import { format } from "date-fns";
+// import {
+//   Calendar,
+//   Clock,
+//   User,
+//   Tag,
+//   Facebook,
+//   Twitter,
+//   Linkedin,
+//   FileText,
+// } from "lucide-react";
+// import Link from "next/link";
+// import TocClient from "../components/TocClient";
+
+// type BlogDetailsPageProps = {
+//   params: {
+//     slug: string;
+//   };
+// };
+
+// export default async function BlogDetailsPage({
+//   params,
+// }: BlogDetailsPageProps) {
+//   const blog = await blogService.getBlogBySlug(params.slug);
+
+//   if (!blog) {
+//     notFound();
+//   }
+
+//   // A simple function to generate a table of contents
+//   const generateToc = (content: string) => {
+//     const headings = content.match(/<h[2-4][^>]*>(.*?)<\/h[2-4]>/g) || [];
+//     return headings.map((heading) => {
+//       const level = parseInt(heading.charAt(2), 10);
+//       const text = heading.replace(/<[^>]+>/g, "");
+//       const slug = text.toLowerCase().replace(/\s+/g, "-");
+//       return { level, text, slug };
+//     });
+//   };
+
+//   const toc = generateToc(blog.content);
+
+//   return (
+//     <div className="bg-gray-100">
+//       {/* Header Section */}
+//       <div className="relative h-[400px] text-white">
+//         <Image
+//           src={blog.cover_image || "/images/placeholder.png"}
+//           alt={blog.title}
+//           fill
+//           className="object-cover"
+//         />
+//         <div className="absolute inset-0 bg-black/50" />
+//         <div className="absolute inset-0 flex flex-col justify-center items-center">
+//           <div className="text-sm breadcrumbs">
+//             <ul>
+//               <li>
+//                 <Link href="/">Home</Link>
+//               </li>
+//               <li>
+//                 <Link href="/blog">Blogs</Link>
+//               </li>
+//               <li>Details</li>
+//             </ul>
+//           </div>
+//           <h1 className="text-4xl md:text-5xl font-bold text-center mt-4 max-w-4xl">
+//             {blog.title}
+//           </h1>
+//         </div>
+//       </div>
+
+//       {/* Main Content */}
+//       <div className="container mx-auto px-4 py-16">
+//         <div className="bg-white p-8 rounded-lg shadow-md">
+//           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+//             {/* Left Sidebar */}
+//             <aside className="lg:col-span-4 xl:col-span-3 space-y-8">
+//               {/* Author */}
+//               <div className="p-6 bg-gray-50 rounded-lg text-center">
+//                 <Image
+//                   src={"/images/placeholder.png"} // Replace with author image if available
+//                   alt="Author"
+//                   width={80}
+//                   height={80}
+//                   className="rounded-full mx-auto"
+//                 />
+//                 <h3 className="mt-4 font-bold">Tahmeed Siraz</h3>
+//                 <p className="text-sm text-gray-500">se7enfold</p>
+//               </div>
+
+//               {/* Meta */}
+//               <div className="p-6 bg-gray-50 rounded-lg">
+//                 <div className="flex items-center gap-3 text-gray-600">
+//                   <User className="w-5 h-5 text-red-600" />
+//                   <span className="font-medium">Category:</span>
+//                   <span className="text-gray-800 font-semibold">
+//                     {blog.category}
+//                   </span>
+//                 </div>
+//                 <div className="flex items-start gap-3 mt-4 text-gray-600">
+//                   <Tag className="w-5 h-5 text-red-600 mt-1" />
+//                   <div>
+//                     <span className="font-medium">Tags:</span>
+//                     <div className="flex flex-wrap gap-2 mt-2">
+//                       {blog.tags.map((tag) => (
+//                         <span
+//                           key={tag}
+//                           className="px-3 py-1 text-xs bg-white border border-gray-200 rounded-full text-gray-600"
+//                         >
+//                           {tag}
+//                         </span>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Table of Contents */}
+//               {/* {toc.length > 0 && <TocClient toc={toc} />} */}
+
+//               {/* Share */}
+//               <div className="p-6 bg-gray-50 rounded-lg">
+//                 <h3 className="font-bold text-lg mb-4">Share</h3>
+//                 <div className="flex items-center gap-4">
+//                   <a href="#" className="text-gray-500 hover:text-blue-600">
+//                     <Facebook />
+//                   </a>
+//                   <a href="#" className="text-gray-500 hover:text-sky-500">
+//                     <Twitter />
+//                   </a>
+//                   <a href="#" className="text-gray-500 hover:text-blue-700">
+//                     <Linkedin />
+//                   </a>
+//                 </div>
+//               </div>
+//             </aside>
+
+//             {/* Right Content */}
+//             <article className="lg:col-span-8 xl:col-span-9">
+//               <div className="flex items-center gap-6 text-sm text-gray-500 mb-8">
+//                 <div className="flex items-center gap-2">
+//                   <Calendar className="w-5 h-5 text-red-500" />
+//                   <span>{format(new Date(blog.created_at), "PPP")}</span>
+//                 </div>
+//                 <div className="flex items-center gap-2">
+//                   <Clock className="w-5 h-5 text-red-500" />
+//                   <span>7 min read</span>
+//                 </div>
+//               </div>
+
+//               <div
+//                 className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-red-600 hover:prose-a:text-red-700"
+//                 dangerouslySetInnerHTML={{
+//                   __html: blog.content.replace(
+//                     /<h([2-4])(.*?)>(.*?)<\/h\1>/g,
+//                     (match, level, attrs, text) => {
+//                       const slug = text.toLowerCase().replace(/\s+/g, "-");
+//                       return `<h${level}${attrs} id="${slug}">${text}</h${level}>`;
+//                     }
+//                   ),
+//                 }}
+//               />
+//             </article>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
