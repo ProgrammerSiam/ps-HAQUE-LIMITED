@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import noiseBg from "@/assets/products-img/sign-up-noice-bg.png";
 
 const Login = () => {
   const router = useRouter();
@@ -55,72 +56,75 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="">
-        <div className="min-h-screen grid md:grid-cols-2 items-center sm:gap-8">
-          <div className="_center bg-muted h-full">
-            <div className="lg:size-[400px] sm:size-[350px] size-[200px]">
-              <Image
-                src="/images/login/login.svg"
-                alt="login"
-                width={400}
-                height={400}
-                className="object-cover size-full"
+    <div className="grid min-h-screen md:grid-cols-2">
+      <div className="hidden items-center justify-center bg-white md:flex">
+        <div className="">
+          <Image
+            src="/images/login/login.svg"
+            alt="login"
+            width={0}
+            height={0}
+            className="h-96 w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div
+        className="flex flex-col items-center justify-center p-6"
+        style={{
+          backgroundColor: "#C5242A",
+          backgroundImage: `url(${noiseBg.src})`,
+        }}
+      >
+        <div className="w-96 max-w-sm ">
+          <div className="flex w-full flex-col items-center mb-10">
+            <Image
+              src={"/logo.png"}
+              alt="Haque"
+              width={136}
+              height={74}
+              className="object-cover"
+            />
+            <h2 className="my-5 text-center text-2xl uppercase text-white">
+              <span className="font-medium">WELCOME BACK TO</span> <br />
+              <span className="font-bold text-white">A.T. HAQUE</span>
+            </h2>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="">
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Username"
+                className="h-12 border-2 rounded-[12px] border-white bg-transparent text-white placeholder:text-gray-200"
+                value={formData.username}
+                onChange={handleChange}
+                required
               />
             </div>
-          </div>
 
-          {/* Form */}
-          <div className="max-w-[660px] mx-auto bg-card p-6 rounded-lg shadow-sm">
-            <div className="w-full _center flex-col">
-              <Image
-                src={"/logo.png"}
-                alt="login"
-                width={136}
-                height={74}
-                className="object-cover"
+            <div className="">
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                className="h-12 border-2 rounded-[12px] border-white bg-transparent text-white placeholder:text-gray-200"
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
-              <h2 className="text-2xl font-bold text-app-black text-center my-5">
-                Welcome back to A.T.Haque!
-              </h2>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-1">
-                <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="Username"
-                  className="h-12"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
 
-              <div className="space-y-1">
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className="h-12"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <Button
-                type="submit"
-                variant={"destructive"}
-                className="w-full"
-                disabled={loading}
-              >
-                {loading ? "Logging in..." : "LOG IN"}
-              </Button>
-            </form>
-          </div>
+            <Button
+              type="submit"
+              className="w-full py-6 bg-white rounded-[10px] text-[#686868] hover:bg-gray-200"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Log In"}
+            </Button>
+          </form>
         </div>
       </div>
     </div>

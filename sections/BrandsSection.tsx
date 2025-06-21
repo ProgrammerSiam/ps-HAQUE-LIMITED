@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import SectionHeader from "@/components/Header";
 import { brandImg1 } from "@/constants/image";
 import { brandImg2 } from "@/constants/image";
 import { brandImg3 } from "@/constants/image";
@@ -42,10 +41,10 @@ const BrandsSection = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-white py-16 lg:pt-4 lg:pb-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <SectionHeader
+        {/* <SectionHeader
           title="Our"
           description="Explore a selection of our brands"
           highlightedText="Brands"
@@ -55,7 +54,7 @@ const BrandsSection = () => {
           animationDelay={0.2}
           viewportOnce={true}
           viewportMargin="-100px"
-        />
+        /> */}
 
         {/* Brands Container */}
         <motion.div
