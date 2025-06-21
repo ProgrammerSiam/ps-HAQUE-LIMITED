@@ -52,6 +52,7 @@ body {
     @apply bg-background text-foreground scroll-smooth;
   }
   
+
   section {
     @apply w-full py-12 md:py-24 lg:py-28 border-b border-gray-200/10 border-dashed;
   }
