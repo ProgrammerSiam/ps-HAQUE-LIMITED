@@ -12,6 +12,7 @@ export default function Commercials() {
   const [commercials, setCommercials] = useState<TvCommercial[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const router = useRouter();
@@ -61,11 +62,14 @@ export default function Commercials() {
   };
 
   // Filter commercials based on search query
-  const filteredCommercials = commercials.filter(
-    (commercial) =>
+  const filteredCommercials = commercials.filter((commercial) => {
+    const searchMatch =
       commercial.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      commercial.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      commercial.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryMatch =
+      filterCategory === "all" || commercial.category === filterCategory;
+    return searchMatch && categoryMatch;
+  });
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredCommercials.length / itemsPerPage);
@@ -90,9 +94,9 @@ export default function Commercials() {
         </motion.button>
       }
     >
-      {/* Search Bar */}
-      <div className="mb-6">
-        <div className="relative">
+      {/* Search Bar and Filters */}
+      <div className="flex justify-between items-center mb-6 gap-4">
+        <div className="relative flex-grow">
           <input
             type="text"
             placeholder="Search commercials..."
@@ -101,6 +105,38 @@ export default function Commercials() {
             className="w-full px-4 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setFilterCategory("all")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filterCategory === "all"
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50 border"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFilterCategory("tv_commercial")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filterCategory === "tv_commercial"
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50 border"
+            }`}
+          >
+            TV Commercials
+          </button>
+          <button
+            onClick={() => setFilterCategory("recipe_video")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filterCategory === "recipe_video"
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50 border"
+            }`}
+          >
+            Recipe Videos
+          </button>
         </div>
       </div>
 
@@ -155,9 +191,22 @@ export default function Commercials() {
                   <p className="text-gray-600 text-sm line-clamp-2">
                     {commercial.description || "No description provided."}
                   </p>
-                  <span className="text-xs text-gray-400 mt-2">
-                    {new Date(commercial.created_at).toLocaleString()}
-                  </span>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-xs text-gray-400">
+                      {new Date(commercial.created_at).toLocaleString()}
+                    </span>
+                    <span
+                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                        commercial.category === "tv_commercial"
+                          ? "bg-sky-100 text-sky-800"
+                          : "bg-emerald-100 text-emerald-800"
+                      }`}
+                    >
+                      {commercial.category === "tv_commercial"
+                        ? "TV Commercial"
+                        : "Recipe Video"}
+                    </span>
+                  </div>
 
                   {/* Action Buttons */}
                   <div className="flex justify-end gap-2 mt-4 pt-2 border-t">
