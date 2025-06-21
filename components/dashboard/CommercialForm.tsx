@@ -12,6 +12,7 @@ interface CommercialFormProps {
     youtubeUrl?: string;
     title?: string;
     description?: string;
+    category?: string;
   };
   mode: "add" | "edit";
   onSubmit: (data: {
@@ -19,6 +20,7 @@ interface CommercialFormProps {
     youtubeUrl: string;
     title: string;
     description: string;
+    category: string;
   }) => Promise<void>;
   loading?: boolean;
   onCancel?: () => void;
@@ -36,8 +38,13 @@ export function CommercialForm({
     youtubeUrl: initialValues?.youtubeUrl || "",
     title: initialValues?.title || "",
     description: initialValues?.description || "",
+    category: initialValues?.category || "tv_commercial",
   });
-  const [errors, setErrors] = useState({ youtubeUrl: "", videoFile: "" });
+  const [errors, setErrors] = useState({
+    youtubeUrl: "",
+    videoFile: "",
+    category: "",
+  });
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
@@ -114,6 +121,11 @@ export function CommercialForm({
         setVideoPreview(null);
       }
     }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleVideoUpload = async (result: CloudinaryUploadWidgetResults) => {
@@ -283,18 +295,42 @@ export function CommercialForm({
                 placeholder="Enter commercial title"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Description (Optional)
+            <div className="space-y-2">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
               </label>
               <textarea
+                id="description"
                 name="description"
+                rows={4}
                 value={formData.description}
                 onChange={handleInputChange}
-                rows={4}
-                className="mt-1 p-3 block w-full rounded-lg border border-gray-300/50 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                placeholder="Enter commercial description"
+                className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="A brief description of the commercial."
               />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleSelectChange}
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+              >
+                <option value="tv_commercial">TV Commercial</option>
+                <option value="recipe_video">Recipe Video</option>
+              </select>
             </div>
           </div>
           {/* Action Buttons */}

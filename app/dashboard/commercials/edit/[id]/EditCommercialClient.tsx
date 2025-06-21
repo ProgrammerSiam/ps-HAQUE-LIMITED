@@ -46,6 +46,7 @@ export default function EditCommercialClient({
     youtubeUrl: string;
     title: string;
     description: string;
+    category: string;
   }) => {
     setSaving(true);
     try {
@@ -55,6 +56,7 @@ export default function EditCommercialClient({
         video_url: formData.videoFile
           ? formData.videoFile
           : formData.youtubeUrl,
+        category: formData.category,
       };
       await databaseService.tv_commercials.update(id, updatedCommercial);
       toast.success("Commercial updated successfully");
@@ -96,6 +98,7 @@ export default function EditCommercialClient({
         : "",
     title: commercial.title || "",
     description: commercial.description || "",
+    category: commercial.category || "tv_commercial",
   };
 
   return (

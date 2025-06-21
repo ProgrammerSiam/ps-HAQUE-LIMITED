@@ -15,6 +15,7 @@ export default function AddCommercial() {
     youtubeUrl: string;
     title: string;
     description: string;
+    category: string;
   }) => {
     setLoading(true);
     try {
@@ -24,6 +25,7 @@ export default function AddCommercial() {
         video_url: formData.videoFile
           ? formData.videoFile
           : formData.youtubeUrl,
+        category: formData.category,
       };
       await databaseService.tv_commercials.create(newCommercial);
       toast.success("Commercial created successfully");
@@ -44,6 +46,7 @@ export default function AddCommercial() {
           youtubeUrl: "",
           title: "",
           description: "",
+          category: "tv_commercial",
         }}
         onSubmit={handleAdd}
         loading={loading}

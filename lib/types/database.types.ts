@@ -78,6 +78,7 @@ export type TvCommercial = {
   title: string;
   description: string;
   video_url?: string;
+  category: string;
   created_at: string;
   updated_at: string;
 };

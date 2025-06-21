@@ -1,114 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { MonitorPlay, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { TvCommercial } from "@/lib/types/database.types";
+
+const getYouTubeVideoId = (url?: string) => {
+  if (!url) return null;
+  const match = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\\n?#]+)/
+  );
+  return match ? match[1] : null;
+};
 
 export default function TvCommercialSection() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [commercials, setCommercials] = useState<TvCommercial[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const commercials = [
-    {
-      id: 1,
-      title: "Misti Cookie | TV Commercial",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "li1tR-8dwa0",
-      category: "commercial",
-    },
-    {
-      id: 2,
-      title: "Mr. Cookie | TV Commercial 2017",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "uo_xul7xJNM",
-      category: "commercial",
-    },
-    {
-      id: 3,
-      title: "Haque Chocolate Digestive",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "mTweb7iq2H4",
-      category: "commercial",
-    },
-    {
-      id: 4,
-      title: "Haque Tarzan Chips",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "-3G5FyxZ6Nw",
-      category: "commercial",
-    },
-    {
-      id: 5,
-      title: "Haque Antiseptic Soap",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "Jd7Oe5Xm1hs",
-      category: "commercial",
-    },
-    {
-      id: 6,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "z6so-jgpIf0",
-      category: "recipe",
-    },
-    {
-      id: 7,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "-zctDK-pH34",
-      category: "recipe",
-    },
-    {
-      id: 8,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "w6MTTr49Jy4",
-      category: "recipe",
-    },
-    {
-      id: 9,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "fGwP2-5QYrc",
-      category: "recipe",
-    },
-    {
-      id: 10,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "iEPAnL0wxpY",
-      category: "recipe",
-    },
-    {
-      id: 11,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "Li43t-OvUg8",
-      category: "recipe",
-    },
-    {
-      id: 12,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "HobHZb2fee8",
-      category: "recipe",
-    },
-    {
-      id: 13,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "8q5UprjM_bk",
-      category: "recipe",
-    },
-    {
-      id: 14,
-      title: "Mr Cookie Dessert Recipe",
-      thumbnail: "/placeholder.svg?height=200&width=350",
-      videoId: "npgp7NWifQU",
-      category: "recipe",
-    },
-  ];
+  useEffect(() => {
+    const fetchCommercials = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/commercials");
+        const data = await response.json();
+        setCommercials(data);
+      } catch (error) {
+        console.error("Failed to fetch commercials", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCommercials();
+  }, []);
 
   // Filter videos based on active category
   const filteredCommercials =
@@ -142,12 +68,12 @@ export default function TvCommercialSection() {
 
   const categories = [
     { id: "all", name: "All Videos" },
-    { id: "commercial", name: "TV Commercials" },
-    { id: "recipe", name: "Recipe Videos" },
+    { id: "tv_commercial", name: "TV Commercials" },
+    { id: "recipe_video", name: "Recipe Videos" },
   ];
 
   // State for currently playing video
-  const [playingVideo, setPlayingVideo] = useState<number | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
   return (
     <section
@@ -192,57 +118,77 @@ export default function TvCommercialSection() {
 
         {/* Video Grid */}
         <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentItems.map((commercial) => (
-              <Card
-                key={commercial.id}
-                className="overflow-hidden border hover:shadow-lg transition-all duration-300"
-              >
-                <CardContent className="p-0">
-                  <div className="group relative aspect-video w-full overflow-hidden bg-muted">
-                    {playingVideo === commercial.id ? (
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${commercial.videoId}?autoplay=1`}
-                        title={commercial.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                      ></iframe>
-                    ) : (
-                      <>
-                        <img
-                          src={commercial.thumbnail}
-                          alt={commercial.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                        <div
-                          className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => setPlayingVideo(commercial.id)}
-                        >
-                          <div className="bg-red-600 rounded-full p-3 shadow-lg">
-                            <Play className="size-8 text-white" fill="white" />
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium text-gray-900 line-clamp-1">
-                      {commercial.title}
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {commercial.category === "commercial"
-                        ? "TV Commercial"
-                        : "Recipe Video"}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-10 text-gray-500">Loading...</div>
+          ) : currentItems.length === 0 ? (
+            <div className="text-center py-10 text-gray-500">
+              No videos found in this category.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentItems.map((commercial) => {
+                const videoId = getYouTubeVideoId(commercial.video_url);
+                const thumbnailUrl = videoId
+                  ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+                  : "/placeholder.svg?height=200&width=350";
+
+                return (
+                  <Card
+                    key={commercial.id}
+                    className="overflow-hidden border hover:shadow-lg transition-all duration-300"
+                  >
+                    <CardContent className="p-0">
+                      <div className="group relative aspect-video w-full overflow-hidden bg-muted">
+                        {playingVideo === commercial.id ? (
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                            title={commercial.title}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                          ></iframe>
+                        ) : (
+                          <>
+                            <img
+                              src={thumbnailUrl}
+                              alt={commercial.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <div
+                              className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => setPlayingVideo(commercial.id)}
+                            >
+                              <div className="bg-red-600 rounded-full p-3 shadow-lg">
+                                <Play
+                                  className="size-8 text-white"
+                                  fill="white"
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-medium text-gray-900 line-clamp-1">
+                          {commercial.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 mt-1">
+                          {commercial.category === "tv_commercial"
+                            ? "TV Commercial"
+                            : commercial.category === "recipe_video"
+                              ? "Recipe Video"
+                              : "Video"}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
