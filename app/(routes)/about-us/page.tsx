@@ -1,10 +1,12 @@
-import About from "@/views/about";
-
 import { Metadata } from "next";
 import { siteConfig } from "@/config/metadata";
 import HeroSection from "@/components/about-us/HeroSection";
 import WhoWeAreSection from "@/components/about-us/whoWeAreSection";
 import ValuesSection from "@/components/about-us/ValuesSection";
+import VenturesSection from "@/components/about-us/VenturesSection";
+import ManufacturingSection from "@/components/about-us/ManufacturingSection";
+import GetInTouchSection from "@/components/about-us/GetInTouchSection";
+import LocationSection from "@/components/about-us/LocationSection";
 
 export const metadata: Metadata = {
     title: "About Us",
@@ -24,7 +26,10 @@ const AboutPage = () => {
             <HeroSection />
             <WhoWeAreSection />
             <ValuesSection />
-            <About />
+            <VenturesSection />
+            <ManufacturingSection />
+            <GetInTouchSection />
+            <LocationSection />
         </main>
     );
 };

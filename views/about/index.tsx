@@ -10,9 +10,9 @@ import WhoWeAreSection from "../../components/about-us/whoWeAreSection";
 const About = () => {
     return (
         <>
-            {/* <HeroSection /> */}
-            {/* <WhoWeAreSection /> */}
-            {/* <CompanyValues /> */}
+            <HeroSection />
+            <WhoWeAreSection />
+            <CompanyValues />
             <CompanyConcern />
             <CompanyProfile />
             <LocationSection />
