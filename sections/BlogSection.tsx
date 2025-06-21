@@ -54,8 +54,8 @@ const BlogSection = () => {
             variants={containerVariants}
           >
             <SectionHeader
-              title="Our"
-              highlightedText="Blog"
+              title=" LATEST BLOG"
+              highlightedText="HAQUE"
               description="A collection of articles and resources about our products and services from our team and industry experts "
               showDivider={true}
               align="center"

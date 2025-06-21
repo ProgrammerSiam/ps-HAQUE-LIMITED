@@ -210,7 +210,7 @@ const ProductsSection = () => {
   };
 
   return (
-    <section className="relative mt-16 lg:mt-24 bg-white overflow-hidden">
+    <section className="relative mt-4 lg:mt-4 bg-white overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         {/* Section Header */}
         <SectionHeader
